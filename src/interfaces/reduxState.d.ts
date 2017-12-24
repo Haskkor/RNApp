@@ -3,7 +3,7 @@ declare namespace ReduxState {
     session: Session,
     container: {
       App: AppContainer,
-      Conversation: ConversationContainer,
+      Conversation: ConversationContainer
     }
     entities: {
       questionBlocks: { [id: string]: ServerEntity.QuestionBlock },

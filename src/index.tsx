@@ -9,18 +9,18 @@ import {
 } from 'react-native'
 
 import createStore from './core/create'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 import App from './view/navigators/App'
 
 export const store = createStore();
 
 (console as any).disableYellowBox = true // any is a hack
 
-export default class OnBoardingApp extends React.Component {
-  render () {
+class OnBoardingApp extends React.Component {
+  render() {
     return (
       <Provider store={store} key="provider">
-        <App />
+        <App/>
       </Provider>
     )
   }

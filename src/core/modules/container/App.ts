@@ -16,21 +16,21 @@ export type LoadQuestionFailPayload = {
 
 const initialState: ReduxState.AppContainer = {
   mainControl: undefined,
-  questionLoaded: false,
+  questionLoaded: false
 }
 
 export default handleActions({
   [LOAD_QUESTION_START]: (state: ReduxState.AppContainer, action: Action<LoadQuestionStartPayload>) => ({
-    ...state,
+    ...state
   }),
   [LOAD_QUESTION_SUCCESS]: (state: ReduxState.AppContainer, action: Action<LoadQuestionSuccessPayload>) => ({
     ...state,
-    loaded: true,
+    loaded: true
   }),
   [LOAD_QUESTION_FAIL]: (state: ReduxState.AppContainer, action: Action<LoadQuestionFailPayload>) => ({
     ...state,
-    loaded: false,
-  }),
+    loaded: false
+  })
 }, initialState)
 
 export const loadQuestionStart = createAction<LoadQuestionStartPayload>(LOAD_QUESTION_START)

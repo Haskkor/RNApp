@@ -6,5 +6,5 @@ import entities from './entities/reducer'
 export default combineReducers({
   me,
   container,
-  entities,
+  entities
 })
