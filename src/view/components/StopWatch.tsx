@@ -1,17 +1,16 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import * as moment from 'moment'
 
 type IProps = {}
 
 type IState = {
   isRunning: boolean
-  mainTimer: moment.Moment
+  mainTimer: Date
 }
 
 class StopWatch extends React.PureComponent<IProps, IState> {
   interval: number
-  startTimer: moment.Moment
+  startTimer: Date
 
   constructor() {
     super()
@@ -26,34 +25,40 @@ class StopWatch extends React.PureComponent<IProps, IState> {
   handleStartStop = () => {
     const {isRunning} = this.state
     if (isRunning) {
-      this.startTimer = null
       clearInterval(this.interval)
       this.setState({isRunning: false})
     } else {
-      this.startTimer = moment()
+      if (!this.startTimer) this.startTimer = new Date()
       this.setState({isRunning: true})
       this.interval = setInterval(() => {
         this.setState({
-          mainTimer: moment()
+          mainTimer: new Date()
         })
-      }, 1000)
+      }, 100)
     }
   }
 
   handleReset = () => {
     const {isRunning} = this.state
     if (!isRunning) {
-      this.setState({
-        mainTimer: null
-      })
+      this.startTimer = null
+      this.setState({mainTimer: null})
     }
   }
 
-  formatTime = (mainTimer: moment.Moment): string => {
+  formatTime = (mainTimer: Date): string => {
     if (mainTimer) {
-      return `${mainTimer.diff(this.startTimer, 'minutes')}:${mainTimer.diff(this.startTimer, 'seconds')}`
+      const diff = +mainTimer - +this.startTimer
+      const milliseconds = Math.floor((diff % 1000) / 10)
+      const seconds = Math.floor(diff / 1000) % 60
+      const minutes = Math.floor((diff / 1000) / 60)
+      if (minutes === 59 && seconds === 59 && milliseconds >= 99) {
+        this.handleStartStop()
+        return '59:59:99'
+      }
+      return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${milliseconds < 10 ? '0' : ''}${milliseconds}`
     }
-    return '00:00'
+    return '00:00:00'
   }
 
   render() {
