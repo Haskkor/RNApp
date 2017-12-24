@@ -4,7 +4,7 @@ import {connect, Dispatch} from 'react-redux'
 import * as meDuck from '../../core/modules/me'
 import * as AppDuck from '../../core/modules/container/App'
 import {bindActionCreators} from 'redux'
-import StopWatch from '../components/StopWatch'
+import TabNavRecovery from './TabNavRecovery'
 
 type IProps = {
   session: ReduxState.Session,
@@ -36,7 +36,7 @@ class App extends React.PureComponent<IProps, IState> {
     console.log('container', container)
     return (
       <View style={styles.container}>
-        <StopWatch/>
+        <TabNavRecovery/>
       </View>
     )
   }
