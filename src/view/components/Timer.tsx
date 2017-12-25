@@ -1,16 +1,18 @@
 import * as React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Picker, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import * as loDash from 'lodash'
 
 type IProps = {}
 
 type IState = {
   isRunning: boolean
-  mainTimer: Date
+  selectedMinute: number
+  selectedSecond: number
+  totalTime: number
 }
 
-class StopWatch extends React.PureComponent<IProps, IState> {
+class Timer extends React.PureComponent<IProps, IState> {
   interval: number
-  startTimer: Date
 
   constructor() {
     super()
@@ -18,60 +20,80 @@ class StopWatch extends React.PureComponent<IProps, IState> {
     this.handleStartStop = this.handleStartStop.bind(this)
     this.state = {
       isRunning: false,
-      mainTimer: null
+      selectedMinute: 1,
+      selectedSecond: 30,
+      totalTime: null
     }
   }
 
   handleStartStop = () => {
-    const {isRunning} = this.state
+    const {isRunning, selectedSecond, selectedMinute} = this.state
     if (isRunning) {
       clearInterval(this.interval)
       this.setState({isRunning: false})
     } else {
-      if (!this.startTimer) this.startTimer = new Date()
+      if (this.state.totalTime === null) this.setState({totalTime: selectedMinute * 60 + selectedSecond})
       this.setState({isRunning: true})
       this.interval = setInterval(() => {
-        this.setState({
-          mainTimer: new Date()
-        })
-      }, 100)
+        this.setState({totalTime: this.state.totalTime - 1})
+      }, 1000)
     }
   }
 
   handleReset = () => {
     const {isRunning} = this.state
     if (!isRunning) {
-      this.startTimer = null
-      this.setState({mainTimer: null})
+      this.setState({totalTime: null})
     }
   }
 
-  formatTime = (mainTimer: Date): string => {
-    if (mainTimer) {
-      const diff = +mainTimer - +this.startTimer
-      const milliseconds = Math.floor((diff % 1000) / 10)
-      const seconds = Math.floor(diff / 1000) % 60
-      const minutes = Math.floor((diff / 1000) / 60)
-      if (minutes === 59 && seconds === 59 && milliseconds >= 99) {
+  formatTime = (totalTime: number): string => {
+    if (totalTime > 0) {
+      const seconds = totalTime % 60
+      const minutes = Math.floor(totalTime / 60)
+      if (minutes === 0 && seconds === 0) {
         this.handleStartStop()
-        return '59:59:99'
+        return '00:00'
       }
-      return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${milliseconds < 10 ? '0' : ''}${milliseconds}`
+      return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
     }
-    return '00:00:00'
+    return '00:00'
   }
 
   render() {
-    const {isRunning, mainTimer} = this.state
+    const {isRunning, selectedMinute, selectedSecond, totalTime} = this.state
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
           <View style={styles.header}>
             <Text style={styles.title}>Recovery StopWatch</Text>
           </View>
+          {(isRunning || this.state.totalTime > 0) &&
           <View style={styles.timerWrapper}>
-            <Text style={styles.mainTimer}>{this.formatTime(mainTimer)}</Text>
-          </View>
+            <Text style={styles.mainTimer}>{this.formatTime(totalTime)}</Text>
+          </View> ||
+          <View style={styles.pickerWrapper}>
+            <View style={styles.pickerMinutes}>
+              <Picker
+                selectedValue={selectedMinute}
+                onValueChange={(itemValue) => this.setState({selectedMinute: itemValue})}>
+                {loDash.range(10).map((value) => {
+                  return <Picker.Item key={value} label={value.toString()} value={value}/>
+                })}
+              </Picker>
+              <Text>minutes</Text>
+            </View>
+            <View style={styles.pickerSeconds}>
+              <Picker
+                selectedValue={selectedSecond}
+                onValueChange={(itemValue) => this.setState({selectedSecond: itemValue})}>
+                {loDash.range(0, 60, 5).map((value) => {
+                  return <Picker.Item key={value} label={value.toString()} value={value}/>
+                })}
+              </Picker>
+              <Text>seconds</Text>
+            </View>
+          </View>}
         </View>
         <View style={styles.buttons}>
           <View style={styles.buttonWrapper}>
@@ -109,6 +131,21 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1
   },
+  pickerWrapper: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    alignSelf: 'center'
+  },
+  pickerMinutes: {
+    width: 70,
+    marginRight: 30
+  },
+  pickerSeconds: {
+    width: 70,
+    marginLeft: 30
+  },
   timer: {
     flex: 1,
     backgroundColor: '#FFF'
@@ -145,4 +182,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default StopWatch
+export default Timer

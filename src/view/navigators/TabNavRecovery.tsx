@@ -1,21 +1,17 @@
 import * as React from 'react'
-import {Text, View} from 'react-native'
 import {TabNavigator} from 'react-navigation'
 import StopWatch from '../components/StopWatch'
-
-const profileScreen = () => (
-  <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    <Text>Profile Screen</Text>
-  </View>
-)
+import Timer from '../components/Timer'
 
 const TabNavRecovery = TabNavigator({
   Home: {
     screen: StopWatch
   },
   Profile: {
-    screen: profileScreen
+    screen: Timer
   }
+}, {
+  tabBarPosition: 'bottom'
 })
 
 export default TabNavRecovery
