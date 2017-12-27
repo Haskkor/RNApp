@@ -1,12 +1,14 @@
 import * as React from 'react'
 import {Picker, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
+import { Col, Row, Grid } from 'react-native-easy-grid'
 
 type IProps = {}
 
 type IState = {
   currentReps: string
   currentWeight: string
+  currentMuscle: string
   currentExercise: string
   dataLog: any
 }
@@ -46,6 +48,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentReps: null,
       currentWeight: null,
       currentExercise: null,
+      currentMuscle: null,
       dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}
     }
   }
@@ -57,10 +60,55 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {currentReps, currentWeight, currentExercise, dataLog} = this.state
+    const {currentReps, currentWeight, currentExercise, dataLog, currentMuscle} = this.state
     return (
       <View style={styles.container}>
         <View style={styles.logView}>
+
+
+
+          <Grid>
+            <Row>
+              <Col size={25}><Text>Muscle:</Text></Col>
+              <Col size={75}>
+                <Picker
+                  selectedValue={currentMuscle}
+                  onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
+                  <Picker.Item key="ttt" label="ttt" value="ttt"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                </Picker>
+              </Col>
+            </Row>
+            <Row>
+              <Col size={25}><Text>Exercise:</Text></Col>
+              <Col size={75}>
+                <Picker
+                  selectedValue={currentExercise}
+                  onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
+                  <Picker.Item key="ttt" label="ttt" value="ttt"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                </Picker>
+              </Col>
+            </Row>
+            <Row>
+              <Col></Col>
+              <Col></Col>
+              <Col></Col>
+              <Col></Col>
+            </Row>
+            <Row>
+              <Col></Col>
+            </Row>
+
+          </Grid>
+
+
           <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
             <Text style={{width: 100}}>Exercise:</Text>
             <Picker
@@ -124,7 +172,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   logView: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
