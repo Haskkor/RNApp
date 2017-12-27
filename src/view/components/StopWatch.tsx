@@ -41,12 +41,12 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         this.setState({
           mainTimer: new Date()
         })
-      }, 100)
+      }, 50)
     }
   }
 
   handleReset = () => {
-    this.isReset = true
+    this.isReset = false
     const {isRunning} = this.state
     if (!isRunning) {
       this.startTimer = null
@@ -62,15 +62,16 @@ class StopWatch extends React.PureComponent<IProps, IState> {
       const minutes = Math.floor((diff / 1000) / 60)
       if (minutes === 59 && seconds === 59 && milliseconds >= 99) {
         this.handleStartStop()
-        return '59:59:99'
+        return '59:59,99'
       }
-      return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds}:${milliseconds < 10 ? '0' : ''}${milliseconds}`
+      return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds},${milliseconds < 10 ? '0' : ''}${milliseconds}`
     }
-    return '00:00:00'
+    return '00:00,00'
   }
 
   render() {
     const {isRunning, mainTimer} = this.state
+    const isResetDisabled = !this.isReset
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
@@ -83,10 +84,15 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         </View>
         <View style={styles.buttons}>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity disabled={!this.isReset} onPress={this.handleReset} style={styles.startButton}>
-              <Text>Reset</Text>
+            <TouchableOpacity
+              disabled={isResetDisabled}
+              onPress={this.handleReset}
+              style={[styles.button, isResetDisabled ? styles.resetButtonDisabled : styles.resetButton]}>
+              <Text style={isResetDisabled ? styles.resetButtonTextDisabled : styles.resetButtonText}>Reset</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.handleStartStop} style={isRunning ? styles.stopButton : styles.startButton}>
+            <TouchableOpacity
+              onPress={this.handleStartStop}
+              style={[styles.button, isRunning ? styles.stopButton : styles.startButton]}>
               <Text style={isRunning ? styles.stopButtonText : styles.startButtonText}>
                 {isRunning ? 'Stop' : 'Start'}
               </Text>
@@ -129,9 +135,10 @@ const styles = StyleSheet.create({
   },
   mainTimer: {
     fontSize: 60,
-    fontWeight: '200',
+    fontWeight: 'normal',
     alignSelf: 'flex-end',
-    color: '#FFF'
+    color: '#FFF',
+    fontFamily: 'courier'
   },
   buttonWrapper: {
     flexDirection: 'row',
@@ -139,26 +146,36 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 30
   },
-  startButton: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 112, 10, 0.5)'
-  },
-  startButtonText: {
-    color: '#00CC00'
-  },
-  stopButton: {
+  button: {
     height: 80,
     width: 80,
     borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center'
   },
+  startButton: {
+    backgroundColor: 'rgba(0, 112, 10, 0.5)'
+  },
+  startButtonText: {
+    color: '#00CC00'
+  },
+  stopButton: {
+    backgroundColor: 'rgba(153, 0, 0, 0.5)'
+  },
   stopButtonText: {
     color: '#FF0000'
+  },
+  resetButton: {
+    backgroundColor: 'rgba(179, 179, 179, 0.5)'
+  },
+  resetButtonText: {
+    color: '#FFF'
+  },
+  resetButtonDisabled: {
+    backgroundColor: 'rgba(65, 65, 67, 0.5)'
+  },
+  resetButtonTextDisabled: {
+    color: '#7A7A7B'
   }
 })
 
