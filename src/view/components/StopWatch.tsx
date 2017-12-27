@@ -11,6 +11,7 @@ type IState = {
 class StopWatch extends React.PureComponent<IProps, IState> {
   interval: number
   startTimer: Date
+  isReset: boolean
 
   constructor() {
     super()
@@ -22,12 +23,18 @@ class StopWatch extends React.PureComponent<IProps, IState> {
     }
   }
 
+  componentDidMount() {
+    this.isReset = true
+  }
+
   handleStartStop = () => {
     const {isRunning} = this.state
     if (isRunning) {
+      this.isReset = true
       clearInterval(this.interval)
       this.setState({isRunning: false})
     } else {
+      this.isReset = false
       if (!this.startTimer) this.startTimer = new Date()
       this.setState({isRunning: true})
       this.interval = setInterval(() => {
@@ -39,6 +46,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
   }
 
   handleReset = () => {
+    this.isReset = true
     const {isRunning} = this.state
     if (!isRunning) {
       this.startTimer = null
@@ -67,7 +75,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
       <View style={styles.container}>
         <View style={styles.timer}>
           <View style={styles.header}>
-            <Text style={styles.title}>Recovery StopWatch</Text>
+            <Text style={styles.title}>Recovery Stopwatch</Text>
           </View>
           <View style={styles.timerWrapper}>
             <Text style={styles.mainTimer}>{this.formatTime(mainTimer)}</Text>
@@ -75,11 +83,11 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         </View>
         <View style={styles.buttons}>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity disabled={isRunning} onPress={this.handleReset} style={styles.button}>
+            <TouchableOpacity disabled={!this.isReset} onPress={this.handleReset} style={styles.startButton}>
               <Text>Reset</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.handleStartStop} style={styles.button}>
-              <Text style={[styles.startButton, isRunning && styles.stopButton]}>
+            <TouchableOpacity onPress={this.handleStartStop} style={isRunning ? styles.stopButton : styles.startButton}>
+              <Text style={isRunning ? styles.stopButtonText : styles.startButtonText}>
                 {isRunning ? 'Stop' : 'Start'}
               </Text>
             </TouchableOpacity>
@@ -92,17 +100,20 @@ class StopWatch extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#1B1B1C'
   },
   header: {
     borderBottomWidth: 0.5,
-    paddingTop: 20,
+    borderColor: '#414143',
+    paddingTop: 30,
     paddingBottom: 20,
-    backgroundColor: '#F9F9F9'
+    backgroundColor: '#282829'
   },
   title: {
     alignSelf: 'center',
-    fontWeight: '600'
+    fontWeight: '600',
+    color: '#FFF'
   },
   timerWrapper: {
     justifyContent: 'center',
@@ -110,18 +121,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
   timer: {
-    flex: 1,
-    backgroundColor: '#FFF'
+    flex: 2
   },
   buttons: {
     flex: 1,
-    backgroundColor: '#F0EFF5',
     justifyContent: 'center'
   },
   mainTimer: {
     fontSize: 60,
-    fontWeight: '100',
-    alignSelf: 'flex-end'
+    fontWeight: '200',
+    alignSelf: 'flex-end',
+    color: '#FFF'
   },
   buttonWrapper: {
     flexDirection: 'row',
@@ -129,18 +139,25 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 30
   },
-  button: {
+  startButton: {
     height: 80,
     width: 80,
     borderRadius: 40,
-    backgroundColor: '#FFF',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 112, 10, 0.5)'
   },
-  startButton: {
+  startButtonText: {
     color: '#00CC00'
   },
   stopButton: {
+    height: 80,
+    width: 80,
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  stopButtonText: {
     color: '#FF0000'
   }
 })
