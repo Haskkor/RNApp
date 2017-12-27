@@ -6,7 +6,7 @@ import QuickLog from '../components/QuickLog'
 const MainDrawerNav = DrawerNavigator({
   Home: {
     drawerLabel: 'Quick log',
-    screen: QuickLog
+    screen: TabNavRecovery
   },
   QuickLog: {
     drawerLabel: 'Quick log',
