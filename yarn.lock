@@ -4382,6 +4382,10 @@ react-native-git-upgrade@^0.2.7:
     shelljs "^0.7.5"
     yeoman-environment "1.5.3"
 
+react-native-sortable-listview@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/react-native-sortable-listview/-/react-native-sortable-listview-0.2.7.tgz#d0677970f30c38eb5905aea5043cd9656a7597e4"
+
 react-native-tab-view@^0.0.70:
   version "0.0.70"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.70.tgz#1dd2ded32acd0cb6bfef38d26e53675db733b37b"
