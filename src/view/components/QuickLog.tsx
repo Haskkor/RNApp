@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TextInput, TouchableHighlight, TouchableOpacity, View} from 'react-native'
+import {Picker, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
 
 type IProps = {}
@@ -8,31 +8,34 @@ type IState = {
   currentReps: string
   currentWeight: string
   currentExercise: string
-  dataLog: any // fixme any
+  dataLog: any
 }
 
+type RowProps = {
+  data: any
+  sortHandlers?: any
+}
 
-// let data = {
-//   hello: { text: 'world' },
-//   how: { text: 'are you' },
-//   test: { text: 123 },
-//   this: { text: 'is' },
-//   a: { text: 'a' },
-//   real: { text: 'real' },
-//   drag: { text: 'drag and drop' },
-//   bb: { text: 'bb' },
-//   cc: { text: 'cc' },
-//   dd: { text: 'dd' },
-//   ee: { text: 'ee' },
-//   ff: { text: 'ff' },
-//   gg: { text: 'gg' },
-//   hh: { text: 'hh' },
-//   ii: { text: 'ii' },
-//   jj: { text: 'jj' },
-//   kk: { text: 'kk' },
-// }
-//
-// let order = Object.keys(data)
+type DataRow = {text: string}
+
+class RowComponent extends React.PureComponent<RowProps, {}> {
+  render() {
+    return (
+      <TouchableOpacity
+        underlayColor={'#eee'}
+        style={{
+          padding: 25,
+          backgroundColor: '#F8F8F8',
+          borderBottomWidth: 1,
+          borderColor: '#eee'
+        }}
+        {...this.props.sortHandlers}
+      >
+        <Text>{this.props.data.text}</Text>
+      </TouchableOpacity>
+    )
+  }
+}
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: any // fixme any
@@ -43,17 +46,18 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentReps: null,
       currentWeight: null,
       currentExercise: null,
-      dataLog: {'test': {text: 'test'}}
+      dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}
     }
   }
 
   componentDidMount() {
     this.order = Object.keys(this.state.dataLog)
+    this.setState({dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}})
+    this.order = Object.keys(this.state.dataLog)
   }
 
   render() {
     const {currentReps, currentWeight, currentExercise, dataLog} = this.state
-
     return (
       <View style={styles.container}>
         <View style={styles.logView}>
@@ -64,6 +68,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               selectedValue={currentExercise}
               onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
               <Picker.Item key="ttt" label="ttt" value="ttt"/>
+              <Picker.Item key="aaa" label="aaa" value="aaa"/>
+              <Picker.Item key="aaa" label="aaa" value="aaa"/>
+              <Picker.Item key="aaa" label="aaa" value="aaa"/>
               <Picker.Item key="aaa" label="aaa" value="aaa"/>
             </Picker>
           </View>
@@ -98,27 +105,14 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </TouchableOpacity>
         </View>
         <SortableListView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           data={dataLog}
           order={this.order}
-          onRowMoved={(e: any) => { // fixme any
+          onRowMoved={(e: any) => {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
             this.forceUpdate()
           }}
-          renderRow={(row: any) =>
-            <TouchableHighlight
-              underlayColor={'#eee'}
-              style={{
-                padding: 25,
-                backgroundColor: '#F8F8F8',
-                borderBottomWidth: 1,
-                borderColor: '#eee'
-              }}
-              {...this.props.sortHandlers}
-            >
-              <Text>{row.text}</Text>
-            </TouchableHighlight>
-          }
+          renderRow={(row: DataRow) => <RowComponent data={row} />}
         />
       </View>
     )
