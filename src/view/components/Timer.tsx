@@ -13,6 +13,7 @@ type IState = {
 
 class Timer extends React.PureComponent<IProps, IState> {
   interval: number
+  isReset: boolean
 
   constructor() {
     super()
@@ -26,12 +27,20 @@ class Timer extends React.PureComponent<IProps, IState> {
     }
   }
 
-  handleStartStop = () => {
+  componentDidMount() {
+    this.isReset = false
+  }
+
+  handleStartStop = (endTimer: boolean) => {
     const {isRunning, selectedSecond, selectedMinute} = this.state
+    if (selectedMinute === 0 && selectedSecond === 0) return
+    console.log('end', endTimer)
     if (isRunning) {
+      if (!endTimer) this.isReset = true
       clearInterval(this.interval)
       this.setState({isRunning: false})
     } else {
+      this.isReset = false
       if (this.state.totalTime === null) this.setState({totalTime: selectedMinute * 60 + selectedSecond})
       this.setState({isRunning: true})
       this.interval = setInterval(() => {
@@ -41,6 +50,7 @@ class Timer extends React.PureComponent<IProps, IState> {
   }
 
   handleReset = () => {
+    this.isReset = false
     const {isRunning} = this.state
     if (!isRunning) {
       this.setState({totalTime: null})
@@ -52,16 +62,18 @@ class Timer extends React.PureComponent<IProps, IState> {
       const seconds = totalTime % 60
       const minutes = Math.floor(totalTime / 60)
       if (minutes === 0 && seconds === 0) {
-        this.handleStartStop()
+        this.handleStartStop(false)
         return '00:00'
       }
       return `${minutes < 10 ? '0' : '0'}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
     }
+    this.handleStartStop(true)
     return '00:00'
   }
 
   render() {
     const {isRunning, selectedMinute, selectedSecond, totalTime} = this.state
+    const isResetDisabled = !this.isReset
     return (
       <View style={styles.container}>
         <View style={styles.timer}>
@@ -75,33 +87,40 @@ class Timer extends React.PureComponent<IProps, IState> {
           <View style={styles.pickerWrapper}>
             <View style={styles.pickerMinutes}>
               <Picker
+                style={styles.picker}
                 selectedValue={selectedMinute}
                 onValueChange={(itemValue) => this.setState({selectedMinute: itemValue})}>
                 {loDash.range(10).map((value) => {
-                  return <Picker.Item key={value} label={value.toString()} value={value}/>
+                  return <Picker.Item color="#FFF" key={value} label={value.toString()} value={value}/>
                 })}
               </Picker>
-              <Text>minutes</Text>
+              <Text style={styles.resetButtonText}>minutes</Text>
             </View>
             <View style={styles.pickerSeconds}>
               <Picker
+                style={styles.picker}
                 selectedValue={selectedSecond}
                 onValueChange={(itemValue) => this.setState({selectedSecond: itemValue})}>
                 {loDash.range(0, 60, 5).map((value) => {
-                  return <Picker.Item key={value} label={value.toString()} value={value}/>
+                  return <Picker.Item color="#FFF" key={value} label={value.toString()} value={value}/>
                 })}
               </Picker>
-              <Text>seconds</Text>
+              <Text style={styles.resetButtonText}>seconds</Text>
             </View>
           </View>}
         </View>
         <View style={styles.buttons}>
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity disabled={isRunning} onPress={this.handleReset} style={styles.button}>
-              <Text>Reset</Text>
+            <TouchableOpacity
+              disabled={isResetDisabled}
+              onPress={this.handleReset}
+              style={[styles.button, isResetDisabled ? styles.resetButtonDisabled : styles.resetButton]}>
+              <Text style={isResetDisabled ? styles.resetButtonTextDisabled : styles.resetButtonText}>Reset</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.handleStartStop} style={styles.button}>
-              <Text style={[styles.startButton, isRunning && styles.stopButton]}>
+            <TouchableOpacity
+              onPress={() => this.handleStartStop(false)}
+              style={[styles.button, isRunning ? styles.stopButton : styles.startButton]}>
+              <Text style={isRunning ? styles.stopButtonText : styles.startButtonText}>
                 {isRunning ? 'Stop' : 'Start'}
               </Text>
             </TouchableOpacity>
@@ -114,51 +133,39 @@ class Timer extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#1B1B1C'
   },
   header: {
     borderBottomWidth: 0.5,
-    paddingTop: 20,
+    borderColor: '#414143',
+    paddingTop: 30,
     paddingBottom: 20,
-    backgroundColor: '#F9F9F9'
+    backgroundColor: '#282829'
   },
   title: {
     alignSelf: 'center',
-    fontWeight: '600'
+    fontWeight: '600',
+    color: '#FFF'
   },
   timerWrapper: {
     justifyContent: 'center',
     alignSelf: 'center',
     flex: 1
   },
-  pickerWrapper: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    alignSelf: 'center'
-  },
-  pickerMinutes: {
-    width: 70,
-    marginRight: 30
-  },
-  pickerSeconds: {
-    width: 70,
-    marginLeft: 30
-  },
   timer: {
-    flex: 1,
-    backgroundColor: '#FFF'
+    flex: 2
   },
   buttons: {
     flex: 1,
-    backgroundColor: '#F0EFF5',
     justifyContent: 'center'
   },
   mainTimer: {
     fontSize: 60,
-    fontWeight: '100',
-    alignSelf: 'flex-end'
+    fontWeight: 'normal',
+    alignSelf: 'flex-end',
+    color: '#FFF',
+    fontFamily: 'courier'
   },
   buttonWrapper: {
     flexDirection: 'row',
@@ -170,15 +177,53 @@ const styles = StyleSheet.create({
     height: 80,
     width: 80,
     borderRadius: 40,
-    backgroundColor: '#FFF',
     justifyContent: 'center',
     alignItems: 'center'
   },
   startButton: {
+    backgroundColor: 'rgba(0, 112, 10, 0.5)'
+  },
+  startButtonText: {
     color: '#00CC00'
   },
   stopButton: {
+    backgroundColor: 'rgba(153, 0, 0, 0.5)'
+  },
+  stopButtonText: {
     color: '#FF0000'
+  },
+  resetButton: {
+    backgroundColor: 'rgba(179, 179, 179, 0.5)'
+  },
+  resetButtonText: {
+    color: '#FFF'
+  },
+  resetButtonDisabled: {
+    backgroundColor: 'rgba(65, 65, 67, 0.5)'
+  },
+  resetButtonTextDisabled: {
+    color: '#7A7A7B'
+  },
+  pickerWrapper: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  pickerMinutes: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    alignSelf: 'center'
+  },
+  pickerSeconds: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    alignSelf: 'center'
+  },
+  picker: {
+    width: 50
   }
 })
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StatusBar, StyleSheet, View} from 'react-native'
 import {connect, Dispatch} from 'react-redux'
 import * as meDuck from '../../core/modules/me'
 import * as AppDuck from '../../core/modules/container/App'
@@ -36,6 +36,7 @@ class App extends React.PureComponent<IProps, IState> {
     console.log('container', container)
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content"/>
         <MainDrawerNav/>
       </View>
     )
