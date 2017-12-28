@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {Picker, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
-import { Col, Row, Grid } from 'react-native-easy-grid'
+import {Col, Row, Grid} from 'react-native-easy-grid'
 
 type IProps = {}
 
@@ -18,7 +18,7 @@ type RowProps = {
   sortHandlers?: any
 }
 
-type DataRow = {text: string}
+type DataRow = { text: string }
 
 class RowComponent extends React.PureComponent<RowProps, {}> {
   render() {
@@ -63,104 +63,81 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     const {currentReps, currentWeight, currentExercise, dataLog, currentMuscle} = this.state
     return (
       <View style={styles.container}>
-        <View style={styles.logView}>
 
 
-
-          <Grid>
-            <Row>
+          <Grid style={{flex: 2, marginTop: 40}}>
+            <Row size={35}>
               <Col size={25}><Text>Muscle:</Text></Col>
-              <Col size={75}>
+              <Col size={75} style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Picker
+                  style={{width: 300, height: 400}}
+                  itemStyle={{fontSize: 14}}
                   selectedValue={currentMuscle}
                   onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
-                  <Picker.Item key="ttt" label="ttt" value="ttt"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="Bench press inclined dumbells" label="Bench press inclined dumbells" value="Bench press inclined dumbells"/>
+                  <Picker.Item key="tta" label="tta" value="tta"/>
+                  <Picker.Item key="tts" label="tts" value="tts"/>
                 </Picker>
               </Col>
             </Row>
-            <Row>
+            <Row size={35}>
               <Col size={25}><Text>Exercise:</Text></Col>
-              <Col size={75}>
+              <Col size={75} style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Picker
+                  style={{width: 300, height: 400}}
+                  itemStyle={{fontSize: 14}}
                   selectedValue={currentExercise}
                   onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
-                  <Picker.Item key="ttt" label="ttt" value="ttt"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
-                  <Picker.Item key="aaa" label="aaa" value="aaa"/>
+                  <Picker.Item key="aas" label="aas" value="aas"/>
+                  <Picker.Item key="aad" label="aad" value="aad"/>
+                  <Picker.Item key="aaf" label="aaf" value="aaf"/>
                 </Picker>
               </Col>
             </Row>
-            <Row>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
-              <Col></Col>
+            <Row size={15}>
+              <Col>
+                <TouchableOpacity style={{flexDirection: 'column'}}>
+                  <Text>8 x</Text>
+                  <Text>75 kg</Text>
+                </TouchableOpacity>
+              </Col>
+              <Col>
+                <TouchableOpacity style={{flexDirection: 'column'}}>
+                  <Text>8 x</Text>
+                  <Text>75 kg</Text>
+                </TouchableOpacity>
+              </Col>
+              <Col>
+                <TouchableOpacity style={{flexDirection: 'column'}}>
+                  <Text>8 x</Text>
+                  <Text>75 kg</Text>
+                </TouchableOpacity>
+              </Col>
             </Row>
-            <Row>
-              <Col></Col>
+            <Row size={15}>
+              <Col>
+                <TouchableOpacity
+                  style={{flex: 1}}
+                  onPress={() => console.log('test')}>
+                  <Text>
+                    Done
+                  </Text>
+                </TouchableOpacity>
+              </Col>
             </Row>
 
           </Grid>
 
 
-          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{width: 100}}>Exercise:</Text>
-            <Picker
-              style={{width: 100}}
-              selectedValue={currentExercise}
-              onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
-              <Picker.Item key="ttt" label="ttt" value="ttt"/>
-              <Picker.Item key="aaa" label="aaa" value="aaa"/>
-              <Picker.Item key="aaa" label="aaa" value="aaa"/>
-              <Picker.Item key="aaa" label="aaa" value="aaa"/>
-              <Picker.Item key="aaa" label="aaa" value="aaa"/>
-            </Picker>
-          </View>
-          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{width: 100}}>Reps:</Text>
-            <TextInput
-              style={{width: 100}}
-              onChangeText={(val) => this.setState({currentReps: val})}
-              value={currentReps}
-              placeholder="Enter value"
-              returnKeyType="done"
-              keyboardType="numeric"
-            />
-          </View>
-          <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={{width: 100}}>Weight:</Text>
-            <TextInput
-              style={{width: 100}}
-              onChangeText={(val) => this.setState({currentWeight: val})}
-              value={currentWeight}
-              placeholder="Enter value"
-              returnKeyType="done"
-              keyboardType="numeric"
-            />
-          </View>
-          <TouchableOpacity
-            style={{flex: 1}}
-            onPress={() => console.log('test')}>
-            <Text>
-              Done
-            </Text>
-          </TouchableOpacity>
-        </View>
         <SortableListView
-          style={{ flex: 1 }}
+          style={{flex: 1}}
           data={dataLog}
           order={this.order}
           onRowMoved={(e: any) => {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
             this.forceUpdate()
           }}
-          renderRow={(row: DataRow) => <RowComponent data={row} />}
+          renderRow={(row: DataRow) => <RowComponent data={row}/>}
         />
       </View>
     )
