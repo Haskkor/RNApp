@@ -2,17 +2,19 @@ import * as React from 'react'
 import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
 import ModalListLog from './ModalListLog'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 type IProps = {}
 
 type IState = {
-  currentReps: string
-  currentWeight: string
+  repsWeight: RepsWeight[]
   currentMuscle: string
   currentExercise: string
   showModal: boolean
   dataLog: any
 }
+
+type RepsWeight = { reps: number, weight: number }
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
@@ -20,8 +22,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.state = {
-      currentReps: null,
-      currentWeight: null,
+      repsWeight: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: null,
       currentMuscle: null,
       showModal: false,
@@ -40,7 +41,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {currentExercise, currentMuscle, showModal, dataLog} = this.state
+    const {repsWeight, currentExercise, currentMuscle, showModal, dataLog} = this.state
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -55,8 +56,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 itemStyle={{fontSize: 14}}
                 selectedValue={currentMuscle}
                 onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
-                <Picker.Item key="Bench press inclined dumbells" label="Bench press inclined dumbells"
-                             value="Bench press inclined dumbells"/>
+                <Picker.Item key="Bench press inclined" label="Bench press inclined"
+                             value="Bench press inclined"/>
                 <Picker.Item key="tta" label="tta" value="tta"/>
                 <Picker.Item key="tts" label="tts" value="tts"/>
               </Picker>
@@ -78,24 +79,17 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </Row>
           <Row size={20} style={styles.rows}>
             <ScrollView horizontal={true}>
-              <Col style={styles.columns}>
-                <TouchableOpacity style={{flexDirection: 'column'}}>
-                  <Text><Text>8</Text><Text> x</Text></Text>
-                  <Text><Text>75</Text><Text>kg</Text></Text>
-                </TouchableOpacity>
-              </Col>
-              <Col style={styles.columns}>
-                <TouchableOpacity style={{flexDirection: 'column'}}>
-                  <Text><Text>8</Text><Text> x</Text></Text>
-                  <Text><Text>75</Text><Text>kg</Text></Text>
-                </TouchableOpacity>
-              </Col>
-              <Col style={styles.columns}>
-                <TouchableOpacity style={{flexDirection: 'column'}}>
-                  <Text><Text>8</Text><Text> x</Text></Text>
-                  <Text><Text>75</Text><Text>kg</Text></Text>
-                </TouchableOpacity>
-              </Col>
+              {repsWeight.map((item: RepsWeight) => {
+                return (
+                  <TouchableOpacity style={styles.elemHorizontalList}>
+                    <Text><Text>{item.reps}</Text><Text> x</Text></Text>
+                    <Text><Text>{item.weight}</Text><Text>kg</Text></Text>
+                  </TouchableOpacity>
+                )
+              })}
+              <TouchableOpacity>
+                <Icon name="add-circle-outline" size={30} color="#900"/>
+              </TouchableOpacity>
             </ScrollView>
           </Row>
           <Row size={10} style={styles.rows}>
@@ -169,6 +163,10 @@ const styles = StyleSheet.create({
   picker: {
     width: 300,
     height: 400
+  },
+  elemHorizontalList: {
+    flexDirection: 'column',
+    marginRight: 40
   }
 })
 
