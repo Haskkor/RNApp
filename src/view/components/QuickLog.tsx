@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TouchableOpacity, View, Modal, ScrollView} from 'react-native'
-import * as SortableListView from 'react-native-sortable-listview'
+import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
+import ModalListLog from './ModalListLog'
 
 type IProps = {}
 
@@ -14,34 +14,8 @@ type IState = {
   dataLog: any
 }
 
-type RowProps = {
-  data: any
-  sortHandlers?: any
-}
-
-type DataRow = { text: string }
-
-class RowComponent extends React.PureComponent<RowProps, {}> {
-  render() {
-    return (
-      <TouchableOpacity
-        underlayColor={'#eee'}
-        style={{
-          padding: 25,
-          backgroundColor: '#F8F8F8',
-          borderBottomWidth: 1,
-          borderColor: '#eee'
-        }}
-        {...this.props.sortHandlers}
-      >
-        <Text>{this.props.data.text}</Text>
-      </TouchableOpacity>
-    )
-  }
-}
-
 class QuickLog extends React.PureComponent<IProps, IState> {
-  order: any // fixme any
+  order: string[]
 
   constructor() {
     super()
@@ -53,27 +27,31 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       showModal: false,
       dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}
     }
+    this.closeModalListLog = this.closeModalListLog.bind(this)
+  }
+
+  closeModalListLog() {
+    this.setState({showModal: false})
   }
 
   componentDidMount() {
-    this.order = Object.keys(this.state.dataLog)
     this.setState({dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}})
     this.order = Object.keys(this.state.dataLog)
   }
 
   render() {
-    const {currentReps, currentWeight, currentExercise, dataLog, currentMuscle, showModal} = this.state
+    const {currentExercise, currentMuscle, showModal, dataLog} = this.state
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>Quick Log</Text>
         </View>
-        <Grid style={{flex: 1, marginTop: 40}}>
-          <Row size={30} style={{margin: 10}}>
+        <Grid style={styles.grid}>
+          <Row size={30} style={styles.rows}>
             <Col size={25}><Text>Muscle:</Text></Col>
-            <Col size={75} style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Col size={75} style={styles.columns}>
               <Picker
-                style={{width: 300, height: 400}}
+                style={styles.picker}
                 itemStyle={{fontSize: 14}}
                 selectedValue={currentMuscle}
                 onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
@@ -84,11 +62,11 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </Picker>
             </Col>
           </Row>
-          <Row size={30} style={{margin: 10}}>
+          <Row size={30} style={styles.rows}>
             <Col size={25}><Text>Exercise:</Text></Col>
-            <Col size={75} style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Col size={75} style={styles.columns}>
               <Picker
-                style={{width: 300, height: 400}}
+                style={styles.picker}
                 itemStyle={{fontSize: 14}}
                 selectedValue={currentExercise}
                 onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
@@ -98,27 +76,21 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </Picker>
             </Col>
           </Row>
-          <Row size={20} style={{margin: 10}}>
+          <Row size={20} style={styles.rows}>
             <ScrollView horizontal={true}>
-              <Col style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Col style={styles.columns}>
                 <TouchableOpacity style={{flexDirection: 'column'}}>
                   <Text><Text>8</Text><Text> x</Text></Text>
                   <Text><Text>75</Text><Text>kg</Text></Text>
                 </TouchableOpacity>
               </Col>
-              <Col style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Col style={styles.columns}>
                 <TouchableOpacity style={{flexDirection: 'column'}}>
                   <Text><Text>8</Text><Text> x</Text></Text>
                   <Text><Text>75</Text><Text>kg</Text></Text>
                 </TouchableOpacity>
               </Col>
-              <Col style={{justifyContent: 'center', alignItems: 'center'}}>
-                <TouchableOpacity style={{flexDirection: 'column'}}>
-                  <Text><Text>8</Text><Text> x</Text></Text>
-                  <Text><Text>75</Text><Text>kg</Text></Text>
-                </TouchableOpacity>
-              </Col>
-              <Col style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Col style={styles.columns}>
                 <TouchableOpacity style={{flexDirection: 'column'}}>
                   <Text><Text>8</Text><Text> x</Text></Text>
                   <Text><Text>75</Text><Text>kg</Text></Text>
@@ -126,41 +98,29 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </Col>
             </ScrollView>
           </Row>
-          <Row size={10} style={{margin: 10}}>
-            <Col style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Row size={10} style={styles.rows}>
+            <Col style={styles.columns}>
               <TouchableOpacity
                 onPress={() => console.log('test')}>
-                <Text>
-                  Add
-                </Text>
+                <Text>Add</Text>
               </TouchableOpacity>
             </Col>
           </Row>
-          <Row size={10} style={{margin: 10}}>
-            <Col style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Row size={10} style={styles.rows}>
+            <Col style={styles.columns}>
               <TouchableOpacity
                 onPress={() => this.setState({showModal: true})}>
-                <Text>
-                  See current training
-                </Text>
+                <Text>See current training</Text>
               </TouchableOpacity>
             </Col>
           </Row>
         </Grid>
-        <Modal
-          visible={showModal}
-          animationType="slide">
-          <SortableListView
-            style={{flex: 1}}
-            data={dataLog}
-            order={this.order}
-            onRowMoved={(e: any) => {
-              this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
-              this.forceUpdate()
-            }}
-            renderRow={(row: DataRow) => <RowComponent data={row}/>}
-          />
-        </Modal>
+        <ModalListLog
+          showModal={showModal}
+          dataLog={dataLog}
+          order={this.order}
+          closeModal={this.closeModalListLog}
+        />
       </View>
     )
   }
@@ -194,6 +154,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F9F9F9'
+  },
+  grid: {
+    flex: 1,
+    marginTop: 40
+  },
+  columns: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  rows: {
+    margin: 10
+  },
+  picker: {
+    width: 300,
+    height: 400
   }
 })
 
