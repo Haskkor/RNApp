@@ -21,6 +21,7 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
     return (
       <View>
         <Modal
+          onRequestClose={() => console.log('close')}
           visible={showModal}
           animationType="slide">
           <TouchableOpacity
