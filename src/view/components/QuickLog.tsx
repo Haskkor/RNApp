@@ -40,10 +40,15 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
+    this.closeModalSets = this.closeModalSets.bind(this)
   }
 
   closeModalListLog() {
     this.setState({showModal: false})
+  }
+
+  closeModalSets() {
+    this.setState({showModalSets: false})
   }
 
   componentDidMount() {
@@ -120,7 +125,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 onPress={() => {
                   this.scrollToEndHorizontally()
                   this.setState({repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]}
-                )}}>
+                  )
+                }}>
                 <Icon name="add-circle-outline" size={30} color="#000"/>
               </TouchableOpacity>
             </ScrollView>
@@ -146,6 +152,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           modifySet={(weight, reps) => console.log(weight, reps)}
           reps={this.setToModify.reps}
           weight={this.setToModify.weight}
+          closeModal={this.closeModalSets}
         />}
         {showModal && <ModalListLog
           dataLog={dataLog}
