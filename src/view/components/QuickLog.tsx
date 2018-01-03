@@ -27,6 +27,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     weight: number
   } = {indexSet: 0, reps: 8, weight: 75}
   scrollViewRef: any
+  scrollViewWidth: number
 
   constructor() {
     super()
@@ -50,9 +51,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.order = Object.keys(this.state.dataLog)
   }
 
-  scrollToEndHorizontally(width: number) {
-    // todo FINISH THIS
-    // this.scrollViewRef.scrollTo({x: width - Dimensions.get('window').width / 1.30, y: 0, animated: true})
+  scrollToEndHorizontally() {
+    this.scrollViewRef.scrollTo({x: this.scrollViewWidth - Dimensions.get('window').width * 0.65, y: 0, animated: true})
   }
 
   render() {
@@ -104,7 +104,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               horizontal={true}
               contentContainerStyle={styles.scroll}
               ref={ref => this.scrollViewRef = ref}
-              onContentSizeChange={(width, height) => this.scrollToEndHorizontally(width)}>
+              onContentSizeChange={(width, height) => this.scrollViewWidth = width}>
               {repsWeight.map((item: RepsWeight, index: number) => {
                 return (
                   <TouchableOpacity
@@ -117,9 +117,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 )
               })}
               <TouchableOpacity
-                onPress={() => this.setState(
-                  {repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]}
-                )}>
+                onPress={() => {
+                  this.scrollToEndHorizontally()
+                  this.setState({repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]}
+                )}}>
                 <Icon name="add-circle-outline" size={30} color="#000"/>
               </TouchableOpacity>
             </ScrollView>
