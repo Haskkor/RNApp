@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 
 type IProps = {}
 
@@ -74,6 +74,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
     const isResetDisabled = !this.isReset
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content"/>
         <View style={styles.timer}>
           <View style={styles.header}>
             <Text style={styles.title}>Recovery Stopwatch</Text>

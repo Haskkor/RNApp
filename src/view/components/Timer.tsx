@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Picker, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import * as loDash from 'lodash'
 
 type IProps = {}
@@ -76,6 +76,7 @@ class Timer extends React.PureComponent<IProps, IState> {
     const isResetDisabled = !this.isReset
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content"/>
         <View style={styles.timer}>
           <View style={styles.header}>
             <Text style={styles.title}>Recovery StopWatch</Text>

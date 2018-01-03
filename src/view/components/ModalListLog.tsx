@@ -4,7 +4,6 @@ import * as SortableListView from 'react-native-sortable-listview'
 import RowComponent from './RowListLog'
 
 type IProps = {
-  showModal: boolean
   dataLog: any
   order: string[]
   closeModal: () => void
@@ -17,12 +16,12 @@ type DataRow = { text: string }
 class ModalListLog extends React.PureComponent<IProps, IState> {
 
   render() {
-    const {showModal, dataLog, order, closeModal} = this.props
+    const {dataLog, order, closeModal} = this.props
     return (
       <View>
         <Modal
           onRequestClose={() => console.log('close')}
-          visible={showModal}
+          visible={true}
           animationType="slide">
           <TouchableOpacity
             onPress={() => closeModal()}>
