@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView} from 'react-native'
+import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
 import ModalListLog from './ModalListLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -54,12 +54,15 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       repsWeight, currentExercise, currentMuscle, showModal, dataLog, showModalSets} = this.state
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content"/>
         <View style={styles.header}>
           <Text style={styles.title}>Quick Log</Text>
         </View>
         <Grid style={styles.grid}>
           <Row size={30} style={styles.rows}>
-            <Col size={25}><Text>Muscle:</Text></Col>
+            <Col size={25} style={styles.textPickers}>
+              <Text>Muscle:</Text>
+            </Col>
             <Col size={75} style={styles.columns}>
               <Picker
                 style={styles.picker}
@@ -74,7 +77,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
           <Row size={30} style={styles.rows}>
-            <Col size={25}><Text>Exercise:</Text></Col>
+            <Col size={25} style={styles.textPickers}>
+              <Text>Exercise:</Text>
+            </Col>
             <Col size={75} style={styles.columns}>
               <Picker
                 style={styles.picker}
@@ -88,7 +93,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
           <Row size={20} style={styles.rows}>
-            <ScrollView horizontal={true}>
+            <ScrollView horizontal={true} contentContainerStyle={styles.scroll}>
               {repsWeight.map((item: RepsWeight, index: number) => {
                 return (
                   <TouchableOpacity
@@ -104,7 +109,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 onPress={() => this.setState({
                   repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]
                 })}>
-                <Icon name="add-circle-outline" size={30} color="#900"/>
+                <Icon name="add-circle-outline" size={30} color="#000"/>
               </TouchableOpacity>
             </ScrollView>
           </Row>
@@ -124,19 +129,17 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
-        <ModalSets
-          showModal={showModalSets}
+        {showModalSets && <ModalSets
           index={this.setToModify.indexSet}
           modifySet={(weight, reps) => console.log(weight, reps)}
           reps={this.setToModify.reps}
           weight={this.setToModify.weight}
-        />
-        <ModalListLog
-          showModal={showModal}
+        />}
+        {showModal && <ModalListLog
           dataLog={dataLog}
           order={this.order}
           closeModal={this.closeModalListLog}
-        />
+        />}
       </View>
     )
   }
@@ -144,19 +147,20 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#EFEFF4'
   },
   header: {
     borderBottomWidth: 0.5,
-    borderColor: '#414143',
+    borderColor: '#000',
     paddingTop: 30,
     paddingBottom: 20,
-    backgroundColor: '#282829'
+    backgroundColor: '#F7F7F8'
   },
   title: {
     alignSelf: 'center',
     fontWeight: '600',
-    color: '#FFF'
+    color: '#000'
   },
   logView: {
     flex: 2,
@@ -173,7 +177,9 @@ const styles = StyleSheet.create({
   },
   grid: {
     flex: 1,
-    marginTop: 40
+    backgroundColor: '#EFEFF4',
+    marginRight: 20,
+    marginLeft: 20
   },
   columns: {
     justifyContent: 'center',
@@ -183,12 +189,20 @@ const styles = StyleSheet.create({
     margin: 10
   },
   picker: {
-    width: 300,
-    height: 400
+    width: 250,
+    height: 'auto'
   },
   elemHorizontalList: {
     flexDirection: 'column',
     marginRight: 40
+  },
+  textPickers: {
+    justifyContent: 'center',
+    alignItems: 'flex-start'
+  },
+  scroll: {
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
