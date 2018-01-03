@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar} from 'react-native'
+import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar, Dimensions} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
 import ModalListLog from './ModalListLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -26,6 +26,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     reps: number
     weight: number
   } = {indexSet: 0, reps: 8, weight: 75}
+  scrollViewRef: any
 
   constructor() {
     super()
@@ -49,9 +50,15 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.order = Object.keys(this.state.dataLog)
   }
 
+  scrollToEndHorizontally(width: number) {
+    // todo FINISH THIS
+    // this.scrollViewRef.scrollTo({x: width - Dimensions.get('window').width / 1.30, y: 0, animated: true})
+  }
+
   render() {
     const {
-      repsWeight, currentExercise, currentMuscle, showModal, dataLog, showModalSets} = this.state
+      repsWeight, currentExercise, currentMuscle, showModal, dataLog, showModalSets
+    } = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -93,7 +100,11 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
           <Row size={20} style={styles.rows}>
-            <ScrollView horizontal={true} contentContainerStyle={styles.scroll}>
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={styles.scroll}
+              ref={ref => this.scrollViewRef = ref}
+              onContentSizeChange={(width, height) => this.scrollToEndHorizontally(width)}>
               {repsWeight.map((item: RepsWeight, index: number) => {
                 return (
                   <TouchableOpacity
@@ -106,9 +117,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 )
               })}
               <TouchableOpacity
-                onPress={() => this.setState({
-                  repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]
-                })}>
+                onPress={() => this.setState(
+                  {repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]}
+                )}>
                 <Icon name="add-circle-outline" size={30} color="#000"/>
               </TouchableOpacity>
             </ScrollView>
