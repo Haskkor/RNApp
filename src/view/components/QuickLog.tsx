@@ -57,12 +57,22 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   scrollToEndHorizontally() {
-    this.scrollViewRef.scrollTo({x: this.scrollViewWidth - Dimensions.get('window').width * 0.65, y: 0, animated: true})
+    if (this.scrollViewWidth >= Dimensions.get('window').width - 140) {
+      this.scrollViewRef.scrollTo({
+        x: this.scrollViewWidth - Dimensions.get('window').width * 0.65,
+        y: 0,
+        animated: true
+      })
+    }
   }
 
-  updateSet(reps: number, weight: number) {
+  updateDeleteSet(reps?: number, weight?: number) {
     let repsWeightCopy = this.state.repsWeight.slice()
-    repsWeightCopy.splice(this.setToModify.indexSet, 1, {reps: reps, weight: weight})
+    if (reps) {
+      repsWeightCopy.splice(this.setToModify.indexSet, 1, {reps: reps, weight: weight})
+    } else {
+      repsWeightCopy.splice(this.setToModify.indexSet, 1)
+    }
     this.setState({repsWeight: repsWeightCopy})
     this.setToModify = null
   }
@@ -161,7 +171,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </Row>
         </Grid>
         {showModalSets && <ModalSets
-          modifySet={(reps, weight) => this.updateSet(reps, weight)}
+          updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
+          deleteEnabled={repsWeight.length > 1}
           reps={this.setToModify.reps}
           weight={this.setToModify.weight}
           closeModal={this.closeModalSets}
