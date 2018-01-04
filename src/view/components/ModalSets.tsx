@@ -63,7 +63,7 @@ class ModalSets extends React.PureComponent<IProps, IState> {
                   <Row size={90}>
                     <Picker
                       style={styles.picker}
-                      itemStyle={{fontSize: 14}}
+                      itemStyle={styles.pickerItem}
                       selectedValue={currentReps}
                       onValueChange={(itemValue) => this.setState({currentReps: itemValue})}>
                       {loDash.range(1, 30).map((value: number) => {
@@ -79,7 +79,7 @@ class ModalSets extends React.PureComponent<IProps, IState> {
                   <Row size={90}>
                     <Picker
                       style={styles.picker}
-                      itemStyle={{fontSize: 14}}
+                      itemStyle={styles.pickerItem}
                       selectedValue={currentWeight}
                       onValueChange={(itemValue) => this.setState({currentWeight: itemValue})}>
                       {loDash.range(1, 500).map((value: number) => {
@@ -138,6 +138,9 @@ const styles = StyleSheet.create({
   },
   textDeleteDisabled: {
     color: 'rgba(153, 0, 0, 0.5)'
+  },
+  pickerItem: {
+    fontSize: 14
   }
 })
 

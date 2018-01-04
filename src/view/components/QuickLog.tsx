@@ -59,7 +59,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   scrollToEndHorizontally() {
     if (this.scrollViewWidth >= Dimensions.get('window').width - 140) {
       this.scrollViewRef.scrollTo({
-        x: this.scrollViewWidth - Dimensions.get('window').width * 0.65,
+        x: this.scrollViewWidth - Dimensions.get('window').width * 0.55,
         y: 0,
         animated: true
       })
@@ -95,7 +95,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             <Col size={75} style={styles.columns}>
               <Picker
                 style={styles.picker}
-                itemStyle={{fontSize: 14}}
+                itemStyle={styles.pickerItem}
                 selectedValue={currentMuscle}
                 onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
                 <Picker.Item key="Bench press inclined" label="Bench press inclined"
@@ -114,7 +114,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             <Col size={75} style={styles.columns}>
               <Picker
                 style={styles.picker}
-                itemStyle={{fontSize: 14}}
+                itemStyle={styles.pickerItem}
                 selectedValue={currentExercise}
                 onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
                 <Picker.Item key="aas" label="aas" value="aas"/>
@@ -135,7 +135,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 return (
                   <TouchableOpacity
                     key={item.weight + index}
-                    style={styles.elemHorizontalList}
+                    style={[styles.elemHorizontalList, styles.shadow]}
                     onPress={() => {
                       this.setToModify = {indexSet: index, reps: item.reps, weight: item.weight}
                       this.setState({showModalSets: true})
@@ -158,13 +158,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           <Row size={10} style={styles.rows}>
             <Col style={styles.columns}>
               <TouchableOpacity
-                style={styles.buttonCurrentLog}
+                style={[styles.buttonCurrentLog, styles.shadow]}
                 onPress={() => this.setState({showModal: true})}>
                 <Text>See current training</Text>
               </TouchableOpacity>
             </Col>
             <Col style={styles.columns}>
-              <TouchableOpacity style={styles.buttonAdd}>
+              <TouchableOpacity style={[styles.buttonAdd, styles.shadow]}>
                 <Text>Add</Text>
               </TouchableOpacity>
             </Col>
@@ -236,7 +236,8 @@ const styles = StyleSheet.create({
   },
   elemHorizontalList: {
     flexDirection: 'column',
-    marginRight: 40
+    marginRight: 38,
+    marginLeft: 2
   },
   textPickers: {
     justifyContent: 'center',
@@ -253,6 +254,22 @@ const styles = StyleSheet.create({
   buttonAdd: {
     position: 'absolute',
     right: 0
+  },
+  shadow: {
+    backgroundColor: '#FFF',
+    borderRadius: 4,
+    padding: 5,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderBottomWidth: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 1
+  },
+  pickerItem: {
+    fontSize: 18
   }
 })
 
