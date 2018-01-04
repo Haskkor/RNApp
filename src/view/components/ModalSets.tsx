@@ -4,7 +4,8 @@ import {Grid, Row, Col} from 'react-native-easy-grid'
 import * as loDash from 'lodash'
 
 type IProps = {
-  modifySet: (reps: number, weight: number) => void
+  updateDeleteSet: (reps?: number, weight?: number) => void
+  deleteEnabled: boolean
   reps: number
   weight: number
   closeModal: () => void
@@ -24,6 +25,7 @@ class ModalSets extends React.PureComponent<IProps, IState> {
 
   render() {
     const {currentReps, currentWeight} = this.state
+    const {deleteEnabled} = this.props
     return (
       <View>
         <Modal
@@ -37,13 +39,17 @@ class ModalSets extends React.PureComponent<IProps, IState> {
               <View style={styles.viewButtons}>
                 <TouchableOpacity
                   style={styles.buttonDelete}
-                  onPress={() => this.props.closeModal()}>
-                  <Text style={styles.textDelete}>Delete</Text>
+                  disabled={!deleteEnabled}
+                  onPress={() => {
+                    this.props.updateDeleteSet()
+                    this.props.closeModal()
+                  }}>
+                  <Text style={deleteEnabled ? styles.textDelete : styles.textDeleteDisabled}>Delete</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.buttonSave}
                   onPress={() => {
-                    this.props.modifySet(currentReps, currentWeight)
+                    this.props.updateDeleteSet(currentReps, currentWeight)
                     this.props.closeModal()
                   }}>
                   <Text>Save</Text>
@@ -129,6 +135,9 @@ const styles = StyleSheet.create({
   },
   textDelete: {
     color: 'red'
+  },
+  textDeleteDisabled: {
+    color: 'rgba(153, 0, 0, 0.5)'
   }
 })
 
