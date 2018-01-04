@@ -60,6 +60,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.scrollViewRef.scrollTo({x: this.scrollViewWidth - Dimensions.get('window').width * 0.65, y: 0, animated: true})
   }
 
+  updateSet(reps: number, weight: number) {
+    let repsWeightCopy = this.state.repsWeight.slice()
+    repsWeightCopy.splice(this.setToModify.indexSet, 1, {reps: reps, weight: weight})
+    this.setState({repsWeight: repsWeightCopy})
+    this.setToModify = null
+  }
+
   render() {
     const {
       repsWeight, currentExercise, currentMuscle, showModal, dataLog, showModalSets
@@ -71,7 +78,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           <Text style={styles.title}>Quick Log</Text>
         </View>
         <Grid style={styles.grid}>
-          <Row size={30} style={styles.rows}>
+          <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
               <Text>Muscle:</Text>
             </Col>
@@ -85,10 +92,12 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                              value="Bench press inclined"/>
                 <Picker.Item key="tta" label="tta" value="tta"/>
                 <Picker.Item key="tts" label="tts" value="tts"/>
+                <Picker.Item key="tts" label="tts" value="tts"/>
+                <Picker.Item key="tts" label="tts" value="tts"/>
               </Picker>
             </Col>
           </Row>
-          <Row size={30} style={styles.rows}>
+          <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
               <Text>Exercise:</Text>
             </Col>
@@ -100,6 +109,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
                 <Picker.Item key="aas" label="aas" value="aas"/>
                 <Picker.Item key="aad" label="aad" value="aad"/>
+                <Picker.Item key="aaf" label="aaf" value="aaf"/>
+                <Picker.Item key="aaf" label="aaf" value="aaf"/>
                 <Picker.Item key="aaf" label="aaf" value="aaf"/>
               </Picker>
             </Col>
@@ -115,7 +126,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   <TouchableOpacity
                     key={item.weight + index}
                     style={styles.elemHorizontalList}
-                    onPress={() => this.setState({showModalSets: true})}>
+                    onPress={() => {
+                      this.setToModify = {indexSet: index, reps: item.reps, weight: item.weight}
+                      this.setState({showModalSets: true})
+                    }}>
                     <Text><Text>{item.reps}</Text><Text> x</Text></Text>
                     <Text><Text>{item.weight}</Text><Text>kg</Text></Text>
                   </TouchableOpacity>
@@ -133,23 +147,21 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </Row>
           <Row size={10} style={styles.rows}>
             <Col style={styles.columns}>
-              <TouchableOpacity>
-                <Text>Add</Text>
-              </TouchableOpacity>
-            </Col>
-          </Row>
-          <Row size={10} style={styles.rows}>
-            <Col style={styles.columns}>
               <TouchableOpacity
+                style={styles.buttonCurrentLog}
                 onPress={() => this.setState({showModal: true})}>
                 <Text>See current training</Text>
+              </TouchableOpacity>
+            </Col>
+            <Col style={styles.columns}>
+              <TouchableOpacity style={styles.buttonAdd}>
+                <Text>Add</Text>
               </TouchableOpacity>
             </Col>
           </Row>
         </Grid>
         {showModalSets && <ModalSets
-          index={this.setToModify.indexSet}
-          modifySet={(weight, reps) => console.log(weight, reps)}
+          modifySet={(reps, weight) => this.updateSet(reps, weight)}
           reps={this.setToModify.reps}
           weight={this.setToModify.weight}
           closeModal={this.closeModalSets}
@@ -222,6 +234,14 @@ const styles = StyleSheet.create({
   scroll: {
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  buttonCurrentLog: {
+    position: 'absolute',
+    left: 0
+  },
+  buttonAdd: {
+    position: 'absolute',
+    right: 0
   }
 })
 

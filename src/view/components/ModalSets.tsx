@@ -1,11 +1,10 @@
 import * as React from 'react'
-import {View, Modal, Picker, StyleSheet, Text, TouchableOpacity, Dimensions} from 'react-native'
+import {View, Modal, Picker, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {Grid, Row, Col} from 'react-native-easy-grid'
 import * as loDash from 'lodash'
 
 type IProps = {
-  index: number
-  modifySet: (weight: number, reps: number) => void
+  modifySet: (reps: number, weight: number) => void
   reps: number
   weight: number
   closeModal: () => void
@@ -43,7 +42,10 @@ class ModalSets extends React.PureComponent<IProps, IState> {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.buttonSave}
-                  onPress={() => this.props.closeModal()}>
+                  onPress={() => {
+                    this.props.modifySet(currentReps, currentWeight)
+                    this.props.closeModal()
+                  }}>
                   <Text>Save</Text>
                 </TouchableOpacity>
               </View>
