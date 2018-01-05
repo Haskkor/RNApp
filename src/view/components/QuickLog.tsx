@@ -9,15 +9,20 @@ import ModalSets from './ModalSets'
 type IProps = {}
 
 type IState = {
-  repsWeight: RepsWeight[]
+  sets: Set[]
   currentMuscle: string
   currentExercise: string
   showModal: boolean
   showModalSets: boolean
-  dataLog: any
+  dataLog: ExerciseSet[]
 }
 
-type RepsWeight = { reps: number, weight: number }
+export type Set = { reps: number, weight: number }
+export type ExerciseSet = {
+  muscleGroup: string
+  exercise: string
+  sets: Set[]
+}
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
@@ -32,15 +37,16 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.state = {
-      repsWeight: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
+      sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: null,
       currentMuscle: null,
       showModal: false,
       showModalSets: false,
-      dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}
+      dataLog: []
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
+    this.addExerciseSet = this.addExerciseSet.bind(this)
   }
 
   closeModalListLog() {
@@ -52,7 +58,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    this.setState({dataLog: {test: {text: 'test'}, test2: {text: 'test2'}, test3: {text: 'test3'}}})
     this.order = Object.keys(this.state.dataLog)
   }
 
@@ -67,20 +72,33 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   updateDeleteSet(reps?: number, weight?: number) {
-    let repsWeightCopy = this.state.repsWeight.slice()
+    let repsWeightCopy = this.state.sets.slice()
     if (reps) {
       repsWeightCopy.splice(this.setToModify.indexSet, 1, {reps: reps, weight: weight})
     } else {
       repsWeightCopy.splice(this.setToModify.indexSet, 1)
     }
-    this.setState({repsWeight: repsWeightCopy})
+    this.setState({sets: repsWeightCopy})
     this.setToModify = null
   }
 
+  addExerciseSet = () => {
+    const {currentMuscle, currentExercise, sets, dataLog} = this.state
+    const newSet: ExerciseSet = {
+      exercise: currentExercise,
+      muscleGroup: currentMuscle,
+      sets: sets
+    }
+
+    console.log(newSet)
+
+    let dataLogCopy = dataLog.slice()
+    dataLogCopy.push(newSet)
+    this.setState({dataLog: dataLogCopy})
+  }
+
   render() {
-    const {
-      repsWeight, currentExercise, currentMuscle, showModal, dataLog, showModalSets
-    } = this.state
+    const {sets, currentExercise, currentMuscle, showModal, showModalSets, dataLog} = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -131,7 +149,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               contentContainerStyle={styles.scroll}
               ref={ref => this.scrollViewRef = ref}
               onContentSizeChange={(width, height) => this.scrollViewWidth = width}>
-              {repsWeight.map((item: RepsWeight, index: number) => {
+              {sets.map((item: Set, index: number) => {
                 return (
                   <TouchableOpacity
                     key={item.weight + index}
@@ -148,7 +166,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               <TouchableOpacity
                 onPress={() => {
                   this.scrollToEndHorizontally()
-                  this.setState({repsWeight: [...this.state.repsWeight, loDash.last(repsWeight)]}
+                  this.setState({sets: [...this.state.sets, loDash.last(sets)]}
                   )
                 }}>
                 <Icon name="add-circle-outline" size={30} color="#000"/>
@@ -164,7 +182,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </TouchableOpacity>
             </Col>
             <Col style={styles.columns}>
-              <TouchableOpacity style={[styles.buttonAdd, styles.shadow]}>
+              <TouchableOpacity
+                onPress={() => this.addExerciseSet()}
+                style={[styles.buttonAdd, styles.shadow]}>
                 <Text>Add</Text>
               </TouchableOpacity>
             </Col>
@@ -172,7 +192,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         </Grid>
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
-          deleteEnabled={repsWeight.length > 1}
+          deleteEnabled={sets.length > 1}
           reps={this.setToModify.reps}
           weight={this.setToModify.weight}
           closeModal={this.closeModalSets}
@@ -263,7 +283,7 @@ const styles = StyleSheet.create({
     borderColor: '#DDD',
     borderBottomWidth: 0,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 1

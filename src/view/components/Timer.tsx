@@ -34,7 +34,6 @@ class Timer extends React.PureComponent<IProps, IState> {
   handleStartStop = (endTimer: boolean) => {
     const {isRunning, selectedSecond, selectedMinute} = this.state
     if (selectedMinute === 0 && selectedSecond === 0) return
-    console.log('end', endTimer)
     if (isRunning) {
       if (!endTimer) this.isReset = true
       clearInterval(this.interval)

@@ -1,17 +1,22 @@
 import * as React from 'react'
 import {Text, TouchableOpacity, View, Modal, StyleSheet} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
-import RowComponent from './RowListLog'
+import RowListLog from './RowListLog'
+import {ExerciseSet, Set} from './QuickLog'
 
 type IProps = {
-  dataLog: any
+  dataLog: ExerciseSet[]
   order: string[]
   closeModal: () => void
 }
 
 type IState = {}
 
-type DataRow = { text: string }
+type DataRow = {
+  muscleGroup: string,
+  exercise: string,
+  sets: Set[]
+}
 
 class ModalListLog extends React.PureComponent<IProps, IState> {
 
@@ -27,18 +32,18 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
             <TouchableOpacity
               style={styles.buttonDismiss}
               onPress={() => closeModal()}>
-              <Text>Dismiss</Text>
+              <Text style={styles.textButton}>Dismiss</Text>
             </TouchableOpacity>
           </View>
           <SortableListView
-            style={{flex: 1}}
+            style={styles.sortableList}
             data={dataLog}
             order={order}
             onRowMoved={(e: any) => {
               order.splice(e.to, 0, order.splice(e.from, 1)[0])
               this.forceUpdate()
             }}
-            renderRow={(row: DataRow) => <RowComponent data={row}/>}
+            renderRow={(row: DataRow) => <RowListLog data={row}/>}
           />
         </Modal>
       </View>
@@ -61,8 +66,13 @@ const styles = StyleSheet.create({
   buttonDismiss: {
     alignSelf: 'flex-end',
     marginRight: 20,
+  },
+  textButton: {
     fontWeight: '600',
     color: '#000'
+  },
+  sortableList: {
+    flex: 1
   }
 })
 
