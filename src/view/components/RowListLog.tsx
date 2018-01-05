@@ -1,5 +1,7 @@
 import * as React from 'react'
-import {StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Set} from './QuickLog'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 type IProps = {
   data: any
@@ -8,15 +10,26 @@ type IProps = {
 
 type IState = {}
 
-class RowComponent extends React.PureComponent<IProps, IState> {
+class RowListLog extends React.PureComponent<IProps, IState> {
   render() {
     return (
       <TouchableOpacity
-        underlayColor={'#eee'}
+        underlayColor={'#EEE'}
         style={styles.container}
-        {...this.props.sortHandlers}
-      >
-        <Text>{this.props.data.text}</Text>
+        {...this.props.sortHandlers}>
+        <View style={styles.viewContent}>
+          <View style={styles.viewIcon}>
+            <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
+          </View>
+          <View>
+            <Text style={styles.setName}>{`${this.props.data.muscleGroup}, ${this.props.data.exercise}`}</Text>
+            <View style={styles.viewSets}>
+              {this.props.data.sets.map((set: Set, index: number) =>
+                <Text key={set.toString() + index} style={styles.set}>{set.reps} x {set.weight}kg</Text>
+              )}
+            </View>
+          </View>
+        </View>
       </TouchableOpacity>
     )
   }
@@ -24,11 +37,28 @@ class RowComponent extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 25,
-    backgroundColor: '#F8F8F8',
+    padding: 15,
+    backgroundColor: '#DFDFDF',
     borderBottomWidth: 1,
     borderColor: '#eee'
+  },
+  viewContent: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  viewIcon: {
+    marginRight: 15
+  },
+  setName: {
+    fontWeight: 'bold'
+  },
+  viewSets: {
+    marginTop: 10,
+    flexDirection: 'row'
+  },
+  set: {
+    marginRight: 20
   }
 })
 
-export default RowComponent
+export default RowListLog
