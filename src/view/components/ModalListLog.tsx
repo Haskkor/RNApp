@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   buttonDismiss: {
     alignSelf: 'flex-end',
-    marginRight: 20,
+    marginRight: 20
   },
   textButton: {
     fontWeight: '600',
