@@ -38,8 +38,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     super()
     this.state = {
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
-      currentExercise: null,
-      currentMuscle: null,
+      currentExercise: 'Bench Press Inclined',
+      currentMuscle: 'aas',
       showModal: false,
       showModalSets: false,
       dataLog: []
@@ -89,11 +89,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       muscleGroup: currentMuscle,
       sets: sets
     }
-
-    console.log(newSet)
-
     let dataLogCopy = dataLog.slice()
     dataLogCopy.push(newSet)
+    this.order = Object.keys(dataLogCopy)
     this.setState({dataLog: dataLogCopy})
   }
 
