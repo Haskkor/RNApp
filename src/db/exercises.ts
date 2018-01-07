@@ -129,7 +129,7 @@ export const exercises = [
     'Lats': [
       {
         name: 'Rickshaw carry',
-        equipment: 'Other'
+        equipment: 'O'
       },
       {
         name: 'Wrist rotations barbell',
