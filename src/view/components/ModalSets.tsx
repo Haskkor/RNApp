@@ -20,7 +20,7 @@ type IState = {
 class ModalSets extends React.PureComponent<IProps, IState> {
 
   componentWillMount() {
-    this.state = {currentReps: this.props.reps, currentWeight: this.props.weight}
+    this.setState({currentReps: this.props.reps, currentWeight: this.props.weight})
   }
 
   render() {

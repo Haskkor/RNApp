@@ -41,16 +41,16 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
+    this.muscles = exercises.map((data: MuscleGroups) => data.muscle).sort()
+    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
     this.state = {
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
-      currentExercise: 'Bench Press Inclined',
-      currentMuscle: 'aas',
+      currentExercise: this.exercises[0].name,
+      currentMuscle: this.muscles[0],
       showModal: false,
       showModalSets: false,
       dataLog: []
     }
-    this.muscles = exercises.map((data: MuscleGroups) => data.muscle).sort()
-    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
