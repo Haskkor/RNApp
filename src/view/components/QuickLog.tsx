@@ -5,6 +5,7 @@ import ModalListLog from './ModalListLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as loDash from 'lodash'
 import ModalSets from './ModalSets'
+import exercises from '../../db/exercises'
 
 type IProps = {}
 
@@ -23,6 +24,8 @@ export type ExerciseSet = {
   exercise: string
   sets: Set[]
 }
+export type MuscleGroups = {muscle: string, exercises: ExerciseMuscle[]}
+export type ExerciseMuscle = {name: string, equipment: string}
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
@@ -33,6 +36,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   } = {indexSet: 0, reps: 8, weight: 75}
   scrollViewRef: any
   scrollViewWidth: number
+  muscles: string[]
+  exercises: ExerciseMuscle[]
 
   constructor() {
     super()
@@ -44,6 +49,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       showModalSets: false,
       dataLog: []
     }
+    this.muscles = exercises.map((data: MuscleGroups) => data.muscle).sort()
+    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
@@ -113,13 +120,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
                 selectedValue={currentMuscle}
-                onValueChange={(itemValue) => this.setState({currentMuscle: itemValue})}>
-                <Picker.Item key="Bench press inclined" label="Bench press inclined"
-                             value="Bench press inclined"/>
-                <Picker.Item key="tta" label="tta" value="tta"/>
-                <Picker.Item key="tts" label="tts" value="tts"/>
-                <Picker.Item key="tts" label="tts" value="tts"/>
-                <Picker.Item key="tts" label="tts" value="tts"/>
+                onValueChange={(itemValue) => {
+                  this.exercises = exercises.find((data: MuscleGroups) => data.muscle === itemValue).exercises.sort()
+                  this.setState({currentMuscle: itemValue})
+                }}>
+                {this.muscles.map((muscle: string) => {
+                  return <Picker.Item key={muscle} label={muscle} value={muscle}/>
+                })}
               </Picker>
             </Col>
           </Row>
@@ -133,11 +140,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 itemStyle={styles.pickerItem}
                 selectedValue={currentExercise}
                 onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
-                <Picker.Item key="aas" label="aas" value="aas"/>
-                <Picker.Item key="aad" label="aad" value="aad"/>
-                <Picker.Item key="aaf" label="aaf" value="aaf"/>
-                <Picker.Item key="aaf" label="aaf" value="aaf"/>
-                <Picker.Item key="aaf" label="aaf" value="aaf"/>
+                {this.exercises.map((muscle: ExerciseMuscle) => {
+                  return <Picker.Item key={muscle.name} label={muscle.name} value={muscle.name}/>
+                })}
               </Picker>
             </Col>
           </Row>

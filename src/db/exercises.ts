@@ -1,6 +1,7 @@
-export const exercises = [
+const exercises = [
   {
-    'Chest': [
+    muscle: 'Chest',
+    exercises: [
       {
         name: 'Dumbbell bench press',
         equipment: 'Dumbbell'
@@ -92,7 +93,8 @@ export const exercises = [
     ]
   },
   {
-    'Forearms': [
+    muscle: 'Forearms',
+    exercises: [
       {
         name: 'Rickshaw carry',
         equipment: 'Other'
@@ -123,40 +125,29 @@ export const exercises = [
       }
     ]
   },
-
-
   {
-    'Lats': [
+    muscle: 'Lats',
+    exercises: [
       {
-        name: 'Rickshaw carry',
-        equipment: 'O'
+        name: 'Shotgun row',
+        equipment: 'Cable'
       },
       {
-        name: 'Wrist rotations barbell',
-        equipment: 'Barbell'
+        name: 'Pull-up',
+        equipment: 'Body'
       },
       {
-        name: 'Palms-down wrist curl',
-        equipment: 'Barbell'
+        name: 'Chin-up',
+        equipment: 'Body'
       },
       {
-        name: 'Palms-up wrist curl',
-        equipment: 'Barbell'
-      },
-      {
-        name: 'Farmer\'s walk',
-        equipment: 'Other'
-      },
-      {
-        name: 'Fingers curl',
-        equipment: 'Barbell'
-      },
-      {
-        name: 'Seated pulley wrist curl',
+        name: 'Close-grip front lat pull-down',
         equipment: 'Cable'
       }
     ]
   }
 ]
 
-// https://www.bodybuilding.com/exercises/finder/?muscleid=3
+export default exercises
+
+// https://www.bodybuilding.com/exercises/finder/?muscleid=4
