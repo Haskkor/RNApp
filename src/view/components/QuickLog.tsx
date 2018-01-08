@@ -15,6 +15,7 @@ type IState = {
   currentExercise: string
   showModal: boolean
   showModalSets: boolean
+  showFeedback: boolean
   dataLog: ExerciseSet[]
 }
 
@@ -24,8 +25,8 @@ export type ExerciseSet = {
   exercise: string
   sets: Set[]
 }
-export type MuscleGroups = {muscle: string, exercises: ExerciseMuscle[]}
-export type ExerciseMuscle = {name: string, equipment: string}
+export type MuscleGroups = { muscle: string, exercises: ExerciseMuscle[] }
+export type ExerciseMuscle = { name: string, equipment: string }
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
@@ -49,11 +50,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       showModal: false,
       showModalSets: false,
+      showFeedback: false,
       dataLog: []
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
+    this.feedbackTimer = this.feedbackTimer.bind(this)
   }
 
   closeModalListLog() {
@@ -89,8 +92,16 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setToModify = null
   }
 
+  feedbackTimer = () => {
+    this.setState({showFeedback: true})
+    setTimeout(() => {
+      this.setState({showFeedback: false})
+    }, 4000)
+  }
+
   addExerciseSet = () => {
     const {currentMuscle, currentExercise, sets, dataLog} = this.state
+    this.feedbackTimer()
     const newSet: ExerciseSet = {
       exercise: currentExercise,
       muscleGroup: currentMuscle,
@@ -109,7 +120,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {sets, currentExercise, currentMuscle, showModal, showModalSets, dataLog} = this.state
+    const {sets, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showFeedback} = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -199,6 +210,15 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
+        {showFeedback &&
+        <View style={styles.feedbackLog}>
+          <TouchableOpacity
+            style={styles.feedbackButton}
+            onPress={() => this.setState({showFeedback: false})}>
+            <Icon name="close" size={22} color="#FFF"/>
+          </TouchableOpacity>
+          <Text style={styles.feedbackText}>Exercise logged</Text>
+        </View>}
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
           deleteEnabled={sets.length > 1}
@@ -299,6 +319,22 @@ const styles = StyleSheet.create({
   },
   pickerItem: {
     fontSize: 18
+  },
+  feedbackLog: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    top: 80,
+    right: 10,
+    backgroundColor: 'rgba(0, 183, 0, 0.5)',
+    padding: 10
+  },
+  feedbackButton: {
+    marginRight: 10
+  },
+  feedbackText: {
+    color: '#FFF'
   }
 })
 
