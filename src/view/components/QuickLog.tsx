@@ -99,7 +99,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     let dataLogCopy = dataLog.slice()
     dataLogCopy.push(newSet)
     this.order = Object.keys(dataLogCopy)
-    this.setState({dataLog: dataLogCopy})
+    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
+    this.setState({
+      sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
+      currentExercise: this.exercises[0].name,
+      currentMuscle: this.muscles[0],
+      dataLog: dataLogCopy
+    })
   }
 
   render() {
