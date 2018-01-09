@@ -23,11 +23,11 @@ class RowListLog extends React.PureComponent<IProps, IState> {
           </View>
           <View>
             <Text style={styles.setName}>{`${this.props.data.muscleGroup}, ${this.props.data.exercise}`}</Text>
-            <View style={styles.viewSets}>
+            <Text numberOfLines={1} style={styles.textContainer}>
               {this.props.data.sets.map((set: Set, index: number) =>
-                <Text key={set.toString() + index} style={styles.set}>{set.reps} x {set.weight}kg</Text>
+                <Text key={set.toString() + index} style={styles.set}>{`${set.reps} x ${set.weight}kg   `}</Text>
               )}
-            </View>
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
   },
   set: {
     marginRight: 20
+  },
+  textContainer: {
+    marginRight: 40
   }
 })
 
