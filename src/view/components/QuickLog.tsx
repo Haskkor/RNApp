@@ -74,7 +74,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   scrollToEndHorizontally() {
     if (this.scrollViewWidth >= Dimensions.get('window').width - 140) {
       this.scrollViewRef.scrollTo({
-        x: this.scrollViewWidth - Dimensions.get('window').width * 0.55,
+        x: this.scrollViewWidth - Dimensions.get('window').width * 0.534,
         y: 0,
         animated: true
       })
