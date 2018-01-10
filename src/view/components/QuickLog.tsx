@@ -22,7 +22,7 @@ type IState = {
 export type Set = { reps: number, weight: number }
 export type ExerciseSet = {
   muscleGroup: string
-  exercise: string
+  exercise: ExerciseMuscle
   sets: Set[]
 }
 export type MuscleGroups = { muscle: string, exercises: ExerciseMuscle[] }
@@ -103,7 +103,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     const {currentMuscle, currentExercise, sets, dataLog} = this.state
     this.feedbackTimer()
     const newSet: ExerciseSet = {
-      exercise: currentExercise,
+      exercise: this.exercises.find((exercise) => {
+        return exercise.name === currentExercise
+      }),
       muscleGroup: currentMuscle,
       sets: sets
     }

@@ -22,8 +22,9 @@ class RowListLog extends React.PureComponent<IProps, IState> {
             <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
           </View>
           <View>
-            <Text style={styles.setName}>{`${this.props.data.muscleGroup}, ${this.props.data.exercise}`}</Text>
+            <Text style={styles.setName}>{`${this.props.data.muscleGroup}, ${this.props.data.exercise.name}`}</Text>
             <Text numberOfLines={1} style={styles.textContainer}>
+              <Text style={styles.textEquipment}>{`${this.props.data.exercise.equipment}   `}</Text>
               {this.props.data.sets.map((set: Set, index: number) =>
                 <Text key={set.toString() + index} style={styles.set}>{`${set.reps} x ${set.weight}kg   `}</Text>
               )}
@@ -61,6 +62,9 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginRight: 40
+  },
+  textEquipment: {
+    color: '#6666FF'
   }
 })
 
