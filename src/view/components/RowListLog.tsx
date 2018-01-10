@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {Set} from './QuickLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
@@ -12,20 +12,33 @@ type IState = {}
 
 class RowListLog extends React.PureComponent<IProps, IState> {
   render() {
+    const {exercise, muscleGroup, sets} = this.props.data
     return (
       <TouchableOpacity
         underlayColor={'#EEE'}
         style={styles.container}
+        onPress={() => {
+          Alert.alert(
+            `${muscleGroup}, ${exercise.name}`,
+            `${exercise.equipment}`,
+            [
+              {text: 'Edit', onPress: () => console.log('Ask me later pressed')},
+              {text: 'Delete', onPress: () => console.log('Cancel Pressed'), style: 'destructive'},
+              {text: 'Cancel', onPress: () => console.log('OK Pressed'), style: 'cancel'}
+            ],
+            { cancelable: true }
+          )
+        }}
         {...this.props.sortHandlers}>
         <View style={styles.viewContent}>
           <View style={styles.viewIcon}>
             <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
           </View>
           <View>
-            <Text style={styles.setName}>{`${this.props.data.muscleGroup}, ${this.props.data.exercise.name}`}</Text>
+            <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}`}</Text>
             <Text numberOfLines={1} style={styles.textContainer}>
-              <Text style={styles.textEquipment}>{`${this.props.data.exercise.equipment}   `}</Text>
-              {this.props.data.sets.map((set: Set, index: number) =>
+              <Text style={styles.textEquipment}>{`${exercise.equipment}   `}</Text>
+              {sets.map((set: Set, index: number) =>
                 <Text key={set.toString() + index} style={styles.set}>{`${set.reps} x ${set.weight}kg   `}</Text>
               )}
             </Text>
