@@ -1,11 +1,12 @@
 import * as React from 'react'
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {Set} from './QuickLog'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {ExerciseSet, Set} from './QuickLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 type IProps = {
-  data: any
+  data: ExerciseSet
   sortHandlers?: any
+  action: (data: ExerciseSet) => void
 }
 
 type IState = {}
@@ -17,18 +18,7 @@ class RowListLog extends React.PureComponent<IProps, IState> {
       <TouchableOpacity
         underlayColor={'#EEE'}
         style={styles.container}
-        onPress={() => {
-          Alert.alert(
-            `${muscleGroup}, ${exercise.name}`,
-            `${exercise.equipment}`,
-            [
-              {text: 'Edit', onPress: () => console.log('Ask me later pressed')},
-              {text: 'Delete', onPress: () => console.log('Cancel Pressed'), style: 'destructive'},
-              {text: 'Cancel', onPress: () => console.log('OK Pressed'), style: 'cancel'}
-            ],
-            { cancelable: true }
-          )
-        }}
+        onPress={() => this.props.action(this.props.data)}
         {...this.props.sortHandlers}>
         <View style={styles.viewContent}>
           <View style={styles.viewIcon}>
