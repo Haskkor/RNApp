@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as loDash from 'lodash'
 import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
+import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 
 type IProps = {}
 
@@ -18,15 +19,6 @@ type IState = {
   showFeedback: boolean
   dataLog: ExerciseSet[]
 }
-
-export type Set = { reps: number, weight: number }
-export type ExerciseSet = {
-  muscleGroup: string
-  exercise: ExerciseMuscle
-  sets: Set[]
-}
-export type MuscleGroups = { muscle: string, exercises: ExerciseMuscle[] }
-export type ExerciseMuscle = { name: string, equipment: string }
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]

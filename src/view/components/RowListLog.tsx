@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {ExerciseSet, Set} from './QuickLog'
+import {ExerciseSet, Set} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 type IProps = {

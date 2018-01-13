@@ -2,7 +2,7 @@ import * as React from 'react'
 import {Text, TouchableOpacity, View, Modal, StyleSheet, ActionSheetIOS} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
 import RowListLog from './RowListLog'
-import {ExerciseSet, Set} from './QuickLog'
+import {ExerciseSet} from  '../../core/types'
 import * as loDash from 'lodash'
 
 type IProps = {
