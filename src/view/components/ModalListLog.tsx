@@ -72,7 +72,7 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
               order.splice(e.to, 0, order.splice(e.from, 1)[0])
               this.forceUpdate()
             }}
-            renderRow={(row: ExerciseSet) => <RowListLog data={row} action={this.showActionSheet}/>}
+            renderRow={(row: ExerciseSet) => row && <RowListLog data={row} action={this.showActionSheet}/> || <View/>}
           />
         </Modal>
       </View>
