@@ -289,8 +289,7 @@ const exercises = [
         equipment: 'Barbell'
       }
     ]
-  }
-  ,
+  },
   {
     muscle: 'Triceps',
     exercises: [
@@ -371,9 +370,213 @@ const exercises = [
         equipment: 'Dumbbell'
       }
     ]
+  },
+  {
+    muscle: 'Traps',
+    exercises: [
+      {
+        name: 'Smith machine shrug',
+        equipment: 'Machine'
+      },
+      {
+        name: 'Dumbbell shrug',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Calf-machine shoulder shrug',
+        equipment: 'Machine'
+      },
+      {
+        name: 'Barbell shrug',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Barbell shrug behind the back',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Upright cable row',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Cable shrugs',
+        equipment: 'Cable'
+      }
+    ]
+  },
+  {
+    muscle: 'Shoulders',
+    exercises: [
+      {
+        name: 'Single-arm linear jammer',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Side laterals to front raise',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Standing palm-in one-arm dumbbell press',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Push press',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Standing military press',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'One-arm kettlebell push press',
+        equipment: 'Kettlebells'
+      },
+      {
+        name: 'Seated barbell military press',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Reverse flyes',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Seated dumbbell press',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Standing dumbbell press',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Front dumbbell raise',
+        equipment: ' Dumbbell'
+      },
+      {
+        name: 'Arnold dumbbell press',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Front plate raise',
+        equipment: 'Other'
+      },
+      {
+        name: 'Front two-dumbbell raise',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Front cable raise',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Barbell shoulder press',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'External rotation with cable',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Barbell shoulder press',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Face pull',
+        equipment: 'Cable'
+      }
+    ]
+  },
+  {
+    muscle: 'Abdominals',
+    exercises: [
+      {
+        name: 'Plank',
+        equipment: 'Body'
+      },
+      {
+        name: 'Bottoms up',
+        equipment: 'Body'
+      },
+      {
+        name: 'Spider crawl',
+        equipment: 'Body'
+      },
+      {
+        name: 'Cross-body crunch',
+        equipment: 'Body'
+      },
+      {
+        name: 'Plate twist',
+        equipment: 'Other'
+      },
+      {
+        name: 'Decline crunch',
+        equipment: 'Body'
+      },
+      {
+        name: 'Cable crunch',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Hanging leg raise',
+        equipment: 'Body'
+      },
+      {
+        name: 'Ab roller',
+        equipment: 'Other'
+      },
+      {
+        name: 'Weighted crunches',
+        equipment: 'Body'
+      },
+      {
+        name: 'Dumbbell side bend',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Decline oblique crunch',
+        equipment: 'Body'
+      },
+      {
+        name: 'Ab crunch machine',
+        equipment: 'Machine'
+      }
+    ]
+  },
+  {
+    muscle: 'Glutes',
+    exercises: [
+      {
+        name: 'Barbell glute bridge',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Barbell hip thrust',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'One-legged cable kickback',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Kneeling squat',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Glute kickback',
+        equipment: 'Body'
+      },
+      {
+        name: 'Flutter kicks',
+        equipment: 'Body'
+      },
+      {
+        name: 'Leg lift',
+        equipment: 'Body'
+      }
+    ]
   }
 ]
 
 export default exercises
 
-// https://www.bodybuilding.com/exercises/finder/?muscleid=11
+// https://www.bodybuilding.com/exercises/finder/?muscleid=15
