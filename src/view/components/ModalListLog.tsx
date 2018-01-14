@@ -7,26 +7,18 @@ import * as loDash from 'lodash'
 
 type IProps = {
   dataLog: ExerciseSet[]
+  deleteExercise: (newDataLog: ExerciseSet[]) => void
   order: string[]
   closeModal: () => void
 }
 
-type IState = {
-  dataLog: ExerciseSet[]
-}
+type IState = {}
 
 class ModalListLog extends React.PureComponent<IProps, IState> {
 
-  // REMOVE IF PROPS MODIFICATION TRIGGERS RENDER
   constructor() {
     super()
-    this.state = {dataLog: []}
     this.showActionSheet = this.showActionSheet.bind(this)
-  }
-
-  // REMOVE IF PROPS MODIFICATION TRIGGERS RENDER
-  componentWillMount() {
-    this.setState({dataLog: this.props.dataLog.slice()})
   }
 
   showActionSheet(data: ExerciseSet) {
@@ -40,17 +32,16 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
       (buttonIndex) => {
         if (buttonIndex === 0) console.log('test')
         else if (buttonIndex === 1) {
-          const indexRow = loDash.findIndex(this.state.dataLog, (row: ExerciseSet) => {return row === data})
-          let dataLogCopy = this.state.dataLog.slice()
+          const indexRow = loDash.findIndex(this.props.dataLog, (row: ExerciseSet) => {return row === data})
+          let dataLogCopy = this.props.dataLog.slice()
           dataLogCopy.splice(indexRow, 1)
-          this.setState({dataLog: dataLogCopy})
+          this.props.deleteExercise(dataLogCopy)
         }
       })
   }
 
   render() {
-    const {order, closeModal} = this.props
-    const {dataLog} = this.state
+    const {order, closeModal, dataLog} = this.props
     return (
       <View style={styles.container}>
         <Modal

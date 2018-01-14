@@ -49,6 +49,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.closeModalSets = this.closeModalSets.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.feedbackTimer = this.feedbackTimer.bind(this)
+    this.deleteExercise = this.deleteExercise.bind(this)
   }
 
   closeModalListLog() {
@@ -111,6 +112,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       dataLog: dataLogCopy
     })
+  }
+
+  deleteExercise = (newDataLog: ExerciseSet[]) => {
+    this.setState({dataLog: newDataLog})
   }
 
   render() {
@@ -222,6 +227,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         />}
         {showModal && <ModalListLog
           dataLog={dataLog}
+          deleteExercise={this.deleteExercise}
           order={this.order}
           closeModal={this.closeModalListLog}
         />}
