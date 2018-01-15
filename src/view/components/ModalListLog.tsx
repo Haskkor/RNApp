@@ -8,6 +8,7 @@ import * as loDash from 'lodash'
 type IProps = {
   dataLog: ExerciseSet[]
   deleteExercise: (newDataLog: ExerciseSet[]) => void
+  editExercise: (index: number) => void
   order: string[]
   closeModal: () => void
 }
@@ -30,9 +31,10 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
         cancelButtonIndex: 2
       },
       (buttonIndex) => {
-        if (buttonIndex === 0) console.log('test')
-        else if (buttonIndex === 1) {
-          const indexRow = loDash.findIndex(this.props.dataLog, (row: ExerciseSet) => {return row === data})
+        const indexRow = loDash.findIndex(this.props.dataLog, (row: ExerciseSet) => {return row === data})
+        if (buttonIndex === 0) {
+          this.props.editExercise(indexRow)
+        } else if (buttonIndex === 1) {
           let dataLogCopy = this.props.dataLog.slice()
           dataLogCopy.splice(indexRow, 1)
           this.props.deleteExercise(dataLogCopy)

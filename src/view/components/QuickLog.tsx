@@ -50,6 +50,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.feedbackTimer = this.feedbackTimer.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
+    this.editExercise = this.editExercise.bind(this)
   }
 
   closeModalListLog() {
@@ -112,6 +113,23 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       dataLog: dataLogCopy
     })
+  }
+
+  editExercise = (index: number) => {
+    const exerciseToEdit = this.state.dataLog[index]
+    this.setState({currentMuscle: exerciseToEdit.muscleGroup})
+    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises.sort()
+    this.setState({
+      showModal: false,
+      sets: exerciseToEdit.sets,
+      currentExercise: exerciseToEdit.exercise.name
+    })
+
+
+
+    // TRANSFORM BUTTON ADD IN BUTTON SAVE AND IF CLICKED SAVE MODIFICATIONS TO THE GIVEN EXERCISE
+
+
   }
 
   deleteExercise = (newDataLog: ExerciseSet[]) => {
@@ -228,6 +246,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         {showModal && <ModalListLog
           dataLog={dataLog}
           deleteExercise={this.deleteExercise}
+          editExercise={this.editExercise}
           order={this.order}
           closeModal={this.closeModalListLog}
         />}
