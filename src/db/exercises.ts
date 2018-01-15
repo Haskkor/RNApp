@@ -574,9 +574,152 @@ const exercises = [
         equipment: 'Body'
       }
     ]
+  },
+  {
+    muscle: 'Biceps',
+    exercises: [
+      {
+        name: 'Incline hammer curls',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Wide-grip standing barbell curl',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Spider curl',
+        equipment: 'EZ Curl Bar'
+      },
+      {
+        name: 'EZ-Bar curl',
+        equipment: 'EZ Curl Bar'
+      },
+      {
+        name: 'Hammer curls',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Zottman curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Concentration curls',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Barbell curl',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Overhead cable curl',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Machine bicep curl',
+        equipment: 'Machine'
+      },
+      {
+        name: 'Dumbbell bicep curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Cross body hammer curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Close-grip EZ bar curl',
+        equipment: 'EZ Curl Bar'
+      },
+      {
+        name: 'Reverse barbell preacher curls',
+        equipment: 'EZ Curl Bar'
+      },
+      {
+        name: 'Preacher curl',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Standing one-arm cable curl',
+        equipment: 'Cable'
+      },
+      {
+        name: 'Seated close-grip concentration barbell curl',
+        equipment: 'Barbell'
+      },
+      {
+        name: 'Alternate incline dumbbell curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Dumbbell alternate biceps curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'One arm dumbbell preacher curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Standing concentration curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Alternate hammer curl',
+        equipment: 'Dumbbell'
+      },
+      {
+        name: 'Standing biceps cable curl',
+        equipment: 'Cable'
+      }
+    ]
+  },
+  {
+    muscle: 'Adductors',
+    exercises: [
+      {
+        name: 'Thigh adductor',
+        equipment: 'Machine'
+      },
+      {
+        name: 'Side leg raises',
+        equipment: 'Body'
+      },
+      {
+        name: 'Lying bent leg groin',
+        equipment: 'Other'
+      },
+      {
+        name: 'Lateral cone hops',
+        equipment: 'Other'
+      }
+    ]
+  },
+  {
+    muscle: 'Abductors',
+    exercises: [
+      {
+        name: 'Standing hip circles',
+        equipment: 'Body'
+      },
+      {
+        name: 'Thigh abductor',
+        equipment: 'Machine'
+      },
+      {
+        name: 'Windmills',
+        equipment: 'Body'
+      },
+      {
+        name: 'IT band and glute stretch',
+        equipment: 'Other'
+      },
+      {
+        name: 'Lateral band walk',
+        equipment: 'Bands'
+      }
+    ]
   }
 ]
 
 export default exercises
 
-// https://www.bodybuilding.com/exercises/finder/?muscleid=15
+// https://www.bodybuilding.com/exercises/finder/?muscleid=17
