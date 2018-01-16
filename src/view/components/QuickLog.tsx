@@ -18,6 +18,7 @@ type IState = {
   showModalSets: boolean
   showFeedback: boolean
   dataLog: ExerciseSet[]
+  editing: boolean
 }
 
 class QuickLog extends React.PureComponent<IProps, IState> {
@@ -31,6 +32,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   scrollViewWidth: number
   muscles: string[]
   exercises: ExerciseMuscle[]
+  editedExerciseIndex: number
 
   constructor() {
     super()
@@ -43,7 +45,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       showModal: false,
       showModalSets: false,
       showFeedback: false,
-      dataLog: []
+      dataLog: [],
+      editing: false
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
@@ -51,6 +54,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.feedbackTimer = this.feedbackTimer.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
     this.editExercise = this.editExercise.bind(this)
+    this.saveEditedExercise = this.saveEditedExercise.bind(this)
   }
 
   closeModalListLog() {
@@ -119,17 +123,36 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     const exerciseToEdit = this.state.dataLog[index]
     this.setState({currentMuscle: exerciseToEdit.muscleGroup})
     this.exercises = exercises.find((data: MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises.sort()
+    this.editedExerciseIndex = index
     this.setState({
       showModal: false,
       sets: exerciseToEdit.sets,
-      currentExercise: exerciseToEdit.exercise.name
+      currentExercise: exerciseToEdit.exercise.name,
+      editing: true
     })
+  }
 
-
-
-    // TRANSFORM BUTTON ADD IN BUTTON SAVE AND IF CLICKED SAVE MODIFICATIONS TO THE GIVEN EXERCISE
-
-
+  saveEditedExercise = () => {
+    const {currentMuscle, currentExercise, sets, dataLog} = this.state
+    this.feedbackTimer()
+    const newSet: ExerciseSet = {
+      exercise: this.exercises.find((exercise) => {
+        return exercise.name === currentExercise
+      }),
+      muscleGroup: currentMuscle,
+      sets: sets
+    }
+    let dataLogCopy = dataLog.slice()
+    dataLogCopy[this.editedExerciseIndex] = newSet
+    this.order = Object.keys(dataLogCopy)
+    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
+    this.setState({
+      sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
+      currentExercise: this.exercises[0].name,
+      currentMuscle: this.muscles[0],
+      dataLog: dataLogCopy,
+      editing: false
+    })
   }
 
   deleteExercise = (newDataLog: ExerciseSet[]) => {
@@ -137,7 +160,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {sets, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showFeedback} = this.state
+    const {sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showFeedback} = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -220,9 +243,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
             <Col style={styles.columns}>
               <TouchableOpacity
-                onPress={() => this.addExerciseSet()}
+                onPress={() => {editing ? this.saveEditedExercise() : this.addExerciseSet()}}
                 style={[styles.buttonAdd, styles.shadow]}>
-                <Text>Add</Text>
+                <Text>{editing ? 'Save' : 'Add'}</Text>
               </TouchableOpacity>
             </Col>
           </Row>
@@ -234,7 +257,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             onPress={() => this.setState({showFeedback: false})}>
             <Icon name="close" size={22} color="#FFF"/>
           </TouchableOpacity>
-          <Text style={styles.feedbackText}>Exercise logged</Text>
+          <Text style={styles.feedbackText}>{editing ? 'Changes saved' : 'Exercise logged'}</Text>
         </View>}
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
