@@ -37,7 +37,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.muscles = exercises.map((data: MuscleGroups) => data.muscle).sort()
-    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
+    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
+      [(exercise: ExerciseMuscle) => {
+        return exercise.name
+      }])
     this.state = {
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: this.exercises[0].name,
@@ -110,7 +113,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     let dataLogCopy = dataLog.slice()
     dataLogCopy.push(newSet)
     this.order = Object.keys(dataLogCopy)
-    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
+    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
+      [(exercise: ExerciseMuscle) => {
+        return exercise.name
+      }])
     this.setState({
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: this.exercises[0].name,
@@ -122,7 +128,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   editExercise = (index: number) => {
     const exerciseToEdit = this.state.dataLog[index]
     this.setState({currentMuscle: exerciseToEdit.muscleGroup})
-    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises.sort()
+    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises,
+      [(exercise: ExerciseMuscle) => {
+        return exercise.name
+      }])
     this.editedExerciseIndex = index
     this.setState({
       showModal: false,
@@ -145,7 +154,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     let dataLogCopy = dataLog.slice()
     dataLogCopy[this.editedExerciseIndex] = newSet
     this.order = Object.keys(dataLogCopy)
-    this.exercises = exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises.sort()
+    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
+      [(exercise: ExerciseMuscle) => {
+        return exercise.name
+      }])
     this.setState({
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: this.exercises[0].name,
@@ -178,7 +190,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 itemStyle={styles.pickerItem}
                 selectedValue={currentMuscle}
                 onValueChange={(itemValue) => {
-                  this.exercises = exercises.find((data: MuscleGroups) => data.muscle === itemValue).exercises.sort()
+                  this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === itemValue).exercises,
+                    [(exercise: ExerciseMuscle) => {
+                      return exercise.name
+                    }])
                   this.setState({currentMuscle: itemValue})
                 }}>
                 {this.muscles.map((muscle: string) => {
@@ -243,7 +258,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
             <Col style={styles.columns}>
               <TouchableOpacity
-                onPress={() => {editing ? this.saveEditedExercise() : this.addExerciseSet()}}
+                onPress={() => {
+                  editing ? this.saveEditedExercise() : this.addExerciseSet()
+                }}
                 style={[styles.buttonAdd, styles.shadow]}>
                 <Text>{editing ? 'Save' : 'Add'}</Text>
               </TouchableOpacity>
