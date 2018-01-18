@@ -8,7 +8,9 @@ import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 
-type IProps = {}
+type IProps = {
+  navigation: any
+}
 
 type IState = {
   sets: Set[]
@@ -177,7 +179,15 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
         <View style={styles.header}>
-          <Text style={styles.title}>Quick Log</Text>
+          <View style={[styles.viewFlex, {marginLeft: 20}]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('DrawerOpen')}>
+              <Icon name="fitness-center" size={22} color="#000"/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.viewFlex}>
+            <Text style={styles.title}>Quick Log</Text>
+          </View>
+          <View style={styles.viewFlex}/>
         </View>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
@@ -305,7 +315,8 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     paddingTop: 30,
     paddingBottom: 20,
-    backgroundColor: '#F7F7F8'
+    backgroundColor: '#F7F7F8',
+    flexDirection: 'row'
   },
   title: {
     alignSelf: 'center',
@@ -394,6 +405,9 @@ const styles = StyleSheet.create({
   },
   feedbackText: {
     color: '#FFF'
+  },
+  viewFlex: {
+    flex: 1
   }
 })
 

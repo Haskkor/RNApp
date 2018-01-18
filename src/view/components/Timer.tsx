@@ -78,7 +78,7 @@ class Timer extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="light-content"/>
         <View style={styles.timer}>
           <View style={styles.header}>
-            <Text style={styles.title}>Recovery StopWatch</Text>
+            <Text style={styles.title}>Recovery Stopwatch</Text>
           </View>
           {(isRunning || this.state.totalTime > 0) &&
           <View style={styles.timerWrapper}>
