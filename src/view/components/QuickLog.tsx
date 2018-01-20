@@ -96,13 +96,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setToModify = null
   }
 
-  feedbackTimer = () => {
-    this.setState({showFeedback: true})
-    setTimeout(() => {
-      this.setState({showFeedback: false})
-    }, 4000)
-  }
-
   addExerciseSet = () => {
     const {currentMuscle, currentExercise, sets, dataLog} = this.state
     this.feedbackTimer()
@@ -273,6 +266,11 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
+
+
+
+
+
         {showFeedback &&
         <View style={styles.feedbackLog}>
           <TouchableOpacity
@@ -282,6 +280,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </TouchableOpacity>
           <Text style={styles.feedbackText}>{editing ? 'Changes saved' : 'Exercise logged'}</Text>
         </View>}
+
+
+
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
           deleteEnabled={sets.length > 1}
@@ -372,25 +373,6 @@ const styles = StyleSheet.create({
   },
   pickerItem: {
     fontSize: 18
-  },
-  feedbackLog: {
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    top: 80,
-    right: 10,
-    backgroundColor: 'rgba(0, 183, 0, 0.5)',
-    padding: 10
-  },
-  feedbackButton: {
-    marginRight: 10
-  },
-  feedbackText: {
-    color: '#FFF'
-  },
-  viewFlex: {
-    flex: 1
   }
 })
 
