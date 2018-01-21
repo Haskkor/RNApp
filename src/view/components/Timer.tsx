@@ -1,8 +1,11 @@
 import * as React from 'react'
 import {Picker, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import * as loDash from 'lodash'
+import Header from './Header'
 
-type IProps = {}
+type IProps = {
+  navigation: any
+}
 
 type IState = {
   isRunning: boolean
@@ -76,10 +79,13 @@ class Timer extends React.PureComponent<IProps, IState> {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content"/>
+        <Header
+          navigation={this.props.navigation}
+          colorBorder='#414143'
+          colorHeader='282829'
+          textColor='#FFF'
+          title='Recovery Timer'/>
         <View style={styles.timer}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Recovery Stopwatch</Text>
-          </View>
           {(isRunning || this.state.totalTime > 0) &&
           <View style={styles.timerWrapper}>
             <Text style={styles.mainTimer}>{this.formatTime(totalTime)}</Text>
@@ -135,18 +141,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#1B1B1C'
-  },
-  header: {
-    borderBottomWidth: 0.5,
-    borderColor: '#414143',
-    paddingTop: 30,
-    paddingBottom: 20,
-    backgroundColor: '#282829'
-  },
-  title: {
-    alignSelf: 'center',
-    fontWeight: '600',
-    color: '#FFF'
   },
   timerWrapper: {
     justifyContent: 'center',
