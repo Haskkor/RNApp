@@ -8,6 +8,7 @@ import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 import Header from './Header'
+import Toaster from "./Toaster";
 
 type IProps = {
   navigation: any
@@ -19,7 +20,7 @@ type IState = {
   currentExercise: string
   showModal: boolean
   showModalSets: boolean
-  showFeedback: boolean
+  showToaster: boolean
   dataLog: ExerciseSet[]
   editing: boolean
 }
@@ -50,14 +51,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       showModal: false,
       showModalSets: false,
-      showFeedback: false,
+      showToaster: false,
       dataLog: [],
       editing: false
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
-    this.feedbackTimer = this.feedbackTimer.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
     this.editExercise = this.editExercise.bind(this)
     this.saveEditedExercise = this.saveEditedExercise.bind(this)
@@ -98,7 +98,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   addExerciseSet = () => {
     const {currentMuscle, currentExercise, sets, dataLog} = this.state
-    this.feedbackTimer()
     const newSet: ExerciseSet = {
       exercise: this.exercises.find((exercise) => {
         return exercise.name === currentExercise
@@ -117,7 +116,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: this.exercises[0].name,
       currentMuscle: this.muscles[0],
-      dataLog: dataLogCopy
+      dataLog: dataLogCopy,
+      showToaster: true
     })
   }
 
@@ -139,7 +139,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   saveEditedExercise = () => {
     const {currentMuscle, currentExercise, sets, dataLog} = this.state
-    this.feedbackTimer()
     const newSet: ExerciseSet = {
       exercise: this.exercises.find((exercise) => {
         return exercise.name === currentExercise
@@ -159,7 +158,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentExercise: this.exercises[0].name,
       currentMuscle: this.muscles[0],
       dataLog: dataLogCopy,
-      editing: false
+      editing: false,
+      showToaster: true
     })
   }
 
@@ -167,8 +167,12 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setState({dataLog: newDataLog})
   }
 
+  stopToaster = () => {
+    this.setState({showToaster: false})
+  }
+
   render() {
-    const {sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showFeedback} = this.state
+    const {sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToaster} = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -266,23 +270,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
-
-
-
-
-
-        {showFeedback &&
-        <View style={styles.feedbackLog}>
-          <TouchableOpacity
-            style={styles.feedbackButton}
-            onPress={() => this.setState({showFeedback: false})}>
-            <Icon name="close" size={22} color="#FFF"/>
-          </TouchableOpacity>
-          <Text style={styles.feedbackText}>{editing ? 'Changes saved' : 'Exercise logged'}</Text>
-        </View>}
-
-
-
+        {showToaster && <Toaster text={editing ? 'Changes saved' : 'Exercise logged'} stopToaster={this.stopToaster}/>}
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
           deleteEnabled={sets.length > 1}
