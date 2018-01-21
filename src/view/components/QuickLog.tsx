@@ -8,7 +8,7 @@ import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 import Header from './Header'
-import Toaster from "./Toaster";
+import Toaster from './Toaster'
 
 type IProps = {
   navigation: any
@@ -27,11 +27,7 @@ type IState = {
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
-  setToModify: {
-    indexSet: number
-    reps: number
-    weight: number
-  } = {indexSet: 0, reps: 8, weight: 75}
+  setToModify: {indexSet: number, reps: number, weight: number}
   scrollViewRef: any
   scrollViewWidth: number
   muscles: string[]
@@ -61,6 +57,12 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.deleteExercise = this.deleteExercise.bind(this)
     this.editExercise = this.editExercise.bind(this)
     this.saveEditedExercise = this.saveEditedExercise.bind(this)
+    this.stopToaster = this.stopToaster.bind(this)
+    this.backToOriginalState = this.backToOriginalState.bind(this)
+  }
+
+  componentDidMount() {
+    this.order = Object.keys(this.state.dataLog)
   }
 
   closeModalListLog() {
@@ -69,10 +71,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   closeModalSets() {
     this.setState({showModalSets: false})
-  }
-
-  componentDidMount() {
-    this.order = Object.keys(this.state.dataLog)
   }
 
   scrollToEndHorizontally() {
@@ -97,16 +95,30 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   addExerciseSet = () => {
-    const {currentMuscle, currentExercise, sets, dataLog} = this.state
-    const newSet: ExerciseSet = {
-      exercise: this.exercises.find((exercise) => {
-        return exercise.name === currentExercise
-      }),
-      muscleGroup: currentMuscle,
-      sets: sets
-    }
-    let dataLogCopy = dataLog.slice()
+    const newSet = this.buildNewSet()
+    let dataLogCopy = this.state.dataLog.slice()
     dataLogCopy.push(newSet)
+    this.backToOriginalState(dataLogCopy)
+  }
+
+  saveEditedExercise = () => {
+    const newSet = this.buildNewSet()
+    let dataLogCopy = this.state.dataLog.slice()
+    dataLogCopy[this.editedExerciseIndex] = newSet
+    this.backToOriginalState(dataLogCopy)
+  }
+
+  buildNewSet = (): ExerciseSet => {
+    return {
+      exercise: this.exercises.find((exercise) => {
+        return exercise.name === this.state.currentExercise
+      }),
+      muscleGroup: this.state.currentMuscle,
+      sets: this.state.sets
+    }
+  }
+
+  backToOriginalState = (dataLogCopy: ExerciseSet[]) => {
     this.order = Object.keys(dataLogCopy)
     this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
       [(exercise: ExerciseMuscle) => {
@@ -117,6 +129,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentExercise: this.exercises[0].name,
       currentMuscle: this.muscles[0],
       dataLog: dataLogCopy,
+      editing: false,
       showToaster: true
     })
   }
@@ -134,32 +147,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       sets: exerciseToEdit.sets,
       currentExercise: exerciseToEdit.exercise.name,
       editing: true
-    })
-  }
-
-  saveEditedExercise = () => {
-    const {currentMuscle, currentExercise, sets, dataLog} = this.state
-    const newSet: ExerciseSet = {
-      exercise: this.exercises.find((exercise) => {
-        return exercise.name === currentExercise
-      }),
-      muscleGroup: currentMuscle,
-      sets: sets
-    }
-    let dataLogCopy = dataLog.slice()
-    dataLogCopy[this.editedExerciseIndex] = newSet
-    this.order = Object.keys(dataLogCopy)
-    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
-      [(exercise: ExerciseMuscle) => {
-        return exercise.name
-      }])
-    this.setState({
-      sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
-      currentExercise: this.exercises[0].name,
-      currentMuscle: this.muscles[0],
-      dataLog: dataLogCopy,
-      editing: false,
-      showToaster: true
     })
   }
 
@@ -226,7 +213,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               horizontal={true}
               contentContainerStyle={styles.scroll}
               ref={ref => this.scrollViewRef = ref}
-              onContentSizeChange={(width, height) => this.scrollViewWidth = width}>
+              onContentSizeChange={(width) => this.scrollViewWidth = width}>
               {sets.map((item: Set, index: number) => {
                 return (
                   <TouchableOpacity
