@@ -18,6 +18,10 @@
   dependencies:
     moment "*"
 
+"@types/node@^9.3.0":
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
+
 "@types/react-native-modalbox@^1.4.4":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@types/react-native-modalbox/-/react-native-modalbox-1.4.4.tgz#0af8d87fda7fec419d339e441fa9a6f7640f81e6"
@@ -3767,6 +3771,10 @@ nested-error-stacks@^1.0.0:
   dependencies:
     inherits "~2.0.1"
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+
 node-emoji@^1.0.4:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/node-emoji/-/node-emoji-1.8.1.tgz#6eec6bfb07421e2148c75c6bba72421f8530a826"
@@ -3810,6 +3818,12 @@ node-pre-gyp@^0.6.36:
 node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
+
+node@^9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/node/-/node-9.4.0.tgz#607459ecd79af0f91e74318124bec0537644cdee"
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nodemon@^1.11.0:
   version "1.11.0"

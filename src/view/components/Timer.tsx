@@ -15,7 +15,7 @@ type IState = {
 }
 
 class Timer extends React.PureComponent<IProps, IState> {
-  interval: number
+  interval: NodeJS.Timer
   isReset: boolean
 
   constructor() {
@@ -81,10 +81,10 @@ class Timer extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="light-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder='#414143'
-          colorHeader='282829'
-          textColor='#FFF'
-          title='Recovery Timer'/>
+          colorBorder="#414143"
+          colorHeader="282829"
+          textColor="#FFF"
+          title="Recovery Timer"/>
         <View style={styles.timer}>
           {(isRunning || this.state.totalTime > 0) &&
           <View style={styles.timerWrapper}>

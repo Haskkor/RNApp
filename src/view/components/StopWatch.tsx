@@ -12,7 +12,7 @@ type IState = {
 }
 
 class StopWatch extends React.PureComponent<IProps, IState> {
-  interval: number
+  interval: NodeJS.Timer
   startTimer: Date
   isReset: boolean
 
@@ -80,10 +80,10 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="light-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder='#414143'
-          colorHeader='282829'
-          textColor='#FFF'
-          title='Recovery Stopwatch'/>
+          colorBorder="#414143"
+          colorHeader="282829"
+          textColor="#FFF"
+          title="Recovery Stopwatch"/>
         <View style={styles.timer}>
           <View style={styles.timerWrapper}>
             <Text style={styles.mainTimer}>{this.formatTime(mainTimer)}</Text>

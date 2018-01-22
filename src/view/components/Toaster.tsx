@@ -10,15 +10,21 @@ type IProps = {
 type IState = {}
 
 class Toaster extends React.PureComponent<IProps, IState> {
+  timer: NodeJS.Timer
 
   constructor() {
     super()
     this.feedbackTimer = this.feedbackTimer.bind(this)
   }
 
+  componentDidMount() {
+    this.feedbackTimer()
+  }
+
   feedbackTimer = () => {
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.props.stopToaster()
+      clearTimeout(this.timer)
     }, 4000)
   }
 
@@ -27,7 +33,10 @@ class Toaster extends React.PureComponent<IProps, IState> {
       <View style={[styles.feedbackLog, styles.feedbackInfo]}>
         <TouchableOpacity
           style={styles.feedbackButton}
-          onPress={() => this.props.stopToaster()}>
+          onPress={() => {
+            clearTimeout(this.timer)
+            this.props.stopToaster()
+          }}>
           <Icon name="close" size={22} color="#FFF"/>
         </TouchableOpacity>
         <Text style={styles.feedbackText}>{this.props.text}</Text>
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
   },
   feedbackText: {
     color: '#FFF'
-  },
+  }
 })
 
 export default Toaster

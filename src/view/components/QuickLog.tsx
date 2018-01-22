@@ -165,10 +165,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder='#000'
-          colorHeader='F7F7F8'
-          textColor='#000'
-          title='Quick Log'/>
+          colorBorder="#000"
+          colorHeader="#F7F7F8"
+          textColor="#000"
+          title="Quick Log"/>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>

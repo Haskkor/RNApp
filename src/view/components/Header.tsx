@@ -17,7 +17,7 @@ class Header extends React.PureComponent<IProps, IState> {
     const {navigation, textColor, colorBorder, colorHeader, title} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
-        <View style={[styles.viewFlex, {marginLeft: 20}]}>
+        <View style={[styles.viewSemiFlex, {marginLeft: 20}]}>
           <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
             <Icon name="fitness-center" size={22} color={textColor}/>
           </TouchableOpacity>
@@ -25,7 +25,7 @@ class Header extends React.PureComponent<IProps, IState> {
         <View style={styles.viewFlex}>
           <Text style={[styles.title, {color: textColor}]}>{title}</Text>
         </View>
-        <View style={styles.viewFlex}/>
+        <View style={styles.viewSemiFlex}/>
       </View>
     )
   }
@@ -34,8 +34,8 @@ class Header extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   header: {
     borderBottomWidth: 0.5,
-    paddingTop: 30,
-    paddingBottom: 20,
+    paddingTop: 35,
+    paddingBottom: 15,
     flexDirection: 'row'
   },
   title: {
@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
   },
   viewFlex: {
     flex: 1
+  },
+  viewSemiFlex: {
+    flex: 0.5
   }
 })
 
