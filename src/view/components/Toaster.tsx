@@ -1,9 +1,11 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {ToasterInfo} from '../../core/enums/index'
 
 type IProps = {
   text: string
+  status: ToasterInfo
   stopToaster: () => void
 }
 
@@ -29,17 +31,19 @@ class Toaster extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const {text, status, stopToaster} = this.props
+    console.log(status, status.toString())
     return (
-      <View style={[styles.feedbackLog, styles.feedbackInfo]}>
+      <View style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning]}>
         <TouchableOpacity
           style={styles.feedbackButton}
           onPress={() => {
             clearTimeout(this.timer)
-            this.props.stopToaster()
+            stopToaster()
           }}>
           <Icon name="close" size={22} color="#FFF"/>
         </TouchableOpacity>
-        <Text style={styles.feedbackText}>{this.props.text}</Text>
+        <Text style={styles.feedbackText}>{text}</Text>
       </View>
     )
   }
@@ -57,6 +61,9 @@ const styles = StyleSheet.create({
   },
   feedbackInfo: {
     backgroundColor: 'rgba(0, 183, 0, 0.5)'
+  },
+  feedbackWarning: {
+    backgroundColor: 'rgba(255, 204, 0, 0.5)'
   },
   feedbackButton: {
     marginRight: 10

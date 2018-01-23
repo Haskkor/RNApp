@@ -9,6 +9,7 @@ import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 import Header from './Header'
 import Toaster from './Toaster'
+import {ToasterInfo} from '../../core/enums/index'
 
 type IProps = {
   navigation: any
@@ -27,7 +28,7 @@ type IState = {
 
 class QuickLog extends React.PureComponent<IProps, IState> {
   order: string[]
-  setToModify: {indexSet: number, reps: number, weight: number}
+  setToModify: { indexSet: number, reps: number, weight: number }
   scrollViewRef: any
   scrollViewWidth: number
   muscles: string[]
@@ -242,7 +243,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             <Col style={styles.columns}>
               <TouchableOpacity
                 style={[styles.buttonCurrentLog, styles.shadow]}
-                onPress={() => this.setState({showModal: true})}>
+                onPress={() => this.setState({
+                  showModal: true,
+                  showToaster: false
+                })}>
                 <Text>See current training</Text>
               </TouchableOpacity>
             </Col>
@@ -257,7 +261,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
-        {showToaster && <Toaster text={editing ? 'Changes saved' : 'Exercise logged'} stopToaster={this.stopToaster}/>}
+        {showToaster && <Toaster text="Exercise logged" status={ToasterInfo.info} stopToaster={this.stopToaster}/>}
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
           deleteEnabled={sets.length > 1}
