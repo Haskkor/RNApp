@@ -21,7 +21,8 @@ type IState = {
   currentExercise: string
   showModal: boolean
   showModalSets: boolean
-  showToaster: boolean
+  showToasterInfo: boolean
+  showToasterWarning: boolean
   dataLog: ExerciseSet[]
   editing: boolean
 }
@@ -48,7 +49,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       showModal: false,
       showModalSets: false,
-      showToaster: false,
+      showToasterInfo: false,
+      showToasterWarning: false,
       dataLog: [],
       editing: false
     }
@@ -99,14 +101,14 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     const newSet = this.buildNewSet()
     let dataLogCopy = this.state.dataLog.slice()
     dataLogCopy.push(newSet)
-    this.backToOriginalState(dataLogCopy)
+    this.backToOriginalState(dataLogCopy, false)
   }
 
   saveEditedExercise = () => {
     const newSet = this.buildNewSet()
     let dataLogCopy = this.state.dataLog.slice()
     dataLogCopy[this.editedExerciseIndex] = newSet
-    this.backToOriginalState(dataLogCopy)
+    this.backToOriginalState(dataLogCopy, true)
   }
 
   buildNewSet = (): ExerciseSet => {
@@ -119,7 +121,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     }
   }
 
-  backToOriginalState = (dataLogCopy: ExerciseSet[]) => {
+  backToOriginalState = (dataLogCopy: ExerciseSet[], wasEditing: boolean) => {
     this.order = Object.keys(dataLogCopy)
     this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
       [(exercise: ExerciseMuscle) => {
@@ -131,7 +133,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       dataLog: dataLogCopy,
       editing: false,
-      showToaster: true
+      showToasterInfo: !wasEditing,
+      showToasterWarning: wasEditing
     })
   }
 
@@ -155,12 +158,18 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setState({dataLog: newDataLog})
   }
 
-  stopToaster = () => {
-    this.setState({showToaster: false})
+  stopToaster = (status: ToasterInfo) => {
+    this.setState({
+      showToasterInfo: status === ToasterInfo.info ? false : this.state.showToasterInfo,
+      showToasterWarning: status === ToasterInfo.warning ? false : this.state.showToasterWarning
+    })
   }
 
   render() {
-    const {sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToaster} = this.state
+    const {
+      sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
+      showToasterWarning
+    } = this.state
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -245,7 +254,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 style={[styles.buttonCurrentLog, styles.shadow]}
                 onPress={() => this.setState({
                   showModal: true,
-                  showToaster: false
+                  showToasterInfo: false,
+                  showToasterWarning: false
                 })}>
                 <Text>See current training</Text>
               </TouchableOpacity>
@@ -261,7 +271,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
-        {showToaster && <Toaster text="Exercise logged" status={ToasterInfo.info} stopToaster={this.stopToaster}/>}
+        {showToasterInfo && <Toaster text="Exercise logged" status={ToasterInfo.info} stopToaster={this.stopToaster}/>}
+        {showToasterWarning &&
+        <Toaster text="Changes saved" status={ToasterInfo.warning} stopToaster={this.stopToaster}/>}
         {showModalSets && <ModalSets
           updateDeleteSet={(reps?, weight?) => this.updateDeleteSet(reps, weight)}
           deleteEnabled={sets.length > 1}

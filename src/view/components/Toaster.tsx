@@ -6,7 +6,7 @@ import {ToasterInfo} from '../../core/enums/index'
 type IProps = {
   text: string
   status: ToasterInfo
-  stopToaster: () => void
+  stopToaster: (status: ToasterInfo) => void
 }
 
 type IState = {}
@@ -25,7 +25,7 @@ class Toaster extends React.PureComponent<IProps, IState> {
 
   feedbackTimer = () => {
     this.timer = setTimeout(() => {
-      this.props.stopToaster()
+      this.props.stopToaster(this.props.status)
       clearTimeout(this.timer)
     }, 4000)
   }
@@ -39,7 +39,7 @@ class Toaster extends React.PureComponent<IProps, IState> {
           style={styles.feedbackButton}
           onPress={() => {
             clearTimeout(this.timer)
-            stopToaster()
+            stopToaster(status)
           }}>
           <Icon name="close" size={22} color="#FFF"/>
         </TouchableOpacity>
