@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar, Dimensions} from 'react-native'
+  import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar, Dimensions} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
 import ModalListLog from './ModalListLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -21,6 +21,7 @@ type IState = {
   currentExercise: string
   showModal: boolean
   showModalSets: boolean
+  showModalRecovery: boolean
   showToasterInfo: boolean
   showToasterWarning: boolean
   dataLog: ExerciseSet[]
@@ -49,6 +50,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       currentMuscle: this.muscles[0],
       showModal: false,
       showModalSets: false,
+      showModalRecovery: false,
       showToasterInfo: false,
       showToasterWarning: false,
       dataLog: [],
@@ -251,13 +253,22 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           <Row size={10} style={styles.rows}>
             <Col style={styles.columns}>
               <TouchableOpacity
-                style={[styles.buttonCurrentLog, styles.shadow]}
+                style={[styles.buttonCurrentLog, styles.buttonBottom, styles.shadow]}
                 onPress={() => this.setState({
                   showModal: true,
                   showToasterInfo: false,
                   showToasterWarning: false
                 })}>
-                <Text>See current training</Text>
+                <Text>See log</Text>
+              </TouchableOpacity>
+            </Col>
+            <Col style={styles.columns}>
+              <TouchableOpacity
+                style={[styles.buttonBottom, styles.shadow]}
+                onPress={() => this.setState({
+                  showModalRecovery: true
+                })}>
+                <Text>Rec. time</Text>
               </TouchableOpacity>
             </Col>
             <Col style={styles.columns}>
@@ -265,7 +276,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 onPress={() => {
                   editing ? this.saveEditedExercise() : this.addExerciseSet()
                 }}
-                style={[styles.buttonAdd, styles.shadow]}>
+                style={[styles.buttonAdd, styles.buttonBottom, styles.shadow]}>
                 <Text>{editing ? 'Save' : 'Add'}</Text>
               </TouchableOpacity>
             </Col>
@@ -364,6 +375,11 @@ const styles = StyleSheet.create({
   },
   pickerItem: {
     fontSize: 18
+  },
+  buttonBottom: {
+    width: Dimensions.get('window').width / 5,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
