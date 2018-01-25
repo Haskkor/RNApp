@@ -1,5 +1,5 @@
 import * as React from 'react'
-  import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar, Dimensions} from 'react-native'
+import {Picker, StyleSheet, Text, TouchableOpacity, View, ScrollView, StatusBar, Dimensions} from 'react-native'
 import {Col, Row, Grid} from 'react-native-easy-grid'
 import ModalListLog from './ModalListLog'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -10,6 +10,7 @@ import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 import Header from './Header'
 import Toaster from './Toaster'
 import {ToasterInfo} from '../../core/enums/index'
+import ModalRecovery from './ModalRecovery'
 
 type IProps = {
   navigation: any
@@ -58,6 +59,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
+    this.closeModalRecovery = this.closeModalRecovery.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
     this.editExercise = this.editExercise.bind(this)
@@ -76,6 +78,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   closeModalSets() {
     this.setState({showModalSets: false})
+  }
+
+  closeModalRecovery() {
+    this.setState({showModalRecovery: false})
   }
 
   scrollToEndHorizontally() {
@@ -170,7 +176,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   render() {
     const {
       sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
-      showToasterWarning
+      showToasterWarning, showModalRecovery
     } = this.state
     return (
       <View style={styles.container}>
@@ -298,6 +304,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           editExercise={this.editExercise}
           order={this.order}
           closeModal={this.closeModalListLog}
+        />}
+        {showModalRecovery && <ModalRecovery
+          closeModal={this.closeModalRecovery}
         />}
       </View>
     )
