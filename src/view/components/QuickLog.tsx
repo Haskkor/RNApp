@@ -9,8 +9,9 @@ import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
 import Header from './Header'
 import Toaster from './Toaster'
-import {ToasterInfo} from '../../core/enums/index'
+import {ToasterInfo} from '../../core/enums'
 import ModalRecovery from './ModalRecovery'
+import {buildRecoveryTimes} from '../../utils/helper'
 
 type IProps = {
   navigation: any
@@ -20,6 +21,7 @@ type IState = {
   sets: Set[]
   currentMuscle: string
   currentExercise: string
+  currentRecoveryTime: string
   showModal: boolean
   showModalSets: boolean
   showModalRecovery: boolean
@@ -49,6 +51,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 80}, {reps: 8, weight: 85}],
       currentExercise: this.exercises[0].name,
       currentMuscle: this.muscles[0],
+      currentRecoveryTime: buildRecoveryTimes()[0],
       showModal: false,
       showModalSets: false,
       showModalRecovery: false,
@@ -59,7 +62,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
-    this.closeModalRecovery = this.closeModalRecovery.bind(this)
+    this.updateRecovery = this.updateRecovery.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
     this.editExercise = this.editExercise.bind(this)
@@ -78,10 +81,6 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   closeModalSets() {
     this.setState({showModalSets: false})
-  }
-
-  closeModalRecovery() {
-    this.setState({showModalRecovery: false})
   }
 
   scrollToEndHorizontally() {
@@ -117,6 +116,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     let dataLogCopy = this.state.dataLog.slice()
     dataLogCopy[this.editedExerciseIndex] = newSet
     this.backToOriginalState(dataLogCopy, true)
+  }
+
+  updateRecovery = (recoveryTime: string) => {
+    this.setState({showModalRecovery: false, currentRecoveryTime: recoveryTime})
   }
 
   buildNewSet = (): ExerciseSet => {
@@ -306,7 +309,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           closeModal={this.closeModalListLog}
         />}
         {showModalRecovery && <ModalRecovery
-          closeModal={this.closeModalRecovery}
+          updateRecovery={this.updateRecovery}
         />}
       </View>
     )

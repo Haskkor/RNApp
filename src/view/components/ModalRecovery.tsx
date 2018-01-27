@@ -1,8 +1,9 @@
 import * as React from 'react'
 import {Modal, Picker, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {buildRecoveryTimes} from '../../utils/helper'
 
 type IProps = {
-  closeModal: () => void
+  updateRecovery: (recoveryTime: string) => void
 }
 
 type IState = {
@@ -13,7 +14,7 @@ class ModalRecovery extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {currentRecovery: '00:30'}
+    this.state = {currentRecovery: buildRecoveryTimes()[0]}
   }
 
   render() {
@@ -32,7 +33,7 @@ class ModalRecovery extends React.PureComponent<IProps, IState> {
                 <TouchableOpacity
                   style={styles.buttonSave}
                   onPress={() => {
-                    this.props.closeModal()
+                    this.props.updateRecovery(currentRecovery)
                   }}>
                   <Text>Save</Text>
                 </TouchableOpacity>
@@ -43,7 +44,7 @@ class ModalRecovery extends React.PureComponent<IProps, IState> {
                   itemStyle={styles.pickerItem}
                   selectedValue={currentRecovery}
                   onValueChange={(itemValue) => this.setState({currentRecovery: itemValue})}>
-                  {['00:30', '00:45', '01:00', '01:15', '01:30', '01:45', '02:00'].map((value: string) => {
+                  {buildRecoveryTimes().map((value: string) => {
                     return <Picker.Item key={value} label={value.toString()} value={value}/>
                   })}
                 </Picker>
