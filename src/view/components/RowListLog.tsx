@@ -13,7 +13,7 @@ type IState = {}
 
 class RowListLog extends React.PureComponent<IProps, IState> {
   render() {
-    const {exercise, muscleGroup, sets} = this.props.data
+    const {exercise, muscleGroup, sets, recoveryTime} = this.props.data
     return (
       <TouchableOpacity
         underlayColor={'#EEE'}
@@ -25,7 +25,7 @@ class RowListLog extends React.PureComponent<IProps, IState> {
             <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
           </View>
           <View>
-            <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}`}</Text>
+            <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}. Recovery: ${recoveryTime}`}</Text>
             <Text numberOfLines={1} style={styles.textContainer}>
               <Text style={styles.textEquipment}>{`${exercise.equipment}   `}</Text>
               {sets.map((set: Set, index: number) =>

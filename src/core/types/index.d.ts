@@ -7,6 +7,7 @@ export type ExerciseSet = {
   muscleGroup: string
   exercise: ExerciseMuscle
   sets: Set[]
+  recoveryTime: string
 }
 export type MuscleGroups = {
   muscle: string,

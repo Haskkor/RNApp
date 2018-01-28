@@ -128,7 +128,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         return exercise.name === this.state.currentExercise
       }),
       muscleGroup: this.state.currentMuscle,
-      sets: this.state.sets
+      sets: this.state.sets,
+      recoveryTime: this.state.currentRecoveryTime
     }
   }
 
@@ -179,7 +180,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   render() {
     const {
       sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
-      showToasterWarning, showModalRecovery
+      showToasterWarning, showModalRecovery, currentRecoveryTime
     } = this.state
     return (
       <View style={styles.container}>
@@ -272,13 +273,18 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </TouchableOpacity>
             </Col>
             <Col style={styles.columns}>
-              <TouchableOpacity
-                style={[styles.buttonBottom, styles.shadow]}
-                onPress={() => this.setState({
-                  showModalRecovery: true
-                })}>
-                <Text>Rec. time</Text>
-              </TouchableOpacity>
+              <Row>
+                <Text>{currentRecoveryTime}</Text>
+              </Row>
+              <Row>
+                <TouchableOpacity
+                  style={[styles.buttonBottom, styles.shadow]}
+                  onPress={() => this.setState({
+                    showModalRecovery: true
+                  })}>
+                  <Text>Rec. time</Text>
+                </TouchableOpacity>
+              </Row>
             </Col>
             <Col style={styles.columns}>
               <TouchableOpacity
