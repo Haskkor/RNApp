@@ -190,7 +190,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           colorBorder="#000"
           colorHeader="#F7F7F8"
           textColor="#000"
-          title="Quick Log"/>
+          title="Quick Log"
+          secondaryIcon="search"/>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>

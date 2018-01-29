@@ -8,13 +8,15 @@ type IProps = {
   colorHeader: string
   colorBorder: string
   title: string
+  secondaryIcon?: string
+  secondaryFunction?: () => void
 }
 
 type IState = {}
 
 class Header extends React.PureComponent<IProps, IState> {
   render() {
-    const {navigation, textColor, colorBorder, colorHeader, title} = this.props
+    const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
         <View style={[styles.viewSemiFlex, {marginLeft: 20}]}>
@@ -25,7 +27,11 @@ class Header extends React.PureComponent<IProps, IState> {
         <View style={styles.viewFlex}>
           <Text style={[styles.title, {color: textColor}]}>{title}</Text>
         </View>
-        <View style={styles.viewSemiFlex}/>
+        <View style={[styles.viewSemiFlex, styles.secondaryIconView]}>
+          {secondaryIcon && <TouchableOpacity onPress={() => secondaryFunction()}>
+            <Icon name={secondaryIcon} size={22} color={textColor}/>
+          </TouchableOpacity>}
+        </View>
       </View>
     )
   }
@@ -50,6 +56,10 @@ const styles = StyleSheet.create({
   },
   viewSemiFlex: {
     flex: 0.5
+  },
+  secondaryIconView: {
+    marginRight: 20,
+    alignItems: 'flex-end'
   }
 })
 
