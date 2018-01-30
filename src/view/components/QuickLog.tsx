@@ -12,6 +12,7 @@ import Toaster from './Toaster'
 import {ToasterInfo} from '../../core/enums'
 import ModalRecovery from './ModalRecovery'
 import {buildRecoveryTimes} from '../../utils/helper'
+import ModalSearch from './ModalSearch'
 
 type IProps = {
   navigation: any
@@ -27,6 +28,7 @@ type IState = {
   showModalRecovery: boolean
   showToasterInfo: boolean
   showToasterWarning: boolean
+  showModalSearch: boolean
   dataLog: ExerciseSet[]
   editing: boolean
 }
@@ -57,11 +59,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       showModalRecovery: false,
       showToasterInfo: false,
       showToasterWarning: false,
+      showModalSearch: false,
       dataLog: [],
       editing: false
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
+    this.openModalSearch = this.openModalSearch.bind(this)
     this.updateRecovery = this.updateRecovery.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
@@ -81,6 +85,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   closeModalSets() {
     this.setState({showModalSets: false})
+  }
+
+  openModalSearch() {
+    this.setState({showModalSearch: true})
   }
 
   scrollToEndHorizontally() {
@@ -180,7 +188,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   render() {
     const {
       sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
-      showToasterWarning, showModalRecovery, currentRecoveryTime
+      showToasterWarning, showModalRecovery, currentRecoveryTime, showModalSearch
     } = this.state
     return (
       <View style={styles.container}>
@@ -191,7 +199,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           colorHeader="#F7F7F8"
           textColor="#000"
           title="Quick Log"
-          secondaryIcon="search"/>
+          secondaryIcon="search"
+          secondaryFunction={this.openModalSearch}/>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
@@ -318,6 +327,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         {showModalRecovery && <ModalRecovery
           updateRecovery={this.updateRecovery}
         />}
+        {showModalSearch && <ModalSearch/>}
       </View>
     )
   }
