@@ -1,18 +1,21 @@
 import * as React from 'react'
 import {View, StyleSheet, Text} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
+import {ExerciseMuscle} from '../../core/types'
 
-type IProps = {}
+type IProps = {
+  exercises: ExerciseMuscle[]
+}
 
 type IState = {
   dataSource: ItemList[]
 }
 
-type ItemList = {'searchStr': string}
+type ItemList = { 'searchStr': string }
 
 class ModalSearch extends React.PureComponent<IProps, IState> {
 
-  constructor () {
+  constructor() {
     super()
     this.state = {
       dataSource: [
@@ -29,38 +32,27 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
     }
   }
 
-  renderRow (item: ItemList, rowID: string) {
+  renderRow(item: ItemList, rowID: string) {
     return (
-      <View key={rowID} style={{flex: 1, marginLeft: 40, height: 40, justifyContent: 'center'}}>
+      <View key={rowID} style={styles.row}>
         <Text>{item.searchStr}</Text>
       </View>
     )
   }
 
-  emptyContent (searchStr: string) {
+  emptyContent(searchStr: string) {
     return (
-      <View style={{
-        flex: 1,
-        alignItems: 'center',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        marginTop: 50
-      }}>
-        <Text style={{color: '#979797', fontSize: 18, paddingTop: 20}}> No Result For <Text
-          style={{color: '#171a23', fontSize: 18}}>{searchStr}</Text></Text>
-        <Text style={{color: '#979797', fontSize: 18, alignItems: 'center', paddingTop: 10}}>Please search again</Text>
+      <View style={styles.emptyContentView}>
+        <Text style={styles.emptyContentText}> No result for <Text
+          style={styles.emptyContentTextBold}>{searchStr}</Text></Text>
+        <Text style={styles.emptyContentSearchAgain}>Please search again</Text>
       </View>
     )
   }
 
   render() {
     return (
-      <View style={{
-        flex: 1,
-        backgroundColor: '#efefef',
-        flexDirection: 'column',
-        justifyContent: 'flex-start'
-      }}>
+      <View style={styles.searchListView}>
         <SearchList
           data={this.state.dataSource}
           renderRow={this.renderRow.bind(this)}
@@ -68,9 +60,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
           cellHeight={40}
           title='Search List'
           searchPlaceHolder='Search'
-          customSearchBarStyle={{
-            fontSize: 14
-          }}
+          customSearchBarStyle={{fontSize: 14}}
           onClickBack={() => {}}
           leftButtonStyle={{justifyContent: 'flex-start'}}
           backIconStyle={{width: 8.5, height: 17}}
@@ -83,6 +73,41 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   }
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  row: {
+    flex: 1,
+    marginLeft: 40,
+    height: 40,
+    justifyContent: 'center'
+  },
+  emptyContentView: {
+    flex: 1,
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    marginTop: 50
+  },
+  emptyContentText: {
+    color: '#979797',
+    fontSize: 18,
+    paddingTop: 20
+  },
+  emptyContentTextBold: {
+    color: '#171A23',
+    fontSize: 18
+  },
+  emptyContentSearchAgain: {
+    color: '#979797',
+    fontSize: 18,
+    alignItems: 'center',
+    paddingTop: 10
+  },
+  searchListView: {
+    flex: 1,
+    backgroundColor: '#EFEFEF',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  }
+})
 
 export default ModalSearch
