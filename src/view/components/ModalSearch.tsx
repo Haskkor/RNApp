@@ -1,10 +1,10 @@
 import * as React from 'react'
 import {View, StyleSheet, Text} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
-import {MuscleGroups} from '../../core/types'
+import {ExerciseMuscle, MuscleGroups} from '../../core/types'
 
 type IProps = {
-  exercises: MuscleGroups
+  exercises: MuscleGroups[]
 }
 
 type IState = {
@@ -17,23 +17,16 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {
-      dataSource: [
-        {'searchStr': 'A1'},
-        {'searchStr': 'B1'},
-        {'searchStr': 'A2'},
-        {'searchStr': 'C1'},
-        {'searchStr': 'Linder'},
-        {'searchStr': '林林'},
-        {'searchStr': '王五'},
-        {'searchStr': '张三'},
-        {'searchStr': '张二'},
-        {'searchStr': '李四'}]
-    }
+    this.state = {dataSource: []}
   }
 
   componentDidMount() {
-    const dataSource = this.props.exercises.map((e) => e.)
+    const dataSource = this.props.exercises.map((m: MuscleGroups) =>
+      m.exercises.map((e: ExerciseMuscle) => {
+        return {'searchStr': `${e.name} (${e.equipment}) - ${m.muscle}`}
+      })
+    )
+    this.setState({dataSource: [].concat.apply([], dataSource)})
   }
 
   renderRow(item: ItemList, rowID: string) {
@@ -65,7 +58,8 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
           title='Search List'
           searchPlaceHolder='Search'
           customSearchBarStyle={{fontSize: 14}}
-          onClickBack={() => {}}
+          onClickBack={() => {
+          }}
           leftButtonStyle={{justifyContent: 'flex-start'}}
           backIconStyle={{width: 8.5, height: 17}}
           activeSearchBarColor='#fff'
