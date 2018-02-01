@@ -327,7 +327,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         {showModalRecovery && <ModalRecovery
           updateRecovery={this.updateRecovery}
         />}
-        {showModalSearch && <ModalSearch exercises={this.exercises}/>}
+        {showModalSearch && <ModalSearch exercises={exercises}/>}
       </View>
     )
   }

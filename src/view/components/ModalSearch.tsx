@@ -1,10 +1,10 @@
 import * as React from 'react'
 import {View, StyleSheet, Text} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
-import {ExerciseMuscle} from '../../core/types'
+import {MuscleGroups} from '../../core/types'
 
 type IProps = {
-  exercises: ExerciseMuscle[]
+  exercises: MuscleGroups
 }
 
 type IState = {
@@ -30,6 +30,10 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
         {'searchStr': '张二'},
         {'searchStr': '李四'}]
     }
+  }
+
+  componentDidMount() {
+    const dataSource = this.props.exercises.map((e) => e.)
   }
 
   renderRow(item: ItemList, rowID: string) {
