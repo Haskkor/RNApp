@@ -1,17 +1,19 @@
 import * as React from 'react'
-import {View, StyleSheet, Text} from 'react-native'
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
 import {ExerciseMuscle, MuscleGroups} from '../../core/types'
 
 type IProps = {
   exercises: MuscleGroups[]
+  closeModal: (close: boolean) => void
+  selectExercise: (exercise: string, muscle: string) => void
 }
 
 type IState = {
   dataSource: ItemList[]
 }
 
-type ItemList = { 'searchStr': string }
+type ItemList = { searchStr: string, exercise: string, muscle: string }
 
 class ModalSearch extends React.PureComponent<IProps, IState> {
 
@@ -23,7 +25,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   componentDidMount() {
     const dataSource = this.props.exercises.map((m: MuscleGroups) =>
       m.exercises.map((e: ExerciseMuscle) => {
-        return {'searchStr': `${e.name} (${e.equipment}) - ${m.muscle}`}
+        return {searchStr: `${e.name} (${e.equipment}) - ${m.muscle}`, exercise: e.name, muscle: m.muscle}
       })
     )
     this.setState({dataSource: [].concat.apply([], dataSource)})
@@ -32,7 +34,9 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   renderRow(item: ItemList, rowID: string) {
     return (
       <View key={rowID} style={styles.row}>
-        <Text>{item.searchStr}</Text>
+        <TouchableOpacity onPress={() => this.props.selectExercise(item.exercise, item.muscle)}>
+          <Text>{item.searchStr}</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -59,6 +63,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
           searchPlaceHolder='Search'
           customSearchBarStyle={{fontSize: 14}}
           onClickBack={() => {
+            this.props.closeModal(true)
           }}
           leftButtonStyle={{justifyContent: 'flex-start'}}
           backIconStyle={{width: 8.5, height: 17}}

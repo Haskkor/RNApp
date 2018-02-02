@@ -65,7 +65,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     }
     this.closeModalListLog = this.closeModalListLog.bind(this)
     this.closeModalSets = this.closeModalSets.bind(this)
-    this.openModalSearch = this.openModalSearch.bind(this)
+    this.handleModalSearch = this.handleModalSearch.bind(this)
     this.updateRecovery = this.updateRecovery.bind(this)
     this.addExerciseSet = this.addExerciseSet.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
@@ -73,6 +73,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.saveEditedExercise = this.saveEditedExercise.bind(this)
     this.stopToaster = this.stopToaster.bind(this)
     this.backToOriginalState = this.backToOriginalState.bind(this)
+    this.selectExerciseModalSearch = this.selectExerciseModalSearch.bind(this)
   }
 
   componentDidMount() {
@@ -87,8 +88,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setState({showModalSets: false})
   }
 
-  openModalSearch() {
-    this.setState({showModalSearch: true})
+  handleModalSearch(close: boolean = false) {
+    this.setState({showModalSearch: !close})
   }
 
   scrollToEndHorizontally() {
@@ -185,6 +186,14 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     })
   }
 
+  selectExerciseModalSearch = (exercise: string, muscle: string) => {
+    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === muscle).exercises,
+      [(exercise: ExerciseMuscle) => {
+        return exercise.name
+      }])
+    this.setState({currentMuscle: muscle, currentExercise: exercise, showModalSearch: false})
+  }
+
   render() {
     const {
       sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
@@ -200,7 +209,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           textColor="#000"
           title="Quick Log"
           secondaryIcon="search"
-          secondaryFunction={this.openModalSearch}/>
+          secondaryFunction={this.handleModalSearch}/>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
@@ -327,7 +336,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         {showModalRecovery && <ModalRecovery
           updateRecovery={this.updateRecovery}
         />}
-        {showModalSearch && <ModalSearch exercises={exercises}/>}
+        {showModalSearch && <ModalSearch
+          exercises={exercises}
+          closeModal={this.handleModalSearch}
+          selectExercise={this.selectExerciseModalSearch}/>}
       </View>
     )
   }
