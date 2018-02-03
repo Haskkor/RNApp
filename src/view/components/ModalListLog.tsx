@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   textButton: {
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '600',
     color: '#000'
   },

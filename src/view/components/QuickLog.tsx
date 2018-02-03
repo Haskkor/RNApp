@@ -213,7 +213,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
-              <Text>Muscle:</Text>
+              <Text style={styles.textTitle}>Muscle:</Text>
             </Col>
             <Col size={75} style={styles.columns}>
               <Picker
@@ -235,7 +235,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </Row>
           <Row size={35} style={styles.rows}>
             <Col size={25} style={styles.textPickers}>
-              <Text>Exercise:</Text>
+              <Text style={styles.textTitle}>Exercise:</Text>
             </Col>
             <Col size={75} style={styles.columns}>
               <Picker
@@ -264,8 +264,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                       this.setToModify = {indexSet: index, reps: item.reps, weight: item.weight}
                       this.setState({showModalSets: true})
                     }}>
-                    <Text><Text>{item.reps}</Text><Text> x</Text></Text>
-                    <Text><Text>{item.weight}</Text><Text>kg</Text></Text>
+                    <Text style={styles.textSets}><Text>{item.reps}</Text><Text> x</Text></Text>
+                    <Text style={styles.textSets}><Text>{item.weight}</Text><Text>kg</Text></Text>
                   </TouchableOpacity>
                 )
               })}
@@ -288,7 +288,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   showToasterInfo: false,
                   showToasterWarning: false
                 })}>
-                <Text>See log</Text>
+                <Text style={styles.buttonsText}>See log</Text>
               </TouchableOpacity>
             </Col>
             <Col style={styles.columns}>
@@ -301,7 +301,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   onPress={() => this.setState({
                     showModalRecovery: true
                   })}>
-                  <Text>Rec. time</Text>
+                  <Text style={styles.buttonsText}>Rec. time</Text>
                 </TouchableOpacity>
               </Row>
             </Col>
@@ -311,7 +311,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   editing ? this.saveEditedExercise() : this.addExerciseSet()
                 }}
                 style={[styles.buttonAdd, styles.buttonBottom, styles.shadow]}>
-                <Text>{editing ? 'Save' : 'Add'}</Text>
+                <Text style={styles.buttonsText}>{editing ? 'Save' : 'Add'}</Text>
               </TouchableOpacity>
             </Col>
           </Row>
@@ -421,6 +421,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 5,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  buttonsText: {
+    fontFamily: 'Montserrat-Regular'
+  },
+  textSets: {
+    fontFamily: 'Montserrat-Regular'
+  },
+  textTitle: {
+    fontFamily: 'Montserrat-Regular'
   }
 })
 

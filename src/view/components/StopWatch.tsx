@@ -152,24 +152,28 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 112, 10, 0.5)'
   },
   startButtonText: {
+    fontFamily: 'Montserrat-Regular',
     color: '#00CC00'
   },
   stopButton: {
     backgroundColor: 'rgba(153, 0, 0, 0.5)'
   },
   stopButtonText: {
+    fontFamily: 'Montserrat-Regular',
     color: '#FF0000'
   },
   resetButton: {
     backgroundColor: 'rgba(179, 179, 179, 0.5)'
   },
   resetButtonText: {
+    fontFamily: 'Montserrat-Regular',
     color: '#FFF'
   },
   resetButtonDisabled: {
     backgroundColor: 'rgba(65, 65, 67, 0.5)'
   },
   resetButtonTextDisabled: {
+    fontFamily: 'Montserrat-Regular',
     color: '#7A7A7B'
   }
 })

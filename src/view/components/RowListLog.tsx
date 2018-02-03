@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     marginRight: 15
   },
   setName: {
+    fontFamily: 'Montserrat-Regular',
     fontWeight: 'bold'
   },
   viewSets: {
@@ -64,9 +65,11 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   textContainer: {
+    fontFamily: 'Montserrat-Regular',
     marginRight: 40
   },
   textEquipment: {
+    fontFamily: 'Montserrat-Regular',
     color: '#6666FF'
   }
 })

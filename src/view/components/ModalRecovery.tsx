@@ -35,7 +35,7 @@ class ModalRecovery extends React.PureComponent<IProps, IState> {
                   onPress={() => {
                     this.props.updateRecovery(currentRecovery)
                   }}>
-                  <Text>Save</Text>
+                  <Text style={styles.textButton}>Save</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.viewPicker}>
@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
   viewPicker: {
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  textButton: {
+    fontFamily: 'Montserrat-Regular'
   }
 })
 

@@ -35,7 +35,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
     return (
       <View key={rowID} style={styles.row}>
         <TouchableOpacity onPress={() => this.props.selectExercise(item.exercise, item.muscle)}>
-          <Text>{item.searchStr}</Text>
+          <Text style={styles.itemListText}>{item.searchStr}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -91,15 +91,18 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   emptyContentText: {
+    fontFamily: 'Montserrat-Regular',
     color: '#979797',
     fontSize: 18,
     paddingTop: 20
   },
   emptyContentTextBold: {
+    fontFamily: 'Montserrat-Bold',
     color: '#171A23',
     fontSize: 18
   },
   emptyContentSearchAgain: {
+    fontFamily: 'Montserrat-Regular',
     color: '#979797',
     fontSize: 18,
     alignItems: 'center',
@@ -110,6 +113,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFEFEF',
     flexDirection: 'column',
     justifyContent: 'flex-start'
+  },
+  itemListText: {
+    fontFamily: 'Montserrat-Regular'
   }
 })
 

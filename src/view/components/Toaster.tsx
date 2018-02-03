@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   feedbackText: {
+    fontFamily: 'Montserrat-Regular',
     color: '#FFF'
   }
 })

@@ -52,13 +52,13 @@ class ModalSets extends React.PureComponent<IProps, IState> {
                     this.props.updateDeleteSet(currentReps, currentWeight)
                     this.props.closeModal()
                   }}>
-                  <Text>Save</Text>
+                  <Text style={styles.textButton}>Save</Text>
                 </TouchableOpacity>
               </View>
               <Grid style={styles.grid}>
                 <Col style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Row size={10}>
-                    <Text>Reps:</Text>
+                    <Text style={styles.textTitle}>Reps:</Text>
                   </Row>
                   <Row size={90}>
                     <Picker
@@ -74,7 +74,7 @@ class ModalSets extends React.PureComponent<IProps, IState> {
                 </Col>
                 <Col style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Row size={10}>
-                    <Text>Weight:</Text>
+                    <Text style={styles.textTitle}>Weight:</Text>
                   </Row>
                   <Row size={90}>
                     <Picker
@@ -134,13 +134,21 @@ const styles = StyleSheet.create({
     padding: 20
   },
   textDelete: {
+    fontFamily: 'Montserrat-Regular',
     color: 'red'
   },
   textDeleteDisabled: {
+    fontFamily: 'Montserrat-Regular',
     color: 'rgba(153, 0, 0, 0.5)'
   },
   pickerItem: {
     fontSize: 14
+  },
+  textButton: {
+    fontFamily: 'Montserrat-Regular'
+  },
+  textTitle: {
+    fontFamily: 'Montserrat-Regular'
   }
 })
 
