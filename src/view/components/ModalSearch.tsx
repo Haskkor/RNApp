@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Text, TouchableOpacity, Modal, StatusBar} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
 import {ExerciseMuscle, MuscleGroups} from '../../core/types'
 
@@ -54,29 +54,53 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   render() {
     return (
       <View style={styles.searchListView}>
-        <SearchList
-          data={this.state.dataSource}
-          renderRow={this.renderRow.bind(this)}
-          emptyContent={this.emptyContent.bind(this)}
-          cellHeight={40}
-          title='Search List'
-          searchPlaceHolder='Search'
-          customSearchBarStyle={{fontSize: 14}}
-          onClickBack={() => {
-            this.props.closeModal(true)
-          }}
-          leftButtonStyle={{justifyContent: 'flex-start'}}
-          backIconStyle={{width: 8.5, height: 17}}
-          activeSearchBarColor='#fff'
-          showActiveSearchIcon
-          searchBarActiveColor='#171a23'
-        />
+        <StatusBar barStyle="light-content"/>
+        <Modal
+          onRequestClose={() => console.log('close')}
+          visible={true}
+          transparent={true}
+          animationType="slide">
+          <SearchList
+            data={this.state.dataSource}
+            renderRow={this.renderRow.bind(this)}
+            emptyContent={this.emptyContent.bind(this)}
+
+
+
+
+
+            sectionHeaderHeight={16}
+
+            renderSectionHeader={}
+
+
+
+            cellHeight={40}
+            title="Search List"
+            searchPlaceHolder="Search"
+            customSearchBarStyle={{fontSize: 14}}
+            onClickBack={() => {
+              this.props.closeModal(true)
+            }}
+            leftButtonStyle={{justifyContent: 'flex-start'}}
+            backIconStyle={{width: 8.5, height: 17}}
+            activeSearchBarColor="#fff"
+            showActiveSearchIcon
+            searchBarActiveColor="#171a23"
+          />
+        </Modal>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  searchListView: {
+    flex: 1,
+    backgroundColor: '#EFEFEF',
+    flexDirection: 'column',
+    justifyContent: 'flex-start'
+  },
   row: {
     flex: 1,
     marginLeft: 40,
@@ -107,12 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignItems: 'center',
     paddingTop: 10
-  },
-  searchListView: {
-    flex: 1,
-    backgroundColor: '#EFEFEF',
-    flexDirection: 'column',
-    justifyContent: 'flex-start'
   },
   itemListText: {
     fontFamily: 'Montserrat-Regular'

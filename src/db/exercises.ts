@@ -71,22 +71,6 @@ const exercises = [
         equipment: 'Machine'
       },
       {
-        name: 'Incline cable flies',
-        equipment: 'Cable'
-      },
-      {
-        name: 'Incline cable flies',
-        equipment: 'Cable'
-      },
-      {
-        name: 'Incline cable flies',
-        equipment: 'Cable'
-      },
-      {
-        name: 'Incline cable flies',
-        equipment: 'Cable'
-      },
-      {
         name: 'Pullover dumbbell',
         equipment: 'Dumbbell'
       }

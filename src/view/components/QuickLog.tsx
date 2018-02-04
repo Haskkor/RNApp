@@ -280,7 +280,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </ScrollView>
           </Row>
           <Row size={10} style={styles.rows}>
-            <Col style={styles.columns}>
+            <Col style={styles.columnsButtons}>
               <TouchableOpacity
                 style={[styles.buttonCurrentLog, styles.buttonBottom, styles.shadow]}
                 onPress={() => this.setState({
@@ -291,13 +291,13 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 <Text style={styles.buttonsText}>See log</Text>
               </TouchableOpacity>
             </Col>
-            <Col style={styles.columns}>
+            <Col style={styles.columnsButtons}>
               <Row>
-                <Text>{currentRecoveryTime}</Text>
+                <Text style={styles.textRecovery}>{currentRecoveryTime}</Text>
               </Row>
               <Row>
                 <TouchableOpacity
-                  style={[styles.buttonBottom, styles.shadow]}
+                  style={[styles.buttonBottom, styles.shadow, {marginTop: -4}]}
                   onPress={() => this.setState({
                     showModalRecovery: true
                   })}>
@@ -305,7 +305,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 </TouchableOpacity>
               </Row>
             </Col>
-            <Col style={styles.columns}>
+            <Col style={styles.columnsButtons}>
               <TouchableOpacity
                 onPress={() => {
                   editing ? this.saveEditedExercise() : this.addExerciseSet()
@@ -373,6 +373,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  columnsButtons: {
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
   rows: {
     margin: 10
   },
@@ -420,7 +424,8 @@ const styles = StyleSheet.create({
   buttonBottom: {
     width: Dimensions.get('window').width / 4.5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: 30
   },
   buttonsText: {
     fontFamily: 'Montserrat-Regular'
@@ -430,6 +435,10 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontFamily: 'Montserrat-Regular'
+  },
+  textRecovery: {
+    fontFamily: 'Montserrat-Light',
+    fontSize: 12
   }
 })
 
