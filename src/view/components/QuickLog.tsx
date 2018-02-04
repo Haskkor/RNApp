@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     fontSize: 18
   },
   buttonBottom: {
-    width: Dimensions.get('window').width / 5,
+    width: Dimensions.get('window').width / 4.5,
     justifyContent: 'center',
     alignItems: 'center'
   },

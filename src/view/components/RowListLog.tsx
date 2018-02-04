@@ -25,7 +25,8 @@ class RowListLog extends React.PureComponent<IProps, IState> {
             <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
           </View>
           <View>
-            <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}. Recovery: ${recoveryTime}`}</Text>
+            <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}`}</Text>
+            <Text style={styles.textMedium}>{`Recovery: ${recoveryTime}`}</Text>
             <Text numberOfLines={1} style={styles.textContainer}>
               <Text style={styles.textEquipment}>{`${exercise.equipment}   `}</Text>
               {sets.map((set: Set, index: number) =>
@@ -54,8 +55,7 @@ const styles = StyleSheet.create({
     marginRight: 15
   },
   setName: {
-    fontFamily: 'Montserrat-Regular',
-    fontWeight: 'bold'
+    fontFamily: 'Montserrat-Bold'
   },
   viewSets: {
     marginTop: 10,
@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
   textEquipment: {
     fontFamily: 'Montserrat-Regular',
     color: '#6666FF'
+  },
+  textMedium: {
+    fontFamily: 'Montserrat-Medium'
   }
 })
 
