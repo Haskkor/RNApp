@@ -35,32 +35,36 @@ class Toaster extends React.PureComponent<IProps, IState> {
   render() {
     const {text, status, stopToaster} = this.props
     return (
-      <View style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning]}>
+      <View style={styles.feedbackLogView}>
         <Animate
           show={true}
           start={{
-            opacity: 0
+            opacityView: 0,
+            opacityText: 0
           }}
           enter={{
-            opacity: [1],
-            timing: {duration: 200, ease: easeQuadOut}
+            opacityView: [0.5],
+            opacityText: [1],
+            timing: {duration: 400, ease: easeQuadOut}
           }}
           leave={{
-            opacity: [0],
-            timing: {duration: 200, ease: easeQuadOut}
+            opacityView: [0],
+            opacityText: [0],
+            timing: {duration: 400, ease: easeQuadOut}
           }}
         >
-          {({opacity}) => {
-            return <View style={{opacity: opacity as number}}>
+          {({opacityView, opacityText}) => {
+            return<View
+              style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning, {opacity: opacityView as number}]}>
               <TouchableOpacity
                 style={styles.feedbackButton}
                 onPress={() => {
                   clearTimeout(this.timer)
                   stopToaster(status)
                 }}>
-                <Icon name="close" size={22} color="#FFF"/>
+                <Icon name="close" size={22} color="#FFF" style={{opacity: opacityText as number}}/>
               </TouchableOpacity>
-              <Text style={styles.feedbackText}>{text}</Text>
+              <Text style={[styles.feedbackText, {opacity: opacityText as number}]}>{text}</Text>
             </View>
           }}
         </Animate>
@@ -70,13 +74,15 @@ class Toaster extends React.PureComponent<IProps, IState> {
 }
 
 const styles = StyleSheet.create({
-  feedbackLog: {
+  feedbackLogView: {
     position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
     top: 80,
-    right: 10,
+    right: 10
+  },
+  feedbackLog: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
     padding: 10
   },
   feedbackInfo: {

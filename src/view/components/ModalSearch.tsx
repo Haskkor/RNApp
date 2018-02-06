@@ -47,7 +47,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
         <View/>)
     } else {
       return (
-        <View style={styles.sectionHeader}>
+        <View key={sectionData} style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{sectionID}</Text>
         </View>)
     }
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Regular'
   },
   sectionHeader: {
-    height: 24,
+    height: 18,
     justifyContent: 'center',
     alignItems: 'flex-start',
     paddingLeft: 25,
