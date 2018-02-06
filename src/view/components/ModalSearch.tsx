@@ -41,6 +41,18 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
     )
   }
 
+  renderSectionHeader(sectionData: any, sectionID: string) {
+    if (!sectionID) {
+      return (
+        <View/>)
+    } else {
+      return (
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>{sectionID}</Text>
+        </View>)
+    }
+  }
+
   emptyContent(searchStr: string) {
     return (
       <View style={styles.emptyContentView}>
@@ -64,17 +76,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
             data={this.state.dataSource}
             renderRow={this.renderRow.bind(this)}
             emptyContent={this.emptyContent.bind(this)}
-
-
-
-
-
-            sectionHeaderHeight={16}
-
-            renderSectionHeader={}
-
-
-
+            renderSectionHeader={this.renderSectionHeader.bind(this)}
             cellHeight={40}
             title="Search List"
             searchPlaceHolder="Search"
@@ -134,6 +136,18 @@ const styles = StyleSheet.create({
   },
   itemListText: {
     fontFamily: 'Montserrat-Regular'
+  },
+  sectionHeader: {
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingLeft: 25,
+    backgroundColor: '#efefef'
+  },
+  sectionTitle: {
+    color: '#979797',
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 14
   }
 })
 

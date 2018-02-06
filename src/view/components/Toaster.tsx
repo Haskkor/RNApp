@@ -2,6 +2,8 @@ import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {ToasterInfo} from '../../core/enums/index'
+import Animate from 'react-move/Animate'
+import {easeQuadOut} from 'd3-ease'
 
 type IProps = {
   text: string
@@ -32,18 +34,36 @@ class Toaster extends React.PureComponent<IProps, IState> {
 
   render() {
     const {text, status, stopToaster} = this.props
-    console.log(status, status.toString())
     return (
       <View style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning]}>
-        <TouchableOpacity
-          style={styles.feedbackButton}
-          onPress={() => {
-            clearTimeout(this.timer)
-            stopToaster(status)
-          }}>
-          <Icon name="close" size={22} color="#FFF"/>
-        </TouchableOpacity>
-        <Text style={styles.feedbackText}>{text}</Text>
+        <Animate
+          show={true}
+          start={{
+            opacity: 0
+          }}
+          enter={{
+            opacity: [1],
+            timing: {duration: 200, ease: easeQuadOut}
+          }}
+          leave={{
+            opacity: [0],
+            timing: {duration: 200, ease: easeQuadOut}
+          }}
+        >
+          {({opacity}) => {
+            return <View style={{opacity: opacity as number}}>
+              <TouchableOpacity
+                style={styles.feedbackButton}
+                onPress={() => {
+                  clearTimeout(this.timer)
+                  stopToaster(status)
+                }}>
+                <Icon name="close" size={22} color="#FFF"/>
+              </TouchableOpacity>
+              <Text style={styles.feedbackText}>{text}</Text>
+            </View>
+          }}
+        </Animate>
       </View>
     )
   }
