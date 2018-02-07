@@ -81,7 +81,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         <Header
           navigation={this.props.navigation}
           colorBorder="#414143"
-          colorHeader="282829"
+          colorHeader="#282829"
           textColor="#FFF"
           title="Recovery Stopwatch"/>
         <View style={styles.timer}>

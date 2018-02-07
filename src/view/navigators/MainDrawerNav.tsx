@@ -2,15 +2,20 @@ import * as React from 'react'
 import {DrawerNavigator} from 'react-navigation'
 import TabNavRecovery from './TabNavRecovery'
 import QuickLog from '../components/QuickLog'
+import Programs from '../components/Programs'
 
 const MainDrawerNav = DrawerNavigator({
   Home: {
-    drawerLabel: 'Quick log',
-    screen: QuickLog
+    drawerLabel: 'Programs',
+    screen: Programs
   },
   QuickLog: {
     drawerLabel: 'Quick log',
     screen: QuickLog
+  },
+  Programs: {
+    drawerLabel: 'Programs',
+    screen: Programs
   },
   Recovery: {
     drawerLabel: 'Recovery',
