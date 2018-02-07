@@ -11,7 +11,9 @@ type IProps = {
   stopToaster: (status: ToasterInfo) => void
 }
 
-type IState = {}
+type IState = {
+  active: boolean
+}
 
 class Toaster extends React.PureComponent<IProps, IState> {
   timer: NodeJS.Timer
@@ -19,6 +21,8 @@ class Toaster extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.feedbackTimer = this.feedbackTimer.bind(this)
+    this.setInactive = this.setInactive.bind(this)
+    this.state = {active: true}
   }
 
   componentDidMount() {
@@ -27,44 +31,54 @@ class Toaster extends React.PureComponent<IProps, IState> {
 
   feedbackTimer = () => {
     this.timer = setTimeout(() => {
-      this.props.stopToaster(this.props.status)
-      clearTimeout(this.timer)
+      this.setInactive()
     }, 4000)
   }
 
+  setInactive = () => {
+    this.setState({active: false})
+    setTimeout(() => {
+      this.props.stopToaster(this.props.status)
+      clearTimeout(this.timer)
+    }, 400)
+  }
+
   render() {
-    const {text, status, stopToaster} = this.props
+    const {text, status} = this.props
     return (
       <View style={styles.feedbackLogView}>
         <Animate
-          show={true}
+          show={this.state.active}
           start={{
             opacityView: 0,
-            opacityText: 0
+            opacityText: 0,
+            translate: 50
           }}
-          enter={{
-            opacityView: [0.5],
+          enter={[{
+            opacityView: [0.7],
             opacityText: [1],
+            translate: [0],
             timing: {duration: 400, ease: easeQuadOut}
-          }}
+          }]}
           leave={{
             opacityView: [0],
             opacityText: [0],
+            translate: [50],
             timing: {duration: 400, ease: easeQuadOut}
           }}
         >
-          {({opacityView, opacityText}) => {
-            return<View
-              style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning, {opacity: opacityView as number}]}>
+          {(state: { opacityView: number, opacityText: number, translate: number }) => {
+            return <View
+              style={[styles.feedbackLog, status === ToasterInfo.info ? styles.feedbackInfo : styles.feedbackWarning,
+                {opacity: state.opacityView, left: state.translate}]}>
               <TouchableOpacity
                 style={styles.feedbackButton}
                 onPress={() => {
-                  clearTimeout(this.timer)
-                  stopToaster(status)
+                  this.setInactive()
                 }}>
-                <Icon name="close" size={22} color="#FFF" style={{opacity: opacityText as number}}/>
+                <Icon name="close" size={22} color="#FFF" style={{opacity: state.opacityText}}/>
               </TouchableOpacity>
-              <Text style={[styles.feedbackText, {opacity: opacityText as number}]}>{text}</Text>
+              <Text style={[styles.feedbackText, {opacity: state.opacityText}]}>{text}</Text>
             </View>
           }}
         </Animate>
