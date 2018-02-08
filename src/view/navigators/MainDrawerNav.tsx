@@ -2,12 +2,12 @@ import * as React from 'react'
 import {DrawerNavigator} from 'react-navigation'
 import TabNavRecovery from './TabNavRecovery'
 import QuickLog from '../components/QuickLog'
-import Programs from '../components/Programs'
+import ProgramsStackNav from './ProgramsStackNav'
 
 const MainDrawerNav = DrawerNavigator({
   Home: {
     drawerLabel: 'Programs',
-    screen: Programs
+    screen: ProgramsStackNav
   },
   QuickLog: {
     drawerLabel: 'Quick log',
@@ -15,7 +15,7 @@ const MainDrawerNav = DrawerNavigator({
   },
   Programs: {
     drawerLabel: 'Programs',
-    screen: Programs
+    screen: ProgramsStackNav
   },
   Recovery: {
     drawerLabel: 'Recovery',

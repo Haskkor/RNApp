@@ -38,7 +38,10 @@ class Programs extends React.PureComponent<IProps, IState> {
           colorBorder="#000"
           colorHeader="#F7F7F8"
           textColor="#000"
-          title="Programs"/>
+          title="Programs"
+          secondaryIcon="add"
+          secondaryFunction={() => console.log('e')}
+        />
         {programs.length > 0 && <SortableListView
           style={styles.sortableList}
           data={programs}
