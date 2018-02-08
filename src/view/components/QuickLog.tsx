@@ -13,9 +13,10 @@ import {ToasterInfo} from '../../core/enums'
 import ModalRecovery from './ModalRecovery'
 import {buildRecoveryTimes} from '../../utils/helper'
 import ModalSearch from './ModalSearch'
+import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 
 type IProps = {
-  navigation: any
+  navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {

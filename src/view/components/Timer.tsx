@@ -2,9 +2,10 @@ import * as React from 'react'
 import {Picker, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import * as loDash from 'lodash'
 import Header from './Header'
+import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 
 type IProps = {
-  navigation: any
+  navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {

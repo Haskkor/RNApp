@@ -4,9 +4,10 @@ import Header from './Header'
 import * as SortableListView from 'react-native-sortable-listview'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as LottieView from 'lottie-react-native'
+import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 
 type IProps = {
-  navigation: any
+  navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {
@@ -40,7 +41,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           textColor="#000"
           title="Programs"
           secondaryIcon="add"
-          secondaryFunction={() => console.log('e')}
+          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays')}
         />
         {programs.length > 0 && <SortableListView
           style={styles.sortableList}
@@ -57,7 +58,7 @@ class Programs extends React.PureComponent<IProps, IState> {
             <Text style={styles.textNoProgram}>You have no programs created yet</Text>
           </View>
           <View style={styles.viewAnimationNoProgram}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('ProgramNameDays')}>
               <LottieView
                 ref={(ref: any) => this.animation = ref}
                 loop={true}

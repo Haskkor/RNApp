@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 
 type IProps = {
-  navigation: any
+  navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
   textColor: string
   colorHeader: string
   colorBorder: string
