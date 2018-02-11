@@ -41,7 +41,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           textColor="#000"
           title="Programs"
           secondaryIcon="add"
-          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays')}
+          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}
         />
         {programs.length > 0 && <SortableListView
           style={styles.sortableList}
@@ -58,7 +58,8 @@ class Programs extends React.PureComponent<IProps, IState> {
             <Text style={styles.textNoProgram}>You have no programs created yet</Text>
           </View>
           <View style={styles.viewAnimationNoProgram}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('ProgramNameDays')}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}>
               <LottieView
                 ref={(ref: any) => this.animation = ref}
                 loop={true}

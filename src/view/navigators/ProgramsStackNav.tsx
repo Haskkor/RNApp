@@ -9,8 +9,7 @@ const ProgramsStackNav = StackNavigator({
     navigationOptions: ({navigation}: any): any => ({header: null})
   },
   ProgramNameDays: {
-    screen: ProgramNameDays,
-    title: 'Name and Days'
+    screen: ProgramNameDays
   }
 }, {
   cardStyle: {

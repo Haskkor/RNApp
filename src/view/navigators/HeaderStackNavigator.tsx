@@ -10,8 +10,8 @@ type IState = {}
 
 class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
-  static navigationOptions = ({ navigation, navigationOptions }: any) => ({
-    title: navigationOptions.title,
+  static navigationOptions = ({ navigation }: any) => ({
+    title: navigation.state.params.title,
     headerLeft: <TouchableOpacity style={styles.container} onPress={() => { navigation.goBack() } }>
       <Icon name="arrow-back" size={22} color="#000" style={styles.icon}/>
       <Text style={styles.text}>Back</Text></TouchableOpacity>,
@@ -25,7 +25,7 @@ class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
     },
     headerTitleStyle: {
       fontFamily: 'Montserrat-Bold',
-      fontSize: 16,
+      fontSize: 14,
       color: '#000'
     }
   })
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Montserrat-Bold',
     color: '#000'
   },
