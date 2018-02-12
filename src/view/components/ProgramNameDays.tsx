@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity} from 'react-native'
+import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 
@@ -37,48 +37,58 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         {name: 'Sunday', training: false}
       ]
     }
+    this.buttonNextEnabled = this.buttonNextEnabled.bind(this)
+  }
+
+  buttonNextEnabled = () => {
+    const {name, numberOfDays, weekdays} = this.state
+    return name !== '' && (numberOfDays !== '' || weekdays.some((elem) => {
+      return elem.training
+    }))
   }
 
   render() {
     const {name, numberOfDays, weekdays} = this.state
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
         <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
         <TextInput
-          style={[styles.textInput, styles.elementsSeparator, {width: 200}]}
+          style={[styles.textInput, styles.sectionSeparator, {width: 200}]}
           onChangeText={(text: string) => this.setState({name: text})}
           placeholder={'Type here'}
           value={name}
         />
         <Text style={[styles.text, styles.elementsSeparator]}>Select training days:</Text>
-        {weekdays.map((day: Day, index: number) => {
-          return (
-            <TouchableOpacity
-              key={day.name}
-              style={[styles.box, day.training ? styles.dayTrained : styles.dayOff,
-                index === weekdays.length - 1 && styles.elementsSeparator]}
-              onPress={() => {
-                let weekdaysCopy = weekdays.slice()
-                weekdaysCopy[index] = {name: day.name, training: !day.training}
-                this.setState({weekdays: weekdaysCopy})
-              }}>
-              <Text style={styles.text}>{day.name}</Text>
-            </TouchableOpacity>
-          )
-        })}
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
+          {weekdays.map((day: Day, index: number) => {
+            return (
+              <TouchableOpacity
+                key={day.name}
+                style={[styles.box, day.training ? styles.dayTrained : styles.dayOff,
+                  index === weekdays.length - 1 && styles.sectionSeparator]}
+                onPress={() => {
+                  let weekdaysCopy = weekdays.slice()
+                  weekdaysCopy[index] = {name: day.name, training: !day.training}
+                  this.setState({weekdays: weekdaysCopy})
+                }}>
+                <Text style={styles.text}>{day.name}</Text>
+              </TouchableOpacity>
+            )
+          })}
+        </View>
         <Text style={[styles.text, styles.elementsSeparator]}>Or enter a number of days trained:</Text>
         <TextInput
-          style={[styles.textInput, styles.elementsSeparator, {width: 100}]}
+          style={[styles.textInput, styles.sectionSeparator, {width: 100}]}
           onChangeText={(text: string) => this.setState({numberOfDays: text})}
           placeholder={'Type here'}
           value={numberOfDays}
           keyboardType={'numeric'}
         />
-        <TouchableOpacity style={[styles.buttons, styles.shadow]}>
-          <Text style={styles.text}>Next</Text>
+        <TouchableOpacity style={[styles.buttons, styles.shadow]} disabled={!this.buttonNextEnabled()}>
+          <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     )
   }
 }
@@ -88,12 +98,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'column',
-    marginBottom: 30,
-    marginTop: 30
+    justifyContent: 'center'
   },
   text: {
     fontFamily: 'Montserrat-Regular',
     fontSize: 14
+  },
+  textDisabled: {
+    color: '#CBCDCB'
   },
   textInput: {
     fontSize: 14,
@@ -111,12 +123,12 @@ const styles = StyleSheet.create({
   },
   box: {
     backgroundColor: '#FFF',
-    marginTop: 2,
-    marginBottom: 2,
+    margin: 2,
     borderWidth: 2,
     borderRadius: 4,
     overflow: 'hidden',
-    width: Dimensions.get('window').width / 1.4,
+    alignItems: 'center',
+    width: Dimensions.get('window').width / 2.7,
     height: 'auto',
     minHeight: 40,
     justifyContent: 'center',
@@ -143,6 +155,9 @@ const styles = StyleSheet.create({
   },
   elementsSeparator: {
     marginBottom: 20
+  },
+  sectionSeparator: {
+    marginBottom: 40
   }
 })
 
