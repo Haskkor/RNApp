@@ -1,5 +1,8 @@
 import * as React from 'react'
-import {Dimensions, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import {
+  Dimensions, KeyboardAvoidingView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity,
+  View
+} from 'react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 
@@ -60,7 +63,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           value={name}
         />
         <Text style={[styles.text, styles.elementsSeparator]}>Select training days:</Text>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}>
+        <View style={styles.wrapperDay}>
           {weekdays.map((day: Day, index: number) => {
             return (
               <TouchableOpacity
@@ -92,6 +95,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     )
   }
 }
+// https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580
 
 const styles = StyleSheet.create({
   container: {
@@ -133,6 +137,11 @@ const styles = StyleSheet.create({
     minHeight: 40,
     justifyContent: 'center',
     padding: 5
+  },
+  wrapperDay: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center'
   },
   dayTrained: {
     borderColor: '#EFC154'
