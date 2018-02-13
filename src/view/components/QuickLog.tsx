@@ -189,8 +189,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 
   selectExerciseModalSearch = (exercise: string, muscle: string) => {
     this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === muscle).exercises,
-      [(exercise: ExerciseMuscle) => {
-        return exercise.name
+      [(e: ExerciseMuscle) => {
+        return e.name
       }])
     this.setState({currentMuscle: muscle, currentExercise: exercise, showModalSearch: false})
   }
