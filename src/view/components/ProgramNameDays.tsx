@@ -1,10 +1,8 @@
 import * as React from 'react'
-import {
-  Dimensions, KeyboardAvoidingView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity,
-  View
-} from 'react-native'
+import {ActionSheetIOS, Dimensions, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -43,6 +41,18 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     this.buttonNextEnabled = this.buttonNextEnabled.bind(this)
   }
 
+  showActionSheet() {
+    ActionSheetIOS.showActionSheetWithOptions({
+        title: 'Conflict: please select a value',
+        options: ['Selected days', 'Number of days', 'Cancel'],
+        cancelButtonIndex: 2
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) console.log('test1')
+        else if (buttonIndex === 1) console.log('test2')
+      })
+  }
+
   buttonNextEnabled = () => {
     const {name, numberOfDays, weekdays} = this.state
     return name !== '' && (numberOfDays !== '' || weekdays.some((elem) => {
@@ -53,7 +63,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
   render() {
     const {name, numberOfDays, weekdays} = this.state
     return (
-      <View style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={styles.container} scrollEnabled={false} extraHeight={90}>
         <StatusBar barStyle="dark-content"/>
         <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
         <TextInput
@@ -88,14 +98,22 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           value={numberOfDays}
           keyboardType={'numeric'}
         />
-        <TouchableOpacity style={[styles.buttons, styles.shadow]} disabled={!this.buttonNextEnabled()}>
+        <TouchableOpacity
+          style={[styles.buttons, styles.shadow]}
+          disabled={!this.buttonNextEnabled()}
+          onPress={() => {
+            if ((numberOfDays !== '' && weekdays.some((elem) => {
+                return elem.training
+              }))) this.showActionSheet()
+            else this.props.navigation.navigate('ProgramExercises', {title: 'Exercises'})
+          }}
+        >
           <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAwareScrollView>
     )
   }
 }
-// https://medium.freecodecamp.org/how-to-make-your-react-native-app-respond-gracefully-when-the-keyboard-pops-up-7442c1535580
 
 const styles = StyleSheet.create({
   container: {

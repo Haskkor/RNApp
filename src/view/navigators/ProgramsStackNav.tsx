@@ -2,6 +2,7 @@ import * as React from 'react'
 import {StackNavigator} from 'react-navigation'
 import Programs from '../components/Programs'
 import ProgramNameDays from '../components/ProgramNameDays'
+import ProgramExercises from '../components/ProgramExercises'
 
 const ProgramsStackNav = StackNavigator({
   Home: {
@@ -10,6 +11,9 @@ const ProgramsStackNav = StackNavigator({
   },
   ProgramNameDays: {
     screen: ProgramNameDays
+  },
+  ProgramExercises: {
+    screen: ProgramExercises
   }
 }, {
   cardStyle: {
