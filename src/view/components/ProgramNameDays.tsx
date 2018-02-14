@@ -3,6 +3,7 @@ import {ActionSheetIOS, Dimensions, StatusBar, StyleSheet, Text, TextInput, Touc
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import * as loDash from 'lodash'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -14,7 +15,7 @@ type IState = {
   weekdays: Day[]
 }
 
-type Day = {
+export type Day = {
   name: string,
   training: boolean
 }
@@ -48,8 +49,19 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         cancelButtonIndex: 2
       },
       (buttonIndex) => {
-        if (buttonIndex === 0) console.log('test1')
-        else if (buttonIndex === 1) console.log('test2')
+        if (buttonIndex === 0) {
+          this.props.navigation.navigate('ProgramExercises', {
+            title: 'Exercises',
+            days: this.state.weekdays.filter((day: Day) => {
+              if (day.training) return day.name
+            }).map((day: Day) => day.name)
+          })
+        } else if (buttonIndex === 1) {
+          this.props.navigation.navigate('ProgramExercises', {
+            title: 'Exercises',
+            days: loDash.range(parseInt(this.state.numberOfDays, 10)).map((value: number) => value.toString())
+          })
+        }
       })
   }
 
@@ -104,8 +116,17 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           onPress={() => {
             if ((numberOfDays !== '' && weekdays.some((elem) => {
                 return elem.training
-              }))) this.showActionSheet()
-            else this.props.navigation.navigate('ProgramExercises', {title: 'Exercises'})
+              }))) {
+              this.showActionSheet()
+            } else {
+              this.props.navigation.navigate('ProgramExercises', {
+                title: 'Exercises',
+                days: numberOfDays === '' ? weekdays.filter((day: Day) => {
+                    if (day.training) return day.name
+                  }).map((day: Day) => day.name) :
+                  loDash.range(parseInt(numberOfDays, 10)).map((value: number) => (value + 1).toString())
+              })
+            }
           }}
         >
           <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
