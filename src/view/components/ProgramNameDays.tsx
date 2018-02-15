@@ -59,7 +59,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
             title: 'Exercises',
-            days: loDash.range(parseInt(this.state.numberOfDays, 10)).map((value: number) => value.toString())
+            days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString())
           })
         }
       })
@@ -124,7 +124,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
                 days: numberOfDays === '' ? weekdays.filter((day: Day) => {
                     if (day.training) return day.name
                   }).map((day: Day) => day.name) :
-                  loDash.range(parseInt(numberOfDays, 10)).map((value: number) => (value + 1).toString())
+                  loDash.range(+numberOfDays).map((value: number) => (value + 1).toString())
               })
             }
           }}
