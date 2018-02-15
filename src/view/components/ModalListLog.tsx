@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   viewButtons: {
     borderBottomWidth: 0.5,
-    borderColor: '#000',
+    borderColor: '#445878',
     paddingTop: 30,
     paddingBottom: 20,
     backgroundColor: '#F7F7F8'
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontFamily: 'Montserrat-Regular',
     fontWeight: '600',
-    color: '#000'
+    color: '#445878'
   },
   sortableList: {
     flex: 1

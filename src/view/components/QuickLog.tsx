@@ -205,9 +205,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder="#000"
+          colorBorder="#445878"
           colorHeader="#F7F7F8"
-          textColor="#000"
+          textColor="#445878"
           title="Quick Log"
           secondaryIcon="search"
           secondaryFunction={this.handleModalSearch}/>
@@ -276,7 +276,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   this.setState({sets: [...this.state.sets, loDash.last(sets)]}
                   )
                 }}>
-                <Icon name="add-circle-outline" size={30} color="#000"/>
+                <Icon name="add-circle-outline" size={30} color="#445878"/>
               </TouchableOpacity>
             </ScrollView>
           </Row>

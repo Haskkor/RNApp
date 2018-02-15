@@ -36,9 +36,9 @@ class Programs extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder="#000"
+          colorBorder="#445878"
           colorHeader="#F7F7F8"
-          textColor="#000"
+          textColor="#445878"
           title="Programs"
           secondaryIcon="add"
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}

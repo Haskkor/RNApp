@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#DFDFDF',
     borderBottomWidth: 1,
-    borderColor: '#eee'
+    borderColor: '#EEE'
   },
   viewContent: {
     flexDirection: 'row',
