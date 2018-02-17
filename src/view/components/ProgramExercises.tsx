@@ -1,42 +1,81 @@
 import * as React from 'react'
-import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native'
+import {ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {ExerciseSet} from '../../core/types/index'
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import {isBoolean} from "util";
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {
-  exercisesDay: any[] // fixme any
+  exercisesDay: ExercisesDay[] // fixme any
 }
+
+type ExercisesDay = { day: string, folded: false, exercises: ExerciseSet[] }
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   static navigationOptions = HeaderStackNavigator.navigationOptions
 
-  renderHeaderSection = (day: string, index: number) => {
+  constructor() {
+    super()
+    this.state = {exercisesDay: [{day: '', folded: false, exercises: []}]}
+  }
+
+  componentDidMount() {
+    const exercisesDayEmpty = this.props.navigation.state.params.days.map((day: string) => {
+      return {
+        day: day,
+        folded: false,
+        exercises: [] as ExerciseSet[]
+      }
+    })
+    this.setState({exercisesDay: exercisesDayEmpty})
+  }
+
+  renderHeaderSection = (day: ExercisesDay) => {
     return (
       <View style={{
         width: '100%',
         paddingTop: 10,
         paddingBottom: 10,
         paddingLeft: 30,
+        paddingRight: 20,
         backgroundColor: '#F7F7F8',
-        borderBottomWidth: 1,
-        borderTopWidth: index === 0 ? 1 : 0,
-        borderColor: '#445878'
+        flexDirection: 'row'
       }}>
-        <Text style={{fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#445878'}}>{day}</Text>
+        <Text style={{fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#445878', flex: 3}}>{day.day}</Text>
+        <TouchableOpacity>
+          <Icon name="add-circle-outline" size={20} color="#445878" style={{flex: 1, marginRight: 10}}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          // copy day, change value of folded and set day
+        }}>
+          <Icon name="keyboard-arrow-up" size={20} color="#445878" style={{flex: 1, marginLeft: 10}}/>
+        </TouchableOpacity>
       </View>
     )
   }
 
-  renderSectionDay = (day: string, index: number) => {
+  renderExercisesSection = (day: ExercisesDay) => {
     return (
-      <View key={day}>
-        {this.renderHeaderSection(day, index)}
+      <View>
+        {day.exercises.length === 0 &&
+        <View style={{padding: 10}}>
+          <Text style={{fontFamily: 'Montserrat-Regular', fontSize: 12, color: '#445878'}}>No exercises yet</Text>
+        </View>}
+      </View>
+    )
+  }
 
+  renderSectionDay = (day: ExercisesDay) => {
+    return (
+      <View key={day.day}>
+        {this.renderHeaderSection(day)}
+        {!day.folded && this.renderExercisesSection(day)}
       </View>
     )
   }
@@ -45,8 +84,8 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
-        {this.props.navigation.state.params.days.map((day: string, index: number) => {
-          return this.renderSectionDay(day, index)
+        {this.state.exercisesDay.map((day: ExercisesDay) => {
+          return this.renderSectionDay(day)
         })}
       </ScrollView>
     )
