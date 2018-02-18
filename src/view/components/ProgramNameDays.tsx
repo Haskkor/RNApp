@@ -4,6 +4,8 @@ import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-nav
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import * as loDash from 'lodash'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -79,7 +81,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
         <TextInput
-          style={[styles.textInput, styles.sectionSeparator, {width: 200}]}
+          style={[styles.textInput, styles.sectionSeparator, {width: 12.5}]}
           onChangeText={(text: string) => this.setState({name: text})}
           placeholder={'Type here'}
           value={name}
@@ -145,37 +147,38 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Montserrat-Regular',
-    fontSize: 14
+    fontSize: grid.body,
+    color: colors.base
   },
   textDisabled: {
-    color: '#CBCDCB'
+    color: colors.textDisabled
   },
   textInput: {
-    fontSize: 14,
-    padding: 10,
-    fontFamily: 'Montserrat-Regular',
-    color: '#445878',
-    borderColor: '#171A23',
-    borderWidth: 2,
-    borderRadius: 20
+    fontSize: grid.body,
+    padding: grid.unit * 0.75,
+    fontFamily: grid.font,
+    color: colors.base,
+    borderColor: colors.base,
+    borderWidth: grid.heavyBorder,
+    borderRadius: grid.radiusTextInput
   },
   buttons: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 30
+    height: grid.unit * 2
   },
   box: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.white,
     margin: 2,
-    borderWidth: 2,
-    borderRadius: 4,
+    borderWidth: grid.heavyBorder,
+    borderRadius: grid.radiusBox,
     overflow: 'hidden',
     alignItems: 'center',
     width: Dimensions.get('window').width / 2.7,
     height: 'auto',
-    minHeight: 40,
+    minHeight: grid.unit * 2.5,
     justifyContent: 'center',
-    padding: 5
+    padding: grid.unit / 4
   },
   wrapperDay: {
     flexDirection: 'row',
@@ -183,29 +186,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   dayTrained: {
-    borderColor: '#EFC154'
+    borderColor: colors.orange
   },
   dayOff: {
-    borderColor: '#171A23'
+    borderColor: colors.base
   },
   shadow: {
-    backgroundColor: '#FFF',
-    borderRadius: 4,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: '#DDD',
+    backgroundColor: colors.white,
+    borderRadius: grid.unit / 4,
+    padding: grid.unit / 2,
+    borderWidth: grid.regularBorder,
+    borderColor: colors.lightAlternative,
     borderBottomWidth: 0,
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowOpacity: grid.highOpacity,
+    shadowRadius: grid.unit / 8,
     elevation: 1
   },
   elementsSeparator: {
-    marginBottom: 20
+    marginBottom: grid.unit * 1.25
   },
   sectionSeparator: {
-    marginBottom: 40
+    marginBottom: grid.unit * 2.5
   }
 })
 

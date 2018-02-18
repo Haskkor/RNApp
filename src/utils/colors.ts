@@ -1,12 +1,13 @@
 const colors = {
   red: '#FC4349',
   alert: '#FC4349',
+  black: '#000',
   green: '#8CC63F',
   valid: '#8CC63F',
-  orange: '#ffa500',
+  orange: '#FFA500',
   dark: '#213249',
   light: '#F7F7F8',
-  background: '#FFF',
+  lightAlternative: '#DFDFDF',
   white: '#FFF',
   base: '#445878',
   primary: '#799AE0',
@@ -27,7 +28,10 @@ const colors = {
   test7: '#213249',
   headerBorder: '#414143',
   header: '#282829',
-  darkBackground: '#1B1B1C'
+  headerBorderLight: '#445878',
+  headerLight: '#F7F7F8',
+  darkBackground: '#1B1B1C',
+  textDisabled: '#CBCDCB'
 }
 
 export { colors }

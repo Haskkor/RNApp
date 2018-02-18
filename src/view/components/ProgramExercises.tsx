@@ -2,9 +2,8 @@ import * as React from 'react'
 import {ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
-import {ExerciseSet} from '../../core/types/index'
+import {ExerciseSet} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {isBoolean} from "util";
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>

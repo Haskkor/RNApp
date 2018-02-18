@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   mainTimer: {
-    fontSize: 60,
+    fontSize: grid.timer,
     fontWeight: 'normal',
     alignSelf: 'flex-end',
     color: colors.white,

@@ -2,6 +2,8 @@ import * as React from 'react'
 import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Header from './Header'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {colors} from '../../utils/colors'
+import {grid} from '../../utils/grid'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -81,9 +83,9 @@ class StopWatch extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="light-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder="#414143"
-          colorHeader="#282829"
-          textColor="#FFF"
+          colorBorder={colors.headerBorder}
+          colorHeader={colors.header}
+          textColor={colors.white}
           title="Recovery Stopwatch"/>
         <View style={styles.timer}>
           <View style={styles.timerWrapper}>
@@ -115,7 +117,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1B1B1C'
+    backgroundColor: colors.darkBackground
   },
   timerWrapper: {
     justifyContent: 'center',
@@ -130,22 +132,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   mainTimer: {
-    fontSize: 60,
+    fontSize: grid.timer,
     fontWeight: 'normal',
     alignSelf: 'flex-end',
-    color: '#FFF',
-    fontFamily: 'courier'
+    color: colors.white,
+    fontFamily: grid.fontTimer
   },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 15,
-    paddingBottom: 30
+    paddingTop: grid.unit,
+    paddingBottom: grid.unit
   },
   button: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
+    height: grid.unit * 5,
+    width: grid.unit * 5,
+    borderRadius: grid.unit * 2.5,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -153,29 +155,29 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 112, 10, 0.5)'
   },
   startButtonText: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#00CC00'
+    fontFamily: grid.font,
+    color: colors.valid
   },
   stopButton: {
     backgroundColor: 'rgba(153, 0, 0, 0.5)'
   },
   stopButtonText: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#FF0000'
+    fontFamily: grid.font,
+    color: colors.alert
   },
   resetButton: {
     backgroundColor: 'rgba(179, 179, 179, 0.5)'
   },
   resetButtonText: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#FFF'
+    fontFamily: grid.font,
+    color: colors.white
   },
   resetButtonDisabled: {
     backgroundColor: 'rgba(65, 65, 67, 0.5)'
   },
   resetButtonTextDisabled: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#7A7A7B'
+    fontFamily: grid.font,
+    color: colors.inactiveTintColorTabNav
   }
 })
 

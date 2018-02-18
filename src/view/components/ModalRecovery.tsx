@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {Modal, Picker, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {buildRecoveryTimes} from '../../utils/helper'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   updateRecovery: (recoveryTime: string) => void
@@ -59,43 +61,44 @@ class ModalRecovery extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   picker: {
-    width: 200,
+    width: grid.unit * 12.5,
     height: 'auto',
-    marginBottom: 80
+    marginBottom: grid.unit * 5
   },
   container: {
     flex: 1
   },
   viewOpacity: {
-    backgroundColor: 'black',
-    opacity: 0.5,
+    backgroundColor: colors.base,
+    opacity: grid.lowOpacity,
     flex: 2
   },
   viewModal: {
     flex: 1,
-    backgroundColor: '#F7F7F8'
+    backgroundColor: colors.lightAlternative
   },
   viewButtons: {
     flexDirection: 'row',
-    backgroundColor: '#EFEFF4',
-    height: 40,
+    backgroundColor: colors.lightAlternative,
+    height: grid.unit * 2.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 1
   },
   buttonSave: {
     position: 'absolute',
-    right: 20
+    right: grid.unit * 1.25
   },
   pickerItem: {
-    fontSize: 18
+    fontSize: grid.subHeader
   },
   viewPicker: {
     justifyContent: 'center',
     alignItems: 'center'
   },
   textButton: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   }
 })
 

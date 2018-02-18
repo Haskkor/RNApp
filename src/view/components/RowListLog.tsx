@@ -2,6 +2,8 @@ import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {ExerciseSet, Set} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {colors} from '../../utils/colors'
+import {grid} from '../../utils/grid'
 
 type IProps = {
   data: ExerciseSet
@@ -16,13 +18,13 @@ class RowListLog extends React.PureComponent<IProps, IState> {
     const {exercise, muscleGroup, sets, recoveryTime} = this.props.data
     return (
       <TouchableOpacity
-        underlayColor={'#EEE'}
+        underlayColor={colors.light}
         style={styles.container}
         onPress={() => this.props.action(this.props.data)}
         {...this.props.sortHandlers}>
         <View style={styles.viewContent}>
           <View style={styles.viewIcon}>
-            <Icon name="reorder" size={20} color="rgba(0, 0, 0, 0.5)"/>
+            <Icon name="reorder" size={grid.navIcon} color="rgba(0, 0, 0, 0.5)"/>
           </View>
           <View>
             <Text style={styles.setName}>{`${muscleGroup}, ${exercise.name}`}</Text>
@@ -42,38 +44,39 @@ class RowListLog extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
-    backgroundColor: '#DFDFDF',
-    borderBottomWidth: 1,
-    borderColor: '#EEE'
+    padding: grid.unit,
+    backgroundColor: colors.lightAlternative,
+    borderBottomWidth: grid.regularBorder,
+    borderColor: colors.light
   },
   viewContent: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   viewIcon: {
-    marginRight: 15
+    marginRight: grid.unit
   },
   setName: {
-    fontFamily: 'Montserrat-Bold'
+    fontFamily: grid.fontBold,
+    color: colors.base
   },
   viewSets: {
-    marginTop: 10,
+    marginTop: grid.unit * 0.75,
     flexDirection: 'row'
   },
   set: {
-    marginRight: 20
+    marginRight: grid.unit
   },
   textContainer: {
-    fontFamily: 'Montserrat-Regular',
-    marginRight: 40
+    fontFamily: grid.font,
+    marginRight: grid.unit * 2.5
   },
   textEquipment: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#6666FF'
+    fontFamily: grid.font,
+    color: colors.primary
   },
   textMedium: {
-    fontFamily: 'Montserrat-Medium'
+    fontFamily: grid.fontMedium
   }
 })
 

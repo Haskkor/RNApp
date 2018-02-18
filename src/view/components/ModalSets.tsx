@@ -2,6 +2,8 @@ import * as React from 'react'
 import {View, Modal, Picker, StyleSheet, Text, TouchableOpacity} from 'react-native'
 import {Grid, Row, Col} from 'react-native-easy-grid'
 import * as loDash from 'lodash'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   updateDeleteSet: (reps?: number, weight?: number) => void
@@ -99,56 +101,58 @@ class ModalSets extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   picker: {
-    width: 100,
+    width: grid.unit * 6,
     height: 'auto'
   },
   container: {
     flex: 1
   },
   viewOpacity: {
-    backgroundColor: 'black',
-    opacity: 0.5,
+    backgroundColor: colors.black,
+    opacity: grid.mediumOpacity,
     flex: 1
   },
   viewPickers: {
     flex: 1,
-    backgroundColor: '#F7F7F8'
+    backgroundColor: colors.lightAlternative
   },
   viewButtons: {
     flexDirection: 'row',
-    backgroundColor: '#EFEFF4',
-    height: 40,
+    backgroundColor: colors.lightAlternative,
+    height: grid.unit * 2.5,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 1
   },
   buttonDelete: {
     position: 'absolute',
-    left: 20
+    left: grid.unit * 1.25
   },
   buttonSave: {
     position: 'absolute',
-    right: 20
+    right: grid.unit * 1.25
   },
   grid: {
-    padding: 20
+    padding: grid.unit * 1.25
   },
   textDelete: {
-    fontFamily: 'Montserrat-Regular',
-    color: 'red'
+    fontFamily: grid.font,
+    color: colors.alert
   },
   textDeleteDisabled: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: grid.font,
     color: 'rgba(153, 0, 0, 0.5)'
   },
   pickerItem: {
-    fontSize: 14
+    fontSize: grid.body
   },
   textButton: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   },
   textTitle: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   }
 })
 

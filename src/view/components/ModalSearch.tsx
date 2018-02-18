@@ -2,6 +2,8 @@ import * as React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Modal, StatusBar} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
 import {ExerciseMuscle, MuscleGroups} from '../../core/types'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   exercises: MuscleGroups[]
@@ -77,18 +79,18 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
             renderRow={this.renderRow.bind(this)}
             emptyContent={this.emptyContent.bind(this)}
             renderSectionHeader={this.renderSectionHeader.bind(this)}
-            cellHeight={40}
+            cellHeight={grid.unit * 2.5}
             title="Search List"
             searchPlaceHolder="Search"
-            customSearchBarStyle={{fontSize: 14}}
+            customSearchBarStyle={{fontSize: grid.body}}
             onClickBack={() => {
               this.props.closeModal(true)
             }}
             leftButtonStyle={{justifyContent: 'flex-start'}}
             backIconStyle={{width: 8.5, height: 17}}
-            activeSearchBarColor="#fff"
+            activeSearchBarColor={colors.white}
             showActiveSearchIcon
-            searchBarActiveColor="#171a23"
+            searchBarActiveColor="#171A23"
           />
         </Modal>
       </View>
@@ -99,14 +101,14 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   searchListView: {
     flex: 1,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: colors.lightAlternative,
     flexDirection: 'column',
     justifyContent: 'flex-start'
   },
   row: {
     flex: 1,
-    marginLeft: 40,
-    height: 40,
+    marginLeft: grid.unit * 2.5,
+    height: grid.unit * 2.5,
     justifyContent: 'center'
   },
   emptyContentView: {
@@ -114,40 +116,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginTop: 50
+    marginTop: grid.unit * 3
   },
   emptyContentText: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#979797',
-    fontSize: 18,
-    paddingTop: 20
+    fontFamily: grid.font,
+    color: colors.inactiveTintColorTabNav,
+    fontSize: grid.subHeader,
+    paddingTop: grid.unit * 1.25
   },
   emptyContentTextBold: {
-    fontFamily: 'Montserrat-Bold',
-    color: '#171A23',
-    fontSize: 18
+    fontFamily: grid.fontBold,
+    color: colors.base,
+    fontSize: grid.subHeader
   },
   emptyContentSearchAgain: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#979797',
-    fontSize: 18,
+    fontFamily: grid.font,
+    color: colors.inactiveTintColorTabNav,
+    fontSize: grid.subHeader,
     alignItems: 'center',
-    paddingTop: 10
+    paddingTop: grid.unit * 1.25
   },
   itemListText: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   },
   sectionHeader: {
     height: 18,
     justifyContent: 'center',
     alignItems: 'flex-start',
-    paddingLeft: 25,
-    backgroundColor: '#efefef'
+    paddingLeft: grid.unit * 1.5,
+    backgroundColor: colors.lightAlternative
   },
   sectionTitle: {
-    color: '#979797',
-    fontFamily: 'Montserrat-Regular',
-    fontSize: 14
+    color: colors.inactiveTintColorTabNav,
+    fontFamily: grid.font,
+    fontSize: grid.body
   }
 })
 

@@ -5,6 +5,8 @@ import * as SortableListView from 'react-native-sortable-listview'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as LottieView from 'lottie-react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -36,9 +38,9 @@ class Programs extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder="#445878"
-          colorHeader="#F7F7F8"
-          textColor="#445878"
+          colorBorder={colors.headerBorderLight}
+          colorHeader={colors.headerLight}
+          textColor={colors.base}
           title="Programs"
           secondaryIcon="add"
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}
@@ -54,7 +56,7 @@ class Programs extends React.PureComponent<IProps, IState> {
         /> ||
         <View style={styles.viewNoPrograms}>
           <View style={styles.viewTextNoProgram}>
-            <Icon name="error-outline" size={26} color="#000" style={styles.iconNoProgram}/>
+            <Icon name="error-outline" size={26} color={colors.white} style={styles.iconNoProgram}/>
             <Text style={styles.textNoProgram}>You have no programs created yet</Text>
           </View>
           <View style={styles.viewAnimationNoProgram}>
@@ -65,8 +67,8 @@ class Programs extends React.PureComponent<IProps, IState> {
                 loop={true}
                 speed={0.6}
                 style={{
-                  width: 50,
-                  height: 50
+                  width: grid.unit * 3,
+                  height: grid.unit * 3
                 }}
                 progress={progressAnimation}
                 source={require('../../../assets/lottie/add_button.json')}
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   iconNoProgram: {
-    marginRight: 20
+    marginRight: grid.unit * 1.5
   },
   viewTextNoProgram: {
     flexDirection: 'row',
@@ -101,12 +103,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textNoProgram: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font
   },
   viewAnimationNoProgram: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40
+    marginTop: grid.unit * 2.5
   }
 })
 

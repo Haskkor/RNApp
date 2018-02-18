@@ -14,6 +14,8 @@ import ModalRecovery from './ModalRecovery'
 import {buildRecoveryTimes} from '../../utils/helper'
 import ModalSearch from './ModalSearch'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -205,9 +207,9 @@ class QuickLog extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Header
           navigation={this.props.navigation}
-          colorBorder="#445878"
-          colorHeader="#F7F7F8"
-          textColor="#445878"
+          colorBorder={colors.headerBorderLight}
+          colorHeader={colors.headerLight}
+          textColor={colors.base}
           title="Quick Log"
           secondaryIcon="search"
           secondaryFunction={this.handleModalSearch}/>
@@ -349,11 +351,11 @@ class QuickLog extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EFEFF4'
+    backgroundColor: colors.lightAlternative
   },
   logView: {
     flex: 2,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column'
@@ -362,13 +364,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F9F9F9'
+    backgroundColor: colors.lightAlternative
   },
   grid: {
     flex: 1,
-    backgroundColor: '#EFEFF4',
-    marginRight: 20,
-    marginLeft: 20
+    backgroundColor: colors.lightAlternative,
+    marginRight: grid.unit * 1.5,
+    marginLeft: grid.unit * 1.5
   },
   columns: {
     justifyContent: 'center',
@@ -379,7 +381,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   rows: {
-    margin: 10
+    margin: grid.unit * 0.75
   },
   picker: {
     width: 250,
@@ -387,12 +389,14 @@ const styles = StyleSheet.create({
   },
   elemHorizontalList: {
     flexDirection: 'column',
-    marginRight: 38,
+    marginRight: grid.unit * 2.5,
     marginLeft: 2
   },
   textPickers: {
     justifyContent: 'center',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    color: colors.base,
+    fontFamily: grid.font
   },
   scroll: {
     justifyContent: 'center',
@@ -407,39 +411,43 @@ const styles = StyleSheet.create({
     right: 0
   },
   shadow: {
-    backgroundColor: '#FFF',
-    borderRadius: 4,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: '#DDD',
+    backgroundColor: colors.white,
+    borderRadius: grid.unit / 4,
+    padding: grid.unit / 2,
+    borderWidth: grid.regularBorder,
+    borderColor: colors.lightAlternative,
     borderBottomWidth: 0,
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowOpacity: grid.highOpacity,
+    shadowRadius: grid.unit / 8,
     elevation: 1
   },
   pickerItem: {
-    fontSize: 18
+    fontSize: grid.subHeader,
+    color: colors.base
   },
   buttonBottom: {
     width: Dimensions.get('window').width / 4.5,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 30
+    height: grid.unit * 2
   },
   buttonsText: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   },
   textSets: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   },
   textTitle: {
-    fontFamily: 'Montserrat-Regular'
+    fontFamily: grid.font,
+    color: colors.base
   },
   textRecovery: {
-    fontFamily: 'Montserrat-Light',
-    fontSize: 12
+    fontFamily: grid.fontLight,
+    fontSize: grid.caption
   }
 })
 

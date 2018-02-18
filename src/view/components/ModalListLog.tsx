@@ -4,6 +4,8 @@ import * as SortableListView from 'react-native-sortable-listview'
 import RowListLog from './RowListLog'
 import {ExerciseSet} from  '../../core/types'
 import * as loDash from 'lodash'
+import {colors} from '../../utils/colors'
+import {grid} from '../../utils/grid'
 
 type IProps = {
   dataLog: ExerciseSet[]
@@ -76,23 +78,22 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EFEFF4'
+    backgroundColor: colors.lightAlternative
   },
   viewButtons: {
-    borderBottomWidth: 0.5,
-    borderColor: '#445878',
-    paddingTop: 30,
-    paddingBottom: 20,
-    backgroundColor: '#F7F7F8'
+    borderBottomWidth: grid.smallBorder,
+    borderColor: colors.base,
+    paddingTop: grid.unit * 2,
+    paddingBottom: grid.unit * 1.25,
+    backgroundColor: colors.lightAlternative
   },
   buttonDismiss: {
     alignSelf: 'flex-end',
-    marginRight: 20
+    marginRight: grid.unit * 1.25
   },
   textButton: {
-    fontFamily: 'Montserrat-Regular',
-    fontWeight: '600',
-    color: '#445878'
+    fontFamily: grid.fontBold,
+    color: colors.base
   },
   sortableList: {
     flex: 1

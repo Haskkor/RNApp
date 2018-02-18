@@ -2,6 +2,8 @@ import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -20,9 +22,9 @@ class Header extends React.PureComponent<IProps, IState> {
     const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
-        <View style={[styles.viewSemiFlex, {marginLeft: 20}]}>
+        <View style={[styles.viewSemiFlex, {marginLeft: grid.unit * 1.25}]}>
           <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
-            <Icon name="fitness-center" size={22} color={textColor}/>
+            <Icon name="fitness-center" size={grid.navIcon} color={textColor}/>
           </TouchableOpacity>
         </View>
         <View style={styles.viewFlex}>
@@ -30,7 +32,7 @@ class Header extends React.PureComponent<IProps, IState> {
         </View>
         <View style={[styles.viewSemiFlex, styles.secondaryIconView]}>
           {secondaryIcon && <TouchableOpacity onPress={() => secondaryFunction()}>
-            <Icon name={secondaryIcon} size={22} color={textColor}/>
+            <Icon name={secondaryIcon} size={grid.navIcon} color={textColor}/>
           </TouchableOpacity>}
         </View>
       </View>
@@ -40,18 +42,18 @@ class Header extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   header: {
-    borderBottomWidth: 0.5,
-    paddingTop: 35,
-    paddingBottom: 15,
+    borderBottomWidth: grid.smallBorder,
+    paddingTop: grid.unit * 2,
+    paddingBottom: grid.unit,
     flexDirection: 'row'
   },
   title: {
-    fontFamily: 'Montserrat-Regular',
-    alignSelf: 'center',
-    fontWeight: '600'
+    fontFamily: grid.fontBold,
+    color: colors.base,
+    alignSelf: 'center'
   },
   pickerItem: {
-    fontSize: 18
+    fontSize: grid.subHeader
   },
   viewFlex: {
     flex: 1
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     flex: 0.5
   },
   secondaryIconView: {
-    marginRight: 20,
+    marginRight: grid.unit * 1.25,
     alignItems: 'flex-end'
   }
 })
