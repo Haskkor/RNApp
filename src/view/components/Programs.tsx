@@ -56,7 +56,7 @@ class Programs extends React.PureComponent<IProps, IState> {
         /> ||
         <View style={styles.viewNoPrograms}>
           <View style={styles.viewTextNoProgram}>
-            <Icon name="error-outline" size={26} color={colors.white} style={styles.iconNoProgram}/>
+            <Icon name="error-outline" size={26} color={colors.base} style={styles.iconNoProgram}/>
             <Text style={styles.textNoProgram}>You have no programs created yet</Text>
           </View>
           <View style={styles.viewAnimationNoProgram}>
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textNoProgram: {
-    fontFamily: grid.font
+    fontFamily: grid.font,
+    color: colors.base
   },
   viewAnimationNoProgram: {
     justifyContent: 'center',

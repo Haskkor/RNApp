@@ -98,7 +98,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   scrollToEndHorizontally() {
     if (this.scrollViewWidth >= Dimensions.get('window').width - 140) {
       this.scrollViewRef.scrollTo({
-        x: this.scrollViewWidth - Dimensions.get('window').width * 0.534,
+        x: this.scrollViewWidth - Dimensions.get('window').width * 0.545,
         y: 0,
         animated: true
       })
@@ -300,7 +300,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               </Row>
               <Row>
                 <TouchableOpacity
-                  style={[styles.buttonBottom, styles.shadow, {marginTop: -4}]}
+                  style={[styles.buttonBottom, styles.shadow, {marginTop: -7}]}
                   onPress={() => this.setState({
                     showModalRecovery: true
                   })}>
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   elemHorizontalList: {
     flexDirection: 'column',
-    marginRight: grid.unit * 2.5,
+    marginRight: 32,
     marginLeft: 2
   },
   textPickers: {
@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
     color: colors.base
   },
   buttonBottom: {
-    width: Dimensions.get('window').width / 4.5,
+    width: Dimensions.get('window').width / 4,
     justifyContent: 'center',
     alignItems: 'center',
     height: grid.unit * 2
@@ -447,7 +447,8 @@ const styles = StyleSheet.create({
   },
   textRecovery: {
     fontFamily: grid.fontLight,
-    fontSize: grid.caption
+    fontSize: grid.caption,
+    color: colors.base
   }
 })
 

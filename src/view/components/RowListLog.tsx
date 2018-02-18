@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   set: {
-    marginRight: grid.unit
+    marginRight: grid.unit,
+    color: colors.base
   },
   textContainer: {
     fontFamily: grid.font,
@@ -76,7 +77,8 @@ const styles = StyleSheet.create({
     color: colors.primary
   },
   textMedium: {
-    fontFamily: grid.fontMedium
+    fontFamily: grid.fontMedium,
+    color: colors.base
   }
 })
 

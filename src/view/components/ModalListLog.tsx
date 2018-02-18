@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderColor: colors.base,
     paddingTop: grid.unit * 2,
     paddingBottom: grid.unit * 1.25,
-    backgroundColor: colors.lightAlternative
+    backgroundColor: colors.headerLight
   },
   buttonDismiss: {
     alignSelf: 'flex-end',

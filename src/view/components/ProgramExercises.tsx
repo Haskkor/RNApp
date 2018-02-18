@@ -4,6 +4,8 @@ import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {ExerciseSet} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import Collapsible from 'react-native-collapsible'
+import {easeElasticOut} from 'd3-ease'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -13,7 +15,7 @@ type IState = {
   exercisesDay: ExercisesDay[] // fixme any
 }
 
-type ExercisesDay = { day: string, folded: false, exercises: ExerciseSet[] }
+type ExercisesDay = { day: string, folded: false, exercises: ExerciseSet[], isCollapsed: boolean }
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
 
@@ -21,7 +23,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {exercisesDay: [{day: '', folded: false, exercises: []}]}
+    this.state = {exercisesDay: [{day: '', folded: false, exercises: [], isCollapsed: false}]}
   }
 
   componentDidMount() {
@@ -29,7 +31,8 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       return {
         day: day,
         folded: false,
-        exercises: [] as ExerciseSet[]
+        exercises: [] as ExerciseSet[],
+        isCollapsed: false
       }
     })
     this.setState({exercisesDay: exercisesDayEmpty})
@@ -72,10 +75,10 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   renderSectionDay = (day: ExercisesDay) => {
     return (
-      <View key={day.day}>
+      <Collapsible key={day.day} collapsed={day.isCollapsed} duration={500} easing={easeElasticOut}>
         {this.renderHeaderSection(day)}
         {!day.folded && this.renderExercisesSection(day)}
-      </View>
+      </Collapsible>
     )
   }
 

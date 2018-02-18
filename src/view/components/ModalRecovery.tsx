@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   viewButtons: {
     flexDirection: 'row',
-    backgroundColor: colors.lightAlternative,
+    backgroundColor: colors.headerLight,
     height: grid.unit * 2.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -90,7 +90,9 @@ const styles = StyleSheet.create({
     right: grid.unit * 1.25
   },
   pickerItem: {
-    fontSize: grid.subHeader
+    fontSize: grid.subHeader,
+    fontFamily: grid.font,
+    color: colors.base
   },
   viewPicker: {
     justifyContent: 'center',

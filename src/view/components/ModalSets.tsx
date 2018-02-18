@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   viewButtons: {
     flexDirection: 'row',
-    backgroundColor: colors.lightAlternative,
+    backgroundColor: colors.headerLight,
     height: grid.unit * 2.5,
     justifyContent: 'center',
     alignItems: 'center',
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
     color: 'rgba(153, 0, 0, 0.5)'
   },
   pickerItem: {
-    fontSize: grid.body
+    fontSize: grid.body,
+    color: colors.base
   },
   textButton: {
     fontFamily: grid.font,

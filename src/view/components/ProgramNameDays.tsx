@@ -81,7 +81,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         <StatusBar barStyle="dark-content"/>
         <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
         <TextInput
-          style={[styles.textInput, styles.sectionSeparator, {width: 12.5}]}
+          style={[styles.textInput, styles.sectionSeparator, {width: grid.unit * 12.5}]}
           onChangeText={(text: string) => this.setState({name: text})}
           placeholder={'Type here'}
           value={name}

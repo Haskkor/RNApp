@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: grid.unit,
-    paddingBottom: grid.unit
+    paddingBottom: grid.unit * 2
   },
   button: {
     height: grid.unit * 5,

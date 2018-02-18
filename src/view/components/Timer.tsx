@@ -3,8 +3,8 @@ import {Picker, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react
 import * as loDash from 'lodash'
 import Header from './Header'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
-import {colors} from "../../utils/colors";
-import {grid} from "../../utils/grid";
+import {colors} from '../../utils/colors'
+import {grid} from '../../utils/grid'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
