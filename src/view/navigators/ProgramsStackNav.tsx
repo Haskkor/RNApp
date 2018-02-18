@@ -3,6 +3,7 @@ import {StackNavigator} from 'react-navigation'
 import Programs from '../components/Programs'
 import ProgramNameDays from '../components/ProgramNameDays'
 import ProgramExercises from '../components/ProgramExercises'
+import {colors} from '../../utils/colors'
 
 const ProgramsStackNav = StackNavigator({
   Home: {
@@ -17,7 +18,7 @@ const ProgramsStackNav = StackNavigator({
   }
 }, {
   cardStyle: {
-    backgroundColor: '#FFF'
+    backgroundColor: colors.white
   }
 })
 

@@ -1,9 +1,11 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {ToasterInfo} from '../../core/enums/index'
+import {ToasterInfo} from '../../core/enums'
 import Animate from 'react-move/Animate'
 import {easeQuadOut} from 'd3-ease'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   text: string
@@ -52,10 +54,10 @@ class Toaster extends React.PureComponent<IProps, IState> {
           start={{
             opacityView: 0,
             opacityText: 0,
-            translate: 50
+            translate: grid.unit * 4
           }}
           enter={[{
-            opacityView: [0.7],
+            opacityView: [grid.highOpacity],
             opacityText: [1],
             translate: [0],
             timing: {duration: 400, ease: easeQuadOut}
@@ -63,7 +65,7 @@ class Toaster extends React.PureComponent<IProps, IState> {
           leave={{
             opacityView: [0],
             opacityText: [0],
-            translate: [50],
+            translate: [grid.unit * 4],
             timing: {duration: 400, ease: easeQuadOut}
           }}
         >
@@ -76,7 +78,7 @@ class Toaster extends React.PureComponent<IProps, IState> {
                 onPress={() => {
                   this.setInactive()
                 }}>
-                <Icon name="close" size={22} color="#FFF" style={{opacity: state.opacityText}}/>
+                <Icon name="close" size={grid.navIcon} color={colors.white} style={{opacity: state.opacityText}}/>
               </TouchableOpacity>
               <Text style={[styles.feedbackText, {opacity: state.opacityText}]}>{text}</Text>
             </View>
@@ -90,8 +92,8 @@ class Toaster extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   feedbackLogView: {
     position: 'absolute',
-    top: 80,
-    right: 10
+    top: grid.unit * 5,
+    right: grid.unit
   },
   feedbackLog: {
     alignItems: 'center',
@@ -106,11 +108,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 204, 0, 0.5)'
   },
   feedbackButton: {
-    marginRight: 10
+    marginRight: grid.unit * 0.75
   },
   feedbackText: {
-    fontFamily: 'Montserrat-Regular',
-    color: '#FFF'
+    fontFamily: grid.font,
+    color: colors.white
   }
 })
 

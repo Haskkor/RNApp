@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {Text, StyleSheet, TouchableOpacity} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import {grid} from '../../utils/grid'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: any
@@ -13,20 +15,20 @@ class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
   static navigationOptions = ({ navigation }: any) => ({
     title: navigation.state.params.title,
     headerLeft: <TouchableOpacity style={styles.container} onPress={() => { navigation.goBack() } }>
-      <Icon name="arrow-back" size={22} color="#445878" style={styles.icon}/>
+      <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
       <Text style={styles.text}>Back</Text></TouchableOpacity>,
     headerStyle: {
-      height: 52,
-      backgroundColor: '#F7F7F8',
-      paddingLeft: 16,
-      paddingRight: 16,
-      borderBottomColor: '#445878',
-      borderBottomWidth: 0.5
+      height: grid.unit * 3.25,
+      backgroundColor: colors.light,
+      paddingLeft: grid.unit,
+      paddingRight: grid.unit,
+      borderBottomColor: colors.base,
+      borderBottomWidth: grid.smallBorder
     },
     headerTitleStyle: {
-      fontFamily: 'Montserrat-Bold',
-      fontSize: 14,
-      color: '#445878'
+      fontFamily: grid.fontBold,
+      fontSize: grid.body,
+      color: colors.base
     }
   })
 }
@@ -39,11 +41,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontSize: 12,
-    fontFamily: 'Montserrat-Bold',
-    color: '#445878'
+    fontSize: grid.caption,
+    fontFamily: grid.fontBold,
+    color: colors.base
   },
   icon: {
-    paddingRight: 10
+    paddingRight: grid.unit
   }
 })
