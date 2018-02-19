@@ -15,7 +15,7 @@ type IState = {
   exercisesDay: ExercisesDay[] // fixme any
 }
 
-type ExercisesDay = { day: string, folded: false, exercises: ExerciseSet[], isCollapsed: boolean }
+type ExercisesDay = { day: string, exercises: ExerciseSet[], isCollapsed: boolean }
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
 
@@ -23,14 +23,13 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {exercisesDay: [{day: '', folded: false, exercises: [], isCollapsed: false}]}
+    this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}]}
   }
 
   componentDidMount() {
     const exercisesDayEmpty = this.props.navigation.state.params.days.map((day: string) => {
       return {
         day: day,
-        folded: false,
         exercises: [] as ExerciseSet[],
         isCollapsed: false
       }
@@ -38,7 +37,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     this.setState({exercisesDay: exercisesDayEmpty})
   }
 
-  renderHeaderSection = (day: ExercisesDay) => {
+  renderHeaderSection = (day: ExercisesDay, index: number) => {
     return (
       <View style={{
         width: '100%',
@@ -54,7 +53,13 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           <Icon name="add-circle-outline" size={20} color="#445878" style={{flex: 1, marginRight: 10}}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          // copy day, change value of folded and set day
+          const copyCurrentDay: ExercisesDay = {
+            day: day.day,
+            isCollapsed: !day.isCollapsed,
+            exercises: day.exercises.slice()
+          }
+          const copyExerciseDay = this.state.exercisesDay.slice()
+
         }}>
           <Icon name="keyboard-arrow-up" size={20} color="#445878" style={{flex: 1, marginLeft: 10}}/>
         </TouchableOpacity>
@@ -73,11 +78,11 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     )
   }
 
-  renderSectionDay = (day: ExercisesDay) => {
+  renderSectionDay = (day: ExercisesDay, index: number) => {
     return (
       <Collapsible key={day.day} collapsed={day.isCollapsed} duration={500} easing={easeElasticOut}>
-        {this.renderHeaderSection(day)}
-        {!day.folded && this.renderExercisesSection(day)}
+        {this.renderHeaderSection(day, index)}
+        {this.renderExercisesSection(day)}
       </Collapsible>
     )
   }
@@ -86,8 +91,8 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
-        {this.state.exercisesDay.map((day: ExercisesDay) => {
-          return this.renderSectionDay(day)
+        {this.state.exercisesDay.map((day: ExercisesDay, index: number) => {
+          return this.renderSectionDay(day, index)
         })}
       </ScrollView>
     )
