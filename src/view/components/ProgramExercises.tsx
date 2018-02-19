@@ -5,7 +5,9 @@ import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-nav
 import {ExerciseSet} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Collapsible from 'react-native-collapsible'
-import {easeElasticOut} from 'd3-ease'
+import exercises from '../../db/exercises'
+import ModalSearch from './ModalSearch'
+import * as loDash from 'lodash'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -13,17 +15,20 @@ type IProps = {
 
 type IState = {
   exercisesDay: ExercisesDay[] // fixme any
+  showModalSearch: boolean
 }
 
 type ExercisesDay = { day: string, exercises: ExerciseSet[], isCollapsed: boolean }
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
+  daySelected: ExercisesDay
+  indexDaySelected: number
 
   static navigationOptions = HeaderStackNavigator.navigationOptions
 
   constructor() {
     super()
-    this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}]}
+    this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}], showModalSearch: false}
   }
 
   componentDidMount() {
@@ -35,6 +40,27 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       }
     })
     this.setState({exercisesDay: exercisesDayEmpty})
+  }
+
+  handleSelectionExercise = (exercise: string, muscle: string) => {
+    const newExerciseSet: ExerciseSet = {
+      muscleGroup: muscle,
+      exercise: {name: exercise, equipment: ''},
+      sets: [],
+      recoveryTime: ''
+    }
+    const copyCurrentDay: ExercisesDay = {
+      day: this.daySelected.day,
+      isCollapsed: this.daySelected.isCollapsed,
+      exercises: this.daySelected.exercises.slice()
+    }
+    copyCurrentDay.exercises.push(newExerciseSet)
+    loDash.sortBy(copyCurrentDay.exercises, (e: ExerciseSet) => e.exercise.name)
+    const copyExercisesDay = this.state.exercisesDay.slice()
+    copyExercisesDay[this.indexDaySelected] = copyCurrentDay
+    this.setState({exercisesDay: copyExercisesDay, showModalSearch: false})
+    this.daySelected = null
+    this.indexDaySelected = null
   }
 
   renderHeaderSection = (day: ExercisesDay, index: number) => {
@@ -49,7 +75,11 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         flexDirection: 'row'
       }}>
         <Text style={{fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#445878', flex: 3}}>{day.day}</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          this.daySelected = day
+          this.indexDaySelected = index
+          this.setState({showModalSearch: true})
+        }}>
           <Icon name="add-circle-outline" size={20} color="#445878" style={{flex: 1, marginRight: 10}}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
@@ -58,10 +88,12 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
             isCollapsed: !day.isCollapsed,
             exercises: day.exercises.slice()
           }
-          const copyExerciseDay = this.state.exercisesDay.slice()
-
+          const copyExercisesDay = this.state.exercisesDay.slice()
+          copyExercisesDay[index] = copyCurrentDay
+          this.setState({exercisesDay: copyExercisesDay})
         }}>
-          <Icon name="keyboard-arrow-up" size={20} color="#445878" style={{flex: 1, marginLeft: 10}}/>
+          <Icon name={day.isCollapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'} size={20} color="#445878"
+                style={{flex: 1, marginLeft: 10}}/>
         </TouchableOpacity>
       </View>
     )
@@ -69,21 +101,25 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   renderExercisesSection = (day: ExercisesDay) => {
     return (
-      <View>
+      <Collapsible collapsed={day.isCollapsed} duration={500}>
         {day.exercises.length === 0 &&
         <View style={{padding: 10}}>
           <Text style={{fontFamily: 'Montserrat-Regular', fontSize: 12, color: '#445878'}}>No exercises yet</Text>
         </View>}
-      </View>
+      </Collapsible>
     )
   }
 
   renderSectionDay = (day: ExercisesDay, index: number) => {
     return (
-      <Collapsible key={day.day} collapsed={day.isCollapsed} duration={500} easing={easeElasticOut}>
+      <View key={day.day}>
         {this.renderHeaderSection(day, index)}
         {this.renderExercisesSection(day)}
-      </Collapsible>
+        {this.state.showModalSearch && <ModalSearch
+          exercises={exercises}
+          closeModal={() => this.setState({showModalSearch: false})}
+          selectExercise={this.handleSelectionExercise}/>}
+      </View>
     )
   }
 
