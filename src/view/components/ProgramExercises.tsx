@@ -8,6 +8,7 @@ import Collapsible from 'react-native-collapsible'
 import exercises from '../../db/exercises'
 import ModalSearch from './ModalSearch'
 import * as loDash from 'lodash'
+import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -42,20 +43,21 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     this.setState({exercisesDay: exercisesDayEmpty})
   }
 
-  handleSelectionExercise = (exercise: string, muscle: string) => {
+  handleSelectionExercise = (exercise: string, muscle: string, equipment: string) => {
     const newExerciseSet: ExerciseSet = {
       muscleGroup: muscle,
-      exercise: {name: exercise, equipment: ''},
+      exercise: {name: exercise, equipment: equipment},
       sets: [],
       recoveryTime: ''
     }
+    let sortedExercises = this.daySelected.exercises.slice()
+    sortedExercises.push(newExerciseSet)
+    sortedExercises = loDash.sortBy(sortedExercises, (e: ExerciseSet) => e.exercise.name)
     const copyCurrentDay: ExercisesDay = {
       day: this.daySelected.day,
       isCollapsed: this.daySelected.isCollapsed,
-      exercises: this.daySelected.exercises.slice()
+      exercises: sortedExercises
     }
-    copyCurrentDay.exercises.push(newExerciseSet)
-    loDash.sortBy(copyCurrentDay.exercises, (e: ExerciseSet) => e.exercise.name)
     const copyExercisesDay = this.state.exercisesDay.slice()
     copyExercisesDay[this.indexDaySelected] = copyCurrentDay
     this.setState({exercisesDay: copyExercisesDay, showModalSearch: false})
@@ -105,7 +107,21 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         {day.exercises.length === 0 &&
         <View style={{padding: 10}}>
           <Text style={{fontFamily: 'Montserrat-Regular', fontSize: 12, color: '#445878'}}>No exercises yet</Text>
-        </View>}
+        </View> ||
+        <View>
+          {day.exercises.map((set: ExerciseSet, index: number) => {
+            return (
+              <View key={set.exercise.name + index} style={{padding: 15, borderBottomWidth: index + 1 !== day.exercises.length ? 0.5 : 0, borderColor: colors.base}}>
+                <Text style={{
+                  fontFamily: 'Montserrat-Medium',
+                  fontSize: 12,
+                  color: '#445878'
+                }}>{`${set.exercise.name} - ${set.exercise.equipment}`}</Text>
+              </View>
+            )
+          })}
+        </View>
+        }
       </Collapsible>
     )
   }

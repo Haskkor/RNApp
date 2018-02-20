@@ -8,14 +8,14 @@ import {colors} from '../../utils/colors'
 type IProps = {
   exercises: MuscleGroups[]
   closeModal: (close: boolean) => void
-  selectExercise: (exercise: string, muscle: string) => void
+  selectExercise: (exercise: string, muscle: string, equipment?: string) => void
 }
 
 type IState = {
   dataSource: ItemList[]
 }
 
-type ItemList = { searchStr: string, exercise: string, muscle: string }
+type ItemList = { searchStr: string, exercise: string, muscle: string, equipment: string }
 
 class ModalSearch extends React.PureComponent<IProps, IState> {
 
@@ -27,7 +27,12 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   componentDidMount() {
     const dataSource = this.props.exercises.map((m: MuscleGroups) =>
       m.exercises.map((e: ExerciseMuscle) => {
-        return {searchStr: `${e.name} (${e.equipment}) - ${m.muscle}`, exercise: e.name, muscle: m.muscle}
+        return {
+          searchStr: `${e.name} (${e.equipment}) - ${m.muscle}`,
+          exercise: e.name,
+          muscle: m.muscle,
+          equipment: e.equipment
+        }
       })
     )
     this.setState({dataSource: [].concat.apply([], dataSource)})
@@ -36,7 +41,7 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   renderRow(item: ItemList, rowID: string) {
     return (
       <View key={rowID} style={styles.row}>
-        <TouchableOpacity onPress={() => this.props.selectExercise(item.exercise, item.muscle)}>
+        <TouchableOpacity onPress={() => this.props.selectExercise(item.exercise, item.muscle, item.equipment)}>
           <Text style={styles.itemListText}>{item.searchStr}</Text>
         </TouchableOpacity>
       </View>

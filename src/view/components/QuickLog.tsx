@@ -228,7 +228,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                     [(exercise: ExerciseMuscle) => {
                       return exercise.name
                     }])
-                  this.setState({currentMuscle: itemValue})
+                  this.setState({currentMuscle: itemValue, currentExercise: this.exercises[0].name})
                 }}>
                 {this.muscles.map((muscle: string) => {
                   return <Picker.Item key={muscle} label={muscle} value={muscle}/>
