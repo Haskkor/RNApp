@@ -1,14 +1,15 @@
 import * as React from 'react'
-import {ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {ActionSheetIOS, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
-import {ExerciseSet} from '../../core/types'
+import {ExerciseSet, Set} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Collapsible from 'react-native-collapsible'
 import exercises from '../../db/exercises'
 import ModalSearch from './ModalSearch'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
+import {grid} from '../../utils/grid'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -30,6 +31,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}], showModalSearch: false}
+    this.showActionSheet = this.showActionSheet.bind(this)
   }
 
   componentDidMount() {
@@ -43,12 +45,40 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     this.setState({exercisesDay: exercisesDayEmpty})
   }
 
+  showActionSheet(day: ExercisesDay, exercise: ExerciseSet) {
+    const {exercisesDay} = this.state
+    ActionSheetIOS.showActionSheetWithOptions({
+        title: exercise.exercise.name,
+        message: exercise.exercise.equipment,
+        options: ['Edit', 'Delete', 'Cancel'],
+        destructiveButtonIndex: 1,
+        cancelButtonIndex: 2
+      },
+      (buttonIndex) => {
+        const indexDay = loDash.findIndex(exercisesDay, (dayRow: ExercisesDay) => {
+          return day === dayRow
+        })
+        const indexExercise = loDash.findIndex(exercisesDay[indexDay].exercises, (exerciseRow: ExerciseSet) => {
+          return exercise === exerciseRow
+        })
+        if (buttonIndex === 0) {
+          // this.props.editExercise(indexRow)
+        } else if (buttonIndex === 1) {
+          const exercisesDayCopy = this.state.exercisesDay.slice()
+          const exerciseSetCopy = exercisesDayCopy[indexDay].exercises.slice()
+          exerciseSetCopy.splice(indexExercise, 1)
+          exercisesDayCopy[indexDay].exercises = exerciseSetCopy
+          this.setState({exercisesDay: exercisesDayCopy})
+        }
+      })
+  }
+
   handleSelectionExercise = (exercise: string, muscle: string, equipment: string) => {
     const newExerciseSet: ExerciseSet = {
       muscleGroup: muscle,
       exercise: {name: exercise, equipment: equipment},
-      sets: [],
-      recoveryTime: ''
+      sets: [{reps: 8, weight: 75}, {reps: 8, weight: 75}, {reps: 8, weight: 75}],
+      recoveryTime: '00:00'
     }
     let sortedExercises = this.daySelected.exercises.slice()
     sortedExercises.push(newExerciseSet)
@@ -111,13 +141,46 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         <View>
           {day.exercises.map((set: ExerciseSet, index: number) => {
             return (
-              <View key={set.exercise.name + index} style={{padding: 15, borderBottomWidth: index + 1 !== day.exercises.length ? 0.5 : 0, borderColor: colors.base}}>
-                <Text style={{
-                  fontFamily: 'Montserrat-Medium',
-                  fontSize: 12,
-                  color: '#445878'
-                }}>{`${set.exercise.name} - ${set.exercise.equipment}`}</Text>
-              </View>
+              <TouchableOpacity key={set.exercise.name + index}
+                                onPress={() => this.showActionSheet(day, set)}
+                                style={{
+                                  padding: 15,
+                                  borderBottomWidth: index + 1 !== day.exercises.length ? 1 : 0,
+                                  borderColor: colors.light,
+                                  flexDirection: 'column',
+                                }}>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{
+                    fontFamily: grid.fontBold,
+                    fontSize: 12,
+                    color: colors.base,
+                    marginRight: 5
+                  }}>{set.muscleGroup}</Text>
+                  <Text style={{
+                    fontFamily: 'Montserrat-Medium',
+                    fontSize: 12,
+                    color: '#445878'
+                  }}>{`${set.exercise.name} - ${set.exercise.equipment}`}</Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{
+                    fontFamily: grid.fontBold,
+                    fontSize: 12,
+                    color: colors.base,
+                    marginRight: 5
+                  }}>{set.recoveryTime}</Text>
+                  {set.sets.map((s: Set) => {
+                    return (
+                      <Text style={{
+                        fontFamily: 'Montserrat-Medium',
+                        fontSize: 12,
+                        color: '#445878',
+                        marginRight: 5
+                      }}>{`${s.weight}x${s.reps}`}</Text>
+                    )
+                  })}
+                </View>
+              </TouchableOpacity>
             )
           })}
         </View>
