@@ -10,6 +10,7 @@ import ModalSearch from './ModalSearch'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
+import {HeaderStatus} from './Header'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -62,7 +63,12 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           return exercise === exerciseRow
         })
         if (buttonIndex === 0) {
-          // this.props.editExercise(indexRow)
+          this.props.navigation.navigate('ProgramEditExercise',
+            {
+              exerciseToEdit: this.state.exercisesDay[indexDay].exercises[indexExercise],
+              status: HeaderStatus.editExercise,
+              title: 'Edit exercise'
+            })
         } else if (buttonIndex === 1) {
           const exercisesDayCopy = this.state.exercisesDay.slice()
           const exerciseSetCopy = exercisesDayCopy[indexDay].exercises.slice()
@@ -147,7 +153,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
                                   padding: 15,
                                   borderBottomWidth: index + 1 !== day.exercises.length ? 1 : 0,
                                   borderColor: colors.light,
-                                  flexDirection: 'column',
+                                  flexDirection: 'column'
                                 }}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={{

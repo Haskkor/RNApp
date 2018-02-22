@@ -13,9 +13,15 @@ type IProps = {
   title: string
   secondaryIcon?: string
   secondaryFunction?: () => void
+  status: HeaderStatus
 }
 
 type IState = {}
+
+export enum HeaderStatus {
+  quickLog,
+  editExercise
+}
 
 class Header extends React.PureComponent<IProps, IState> {
   render() {

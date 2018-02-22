@@ -7,7 +7,7 @@ import * as loDash from 'lodash'
 import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
 import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
-import Header from './Header'
+import Header, {HeaderStatus} from './Header'
 import Toaster from './Toaster'
 import {ToasterInfo} from '../../core/enums'
 import ModalRecovery from './ModalRecovery'
@@ -202,15 +202,17 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       sets, editing, currentExercise, currentMuscle, showModal, showModalSets, dataLog, showToasterInfo,
       showToasterWarning, showModalRecovery, currentRecoveryTime, showModalSearch
     } = this.state
+    const navigationParams = this.props.navigation.state.params
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
         <Header
+          status={navigationParams ? navigationParams.status : HeaderStatus.quickLog}
           navigation={this.props.navigation}
           colorBorder={colors.headerBorderLight}
           colorHeader={colors.headerLight}
           textColor={colors.base}
-          title="Quick Log"
+          title={navigationParams ? navigationParams.title : 'Quick Log'}
           secondaryIcon="search"
           secondaryFunction={this.handleModalSearch}/>
         <Grid style={styles.grid}>
@@ -284,6 +286,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           </Row>
           <Row size={10} style={styles.rows}>
             <Col style={styles.columnsButtons}>
+              {!editing &&
               <TouchableOpacity
                 style={[styles.buttonCurrentLog, styles.buttonBottom, styles.shadow]}
                 onPress={() => this.setState({
@@ -292,7 +295,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                   showToasterWarning: false
                 })}>
                 <Text style={styles.buttonsText}>See log</Text>
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </Col>
             <Col style={styles.columnsButtons}>
               <Row>
