@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Picker, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import * as loDash from 'lodash'
-import Header from './Header'
+import Header, {HeaderStatus} from './Header'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
@@ -86,6 +86,7 @@ class Timer extends React.PureComponent<IProps, IState> {
           navigation={this.props.navigation}
           colorBorder={colors.headerBorder}
           colorHeader={colors.header}
+          status={HeaderStatus.drawer}
           textColor={colors.white}
           title="Recovery Timer"/>
         <View style={styles.timer}>

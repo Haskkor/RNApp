@@ -19,19 +19,23 @@ type IProps = {
 type IState = {}
 
 export enum HeaderStatus {
-  quickLog,
+  drawer,
   editExercise
 }
 
 class Header extends React.PureComponent<IProps, IState> {
   render() {
-    const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon} = this.props
+    const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon, status} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
         <View style={[styles.viewSemiFlex, {marginLeft: grid.unit * 1.25}]}>
+          {status === HeaderStatus.drawer &&
           <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
             <Icon name="fitness-center" size={grid.navIcon} color={textColor}/>
-          </TouchableOpacity>
+          </TouchableOpacity> || status === HeaderStatus.editExercise &&
+          <TouchableOpacity style={styles.containerButtonBack} onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
+            <Text style={styles.text}>Back</Text></TouchableOpacity>}
         </View>
         <View style={styles.viewFlex}>
           <Text style={[styles.title, {color: textColor}]}>{title}</Text>
@@ -70,6 +74,18 @@ const styles = StyleSheet.create({
   secondaryIconView: {
     marginRight: grid.unit * 1.25,
     alignItems: 'flex-end'
+  },
+  containerButtonBack: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  text: {
+    fontSize: grid.caption,
+    fontFamily: grid.fontBold,
+    color: colors.base
+  },
+  icon: {
+    paddingRight: grid.unit
   }
 })
 

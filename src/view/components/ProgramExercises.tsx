@@ -26,6 +26,8 @@ type ExercisesDay = { day: string, exercises: ExerciseSet[], isCollapsed: boolea
 class ProgramExercises extends React.PureComponent<IProps, IState> {
   daySelected: ExercisesDay
   indexDaySelected: number
+  editedDayIndex: number
+  editedExerciseIndex: number
 
   static navigationOptions = HeaderStackNavigator.navigationOptions
 
@@ -33,6 +35,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     super()
     this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}], showModalSearch: false}
     this.showActionSheet = this.showActionSheet.bind(this)
+    this.editExerciseFinished = this.editExerciseFinished.bind(this)
   }
 
   componentDidMount() {
@@ -63,11 +66,15 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           return exercise === exerciseRow
         })
         if (buttonIndex === 0) {
+          this.editedExerciseIndex = indexExercise
+          this.editedDayIndex = indexDay
           this.props.navigation.navigate('ProgramEditExercise',
             {
               exerciseToEdit: this.state.exercisesDay[indexDay].exercises[indexExercise],
               status: HeaderStatus.editExercise,
-              title: 'Edit exercise'
+              title: 'Edit exercise',
+              exercise: exercise,
+              saveEdit: this.editExerciseFinished
             })
         } else if (buttonIndex === 1) {
           const exercisesDayCopy = this.state.exercisesDay.slice()
@@ -77,6 +84,15 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           this.setState({exercisesDay: exercisesDayCopy})
         }
       })
+  }
+
+  editExerciseFinished = (exercise: ExerciseSet) => {
+    console.log(exercise)
+    const exercisesDayCopy = this.state.exercisesDay.slice()
+    const exerciseSetCopy = exercisesDayCopy[this.editedDayIndex].exercises.slice()
+    exerciseSetCopy[this.editedExerciseIndex] = exercise
+    exercisesDayCopy[this.editedDayIndex].exercises = exerciseSetCopy
+    this.setState({exercisesDay: exercisesDayCopy})
   }
 
   handleSelectionExercise = (exercise: string, muscle: string, equipment: string) => {

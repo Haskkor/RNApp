@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import Header from './Header'
+import Header, {HeaderStatus} from './Header'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
@@ -86,6 +86,7 @@ class StopWatch extends React.PureComponent<IProps, IState> {
           colorBorder={colors.headerBorder}
           colorHeader={colors.header}
           textColor={colors.white}
+          status={HeaderStatus.drawer}
           title="Recovery Stopwatch"/>
         <View style={styles.timer}>
           <View style={styles.timerWrapper}>

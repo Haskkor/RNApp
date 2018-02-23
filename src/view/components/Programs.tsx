@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Animated, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import Header from './Header'
+import Header, {HeaderStatus} from './Header'
 import * as SortableListView from 'react-native-sortable-listview'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as LottieView from 'lottie-react-native'
@@ -41,6 +41,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           colorBorder={colors.headerBorderLight}
           colorHeader={colors.headerLight}
           textColor={colors.base}
+          status={HeaderStatus.drawer}
           title="Programs"
           secondaryIcon="add"
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}

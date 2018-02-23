@@ -79,6 +79,23 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.selectExerciseModalSearch = this.selectExerciseModalSearch.bind(this)
   }
 
+  componentWillMount() {
+    const {params} = this.props.navigation.state
+    if (params) {
+      this.setState({currentMuscle: params.exercise.muscleGroup})
+      this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === params.exercise.muscleGroup).exercises,
+        [(exercise: ExerciseMuscle) => {
+          return exercise.name
+        }])
+      this.setState({
+        currentExercise: params.exercise.exercise.name,
+        sets: params.exercise.sets,
+        currentRecoveryTime: params.exercise.recoveryTime,
+        editing: true
+      })
+    }
+  }
+
   componentDidMount() {
     this.order = Object.keys(this.state.dataLog)
   }
@@ -207,7 +224,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
         <Header
-          status={navigationParams ? navigationParams.status : HeaderStatus.quickLog}
+          status={navigationParams ? navigationParams.status : HeaderStatus.drawer}
           navigation={this.props.navigation}
           colorBorder={colors.headerBorderLight}
           colorHeader={colors.headerLight}
@@ -314,7 +331,12 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             <Col style={styles.columnsButtons}>
               <TouchableOpacity
                 onPress={() => {
-                  editing ? this.saveEditedExercise() : this.addExerciseSet()
+                  if (navigationParams) {
+                    navigationParams.saveEdit(this.buildNewSet())
+                    this.props.navigation.goBack()
+                  } else {
+                    (editing ? this.saveEditedExercise() : this.addExerciseSet())
+                  }
                 }}
                 style={[styles.buttonAdd, styles.buttonBottom, styles.shadow]}>
                 <Text style={styles.buttonsText}>{editing ? 'Save' : 'Add'}</Text>
@@ -322,7 +344,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
             </Col>
           </Row>
         </Grid>
-        {showToasterInfo && <Toaster text="Exercise logged" status={ToasterInfo.info} stopToaster={this.stopToaster}/>}
+        {showToasterInfo &&
+        <Toaster text="Exercise logged" status={ToasterInfo.info} stopToaster={this.stopToaster}/>}
         {showToasterWarning &&
         <Toaster text="Changes saved" status={ToasterInfo.warning} stopToaster={this.stopToaster}/>}
         {showModalSets && <ModalSets
