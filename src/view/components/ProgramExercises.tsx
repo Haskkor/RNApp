@@ -17,11 +17,15 @@ type IProps = {
 }
 
 type IState = {
-  exercisesDay: ExercisesDay[] // fixme any
+  exercisesDay: ExercisesDay[]
   showModalSearch: boolean
 }
 
-type ExercisesDay = { day: string, exercises: ExerciseSet[], isCollapsed: boolean }
+type ExercisesDay = {
+  day: string,
+  exercises: ExerciseSet[],
+  isCollapsed: boolean
+}
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
   daySelected: ExercisesDay
@@ -119,22 +123,14 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   renderHeaderSection = (day: ExercisesDay, index: number) => {
     return (
-      <View style={{
-        width: '100%',
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingLeft: 30,
-        paddingRight: 20,
-        backgroundColor: '#F7F7F8',
-        flexDirection: 'row'
-      }}>
-        <Text style={{fontFamily: 'Montserrat-Bold', fontSize: 12, color: '#445878', flex: 3}}>{day.day}</Text>
+      <View style={styles.containerHeaderSection}>
+        <Text style={styles.textHeaderSection}>{day.day}</Text>
         <TouchableOpacity onPress={() => {
           this.daySelected = day
           this.indexDaySelected = index
           this.setState({showModalSearch: true})
         }}>
-          <Icon name="add-circle-outline" size={20} color="#445878" style={{flex: 1, marginRight: 10}}/>
+          <Icon name="add-circle-outline" size={20} color={colors.base} style={styles.iconHeaderSectionAdd}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
           const copyCurrentDay: ExercisesDay = {
@@ -146,8 +142,8 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           copyExercisesDay[index] = copyCurrentDay
           this.setState({exercisesDay: copyExercisesDay})
         }}>
-          <Icon name={day.isCollapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'} size={20} color="#445878"
-                style={{flex: 1, marginLeft: 10}}/>
+          <Icon name={day.isCollapsed ? 'keyboard-arrow-down' : 'keyboard-arrow-up'} size={20} color={colors.base}
+                style={styles.iconHeaderSectionCollapsed}/>
         </TouchableOpacity>
       </View>
     )
@@ -158,48 +154,22 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       <Collapsible collapsed={day.isCollapsed} duration={500}>
         {day.exercises.length === 0 &&
         <View style={{padding: 10}}>
-          <Text style={{fontFamily: 'Montserrat-Regular', fontSize: 12, color: '#445878'}}>No exercises yet</Text>
+          <Text style={styles.sectionNoContent}>No exercises yet</Text>
         </View> ||
         <View>
           {day.exercises.map((set: ExerciseSet, index: number) => {
             return (
               <TouchableOpacity key={set.exercise.name + index}
                                 onPress={() => this.showActionSheet(day, set)}
-                                style={{
-                                  padding: 15,
-                                  borderBottomWidth: index + 1 !== day.exercises.length ? 1 : 0,
-                                  borderColor: colors.light,
-                                  flexDirection: 'column'
-                                }}>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{
-                    fontFamily: grid.fontBold,
-                    fontSize: 12,
-                    color: colors.base,
-                    marginRight: 5
-                  }}>{set.muscleGroup}</Text>
-                  <Text style={{
-                    fontFamily: 'Montserrat-Medium',
-                    fontSize: 12,
-                    color: '#445878'
-                  }}>{`${set.exercise.name} - ${set.exercise.equipment}`}</Text>
+                                style={[styles.sectionElement, {borderBottomWidth: index + 1 !== day.exercises.length ? 1 : 0}]}>
+                <View style={styles.sectionElementRow}>
+                  <Text style={styles.textBoldSection}>{set.muscleGroup}</Text>
+                  <Text style={styles.textMediumSection}>{`${set.exercise.name} - ${set.exercise.equipment}`}</Text>
                 </View>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{
-                    fontFamily: grid.fontBold,
-                    fontSize: 12,
-                    color: colors.base,
-                    marginRight: 5
-                  }}>{set.recoveryTime}</Text>
+                <View style={styles.sectionElementRow}>
+                  <Text style={styles.textBoldSection}>{set.recoveryTime}</Text>
                   {set.sets.map((s: Set) => {
-                    return (
-                      <Text style={{
-                        fontFamily: 'Montserrat-Medium',
-                        fontSize: 12,
-                        color: '#445878',
-                        marginRight: 5
-                      }}>{`${s.weight}x${s.reps}`}</Text>
-                    )
+                    return (<Text style={styles.textMediumSection}>{`${s.weight}x${s.reps}`}</Text>)
                   })}
                 </View>
               </TouchableOpacity>
@@ -239,6 +209,54 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  containerHeaderSection: {
+    width: '100%',
+    paddingTop: grid.unit,
+    paddingBottom: grid.unit,
+    paddingLeft: grid.unit * 2,
+    paddingRight: grid.unit,
+    backgroundColor: colors.light,
+    flexDirection: 'row'
+  },
+  textHeaderSection: {
+    fontFamily: grid.fontBold,
+    fontSize: grid.caption,
+    color: colors.base,
+    flex: 3
+  },
+  iconHeaderSectionAdd: {
+    flex: 1,
+    marginRight: grid.unit / 2
+  },
+  iconHeaderSectionCollapsed: {
+    flex: 1,
+    marginLeft: grid.unit / 2
+  },
+  sectionNoContent: {
+    fontFamily: grid.font,
+    fontSize: grid.caption,
+    color: colors.base
+  },
+  sectionElement: {
+    padding: grid.unit,
+    borderColor: colors.light,
+    flexDirection: 'column'
+  },
+  sectionElementRow: {
+    flexDirection: 'row'
+  },
+  textBoldSection: {
+    fontFamily: grid.fontBold,
+    fontSize: grid.caption,
+    color: colors.base,
+    marginRight: 5
+  },
+  textMediumSection: {
+    fontFamily: grid.fontMedium,
+    fontSize: grid.caption,
+    color: colors.base,
+    marginRight: 5
   }
 })
 
