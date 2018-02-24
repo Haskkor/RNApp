@@ -1,38 +1,36 @@
-import { createAction, handleActions, handleAction, combineActions, Action } from 'redux-actions'
+import { createAction, handleActions, Action } from 'redux-actions'
 
-export const LOAD_QUESTION_START = 'OB/APP/LOAD_QUESTION/START'
-export const LOAD_QUESTION_SUCCESS = 'OB/APP/LOAD_QUESTION/SUCCESS'
-export const LOAD_QUESTION_FAIL = 'OB/APP/LOAD_QUESTION/FAIL'
+export const LOAD_DATA_START = 'PL/APP/LOAD_DATA/START'
+export const LOAD_DATA_SUCCESS = 'PL/APP/LOAD_DATA/SUCCESS'
+export const LOAD_DATA_FAIL = 'PL/APP/LOAD_DATA/FAIL'
 
-export type LoadQuestionStartPayload = {
+export type LoadDataStartPayload = {
   id: string
 }
 
-export type LoadQuestionSuccessPayload = {
-}
+export type LoadDataSuccessPayload = {}
 
-export type LoadQuestionFailPayload = {
-}
+export type LoadDataFailPayload = {}
 
 const initialState: ReduxState.AppContainer = {
   mainControl: undefined,
-  questionLoaded: false
+  dataLoaded: false
 }
 
 export default handleActions({
-  [LOAD_QUESTION_START]: (state: ReduxState.AppContainer, action: Action<LoadQuestionStartPayload>) => ({
+  [LOAD_DATA_START]: (state: ReduxState.AppContainer, action: Action<LoadDataStartPayload>) => ({
     ...state
   }),
-  [LOAD_QUESTION_SUCCESS]: (state: ReduxState.AppContainer, action: Action<LoadQuestionSuccessPayload>) => ({
+  [LOAD_DATA_SUCCESS]: (state: ReduxState.AppContainer, action: Action<LoadDataSuccessPayload>) => ({
     ...state,
     loaded: true
   }),
-  [LOAD_QUESTION_FAIL]: (state: ReduxState.AppContainer, action: Action<LoadQuestionFailPayload>) => ({
+  [LOAD_DATA_FAIL]: (state: ReduxState.AppContainer, action: Action<LoadDataFailPayload>) => ({
     ...state,
     loaded: false
   })
 }, initialState)
 
-export const loadQuestionStart = createAction<LoadQuestionStartPayload>(LOAD_QUESTION_START)
-export const loadQuestionSuccess = createAction<LoadQuestionSuccessPayload>(LOAD_QUESTION_SUCCESS)
-export const loadQuestionFail = createAction<LoadQuestionFailPayload>(LOAD_QUESTION_FAIL)
+export const loadDataStart = createAction<LoadDataStartPayload>(LOAD_DATA_START)
+export const loadDataSuccess = createAction<LoadDataSuccessPayload>(LOAD_DATA_SUCCESS)
+export const loadDataFail = createAction<LoadDataFailPayload>(LOAD_DATA_FAIL)

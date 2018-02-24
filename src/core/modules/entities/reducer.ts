@@ -1,25 +1,18 @@
 import { combineReducers } from 'redux'
-import parties from './parties'
-import accounts from './accounts'
-import advisers from './advisers'
-import accountParties from './accountParties'
-import * as lodash from 'lodash'
+import * as loDash from 'lodash'
+import programs from './programs'
 
-const initialState = {
-}
+const initialState = {}
 
 const subReducers = combineReducers({
-  accountParties,
-  parties,
-  accounts,
-  advisers
+  programs
 })
 
 export default function reducer (state = initialState, action: any) { // fixme any
-  const entities = lodash.result(action, 'payload.normalized.entities')
+  const entities = loDash.result(action, 'payload.normalized.entities')
   if (entities) {
-    const newState: any = lodash.assign({}, state) // fixme any
-    lodash.forOwn(entities, (items, key) => {
+    const newState: any = loDash.assign({}, state) // fixme any
+    loDash.forOwn(entities, (items, key) => {
       newState[key] = {...newState[key], ...items}
     })
     return newState
