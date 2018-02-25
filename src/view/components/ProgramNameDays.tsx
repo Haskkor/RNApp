@@ -56,12 +56,14 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
             title: 'Exercises',
             days: this.state.weekdays.filter((day: Day) => {
               if (day.training) return day.name
-            }).map((day: Day) => day.name)
+            }).map((day: Day) => day.name),
+            saveProgram: this.props.navigation.state.params.saveProgram
           })
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
             title: 'Exercises',
-            days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString())
+            days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString()),
+            saveProgram: this.props.navigation.state.params.saveProgram
           })
         }
       })
@@ -126,7 +128,8 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
                 days: numberOfDays === '' ? weekdays.filter((day: Day) => {
                     if (day.training) return day.name
                   }).map((day: Day) => day.name) :
-                  loDash.range(+numberOfDays).map((value: number) => (value + 1).toString())
+                  loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
+                saveProgram: this.props.navigation.state.params.saveProgram
               })
             }
           }}

@@ -194,6 +194,14 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         {this.state.exercisesDay.map((day: ServerEntity.ExercisesDay, index: number) => {
           return this.renderSectionDay(day, index)
         })}
+
+
+
+        <TouchableOpacity onPress={() => this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)}><Text>TEST SAVE</Text></TouchableOpacity>
+
+
+
+
       </ScrollView>
     )
   }

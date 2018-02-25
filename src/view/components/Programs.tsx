@@ -29,11 +29,16 @@ class Programs extends React.PureComponent<IProps, IState> {
   constructor() {
     super()
     this.state = {progressAnimation: new Animated.Value(0)}
+    this.saveProgram = this.saveProgram.bind(this)
   }
 
   componentDidMount() {
     this.order = Object.keys(this.props.programs)
     this.animation.play()
+  }
+
+  saveProgram = (program: ServerEntity.Program, index: number) => {
+    this.props.setPrograms({index: index, program: program})
   }
 
   render() {
@@ -50,7 +55,10 @@ class Programs extends React.PureComponent<IProps, IState> {
           status={HeaderStatus.drawer}
           title="Programs"
           secondaryIcon="add"
-          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}
+          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {
+            title: 'Name and Days',
+            saveProgram: this.saveProgram
+          })}
         />
         {programs.length > 0 && <SortableListView
           style={styles.sortableList}
@@ -68,7 +76,10 @@ class Programs extends React.PureComponent<IProps, IState> {
           </View>
           <View style={styles.viewAnimationNoProgram}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ProgramNameDays', {title: 'Name and Days'})}>
+              onPress={() => this.props.navigation.navigate('ProgramNameDays', {
+                title: 'Name and Days',
+                saveProgram: this.saveProgram
+              })}>
               <LottieView
                 ref={(ref: any) => this.animation = ref}
                 loop={true}
