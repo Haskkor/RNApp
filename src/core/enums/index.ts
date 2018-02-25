@@ -3,3 +3,8 @@ export enum ToasterInfo {
   warning,
   error
 }
+
+export enum HeaderStatus {
+  drawer,
+  editExercise
+}

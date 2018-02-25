@@ -18,3 +18,14 @@ export type ExerciseMuscle = {
   name: string,
   equipment: string
 }
+
+export type ExercisesDay = {
+  day: string,
+  exercises: ExerciseSet[],
+  isCollapsed: boolean
+}
+
+export type Program = {
+  active: boolean,
+  days: ExercisesDay[]
+}

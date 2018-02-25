@@ -1,14 +1,13 @@
 import * as React from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {ExerciseSet, Set} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
 
 type IProps = {
-  data: ExerciseSet
+  data: ServerEntity.ExerciseSet
   sortHandlers?: any
-  action: (data: ExerciseSet) => void
+  action: (data: ServerEntity.ExerciseSet) => void
 }
 
 type IState = {}
@@ -31,7 +30,7 @@ class RowListLog extends React.PureComponent<IProps, IState> {
             <Text style={styles.textMedium}>{`Recovery: ${recoveryTime}`}</Text>
             <Text numberOfLines={1} style={styles.textContainer}>
               <Text style={styles.textEquipment}>{`${exercise.equipment}   `}</Text>
-              {sets.map((set: Set, index: number) =>
+              {sets.map((set: ServerEntity.Set, index: number) =>
                 <Text key={set.toString() + index} style={styles.set}>{`${set.reps} x ${set.weight}kg   `}</Text>
               )}
             </Text>

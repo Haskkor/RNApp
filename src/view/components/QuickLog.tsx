@@ -6,10 +6,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as loDash from 'lodash'
 import ModalSets from './ModalSets'
 import exercises from '../../db/exercises'
-import {ExerciseMuscle, ExerciseSet, MuscleGroups, Set} from '../../core/types'
-import Header, {HeaderStatus} from './Header'
+import Header from './Header'
 import Toaster from './Toaster'
-import {ToasterInfo} from '../../core/enums'
+import {HeaderStatus, ToasterInfo} from '../../core/enums'
 import ModalRecovery from './ModalRecovery'
 import {buildRecoveryTimes} from '../../utils/helper'
 import ModalSearch from './ModalSearch'
@@ -22,7 +21,7 @@ type IProps = {
 }
 
 type IState = {
-  sets: Set[]
+  sets: ServerEntity.Set[]
   currentMuscle: string
   currentExercise: string
   currentRecoveryTime: string
@@ -32,7 +31,7 @@ type IState = {
   showToasterInfo: boolean
   showToasterWarning: boolean
   showModalSearch: boolean
-  dataLog: ExerciseSet[]
+  dataLog: ServerEntity.ExerciseSet[]
   editing: boolean
 }
 
@@ -42,14 +41,14 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   scrollViewRef: any
   scrollViewWidth: number
   muscles: string[]
-  exercises: ExerciseMuscle[]
+  exercises: ServerEntity.ExerciseMuscle[]
   editedExerciseIndex: number
 
   constructor() {
     super()
-    this.muscles = exercises.map((data: MuscleGroups) => data.muscle).sort()
-    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
-      [(exercise: ExerciseMuscle) => {
+    this.muscles = exercises.map((data: ServerEntity.MuscleGroups) => data.muscle).sort()
+    this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === this.muscles[0]).exercises,
+      [(exercise: ServerEntity.ExerciseMuscle) => {
         return exercise.name
       }])
     this.state = {
@@ -83,8 +82,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     const {params} = this.props.navigation.state
     if (params) {
       this.setState({currentMuscle: params.exercise.muscleGroup})
-      this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === params.exercise.muscleGroup).exercises,
-        [(exercise: ExerciseMuscle) => {
+      this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === params.exercise.muscleGroup).exercises,
+        [(exercise: ServerEntity.ExerciseMuscle) => {
           return exercise.name
         }])
       this.setState({
@@ -151,7 +150,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     this.setState({showModalRecovery: false, currentRecoveryTime: recoveryTime})
   }
 
-  buildNewSet = (): ExerciseSet => {
+  buildNewSet = (): ServerEntity.ExerciseSet => {
     return {
       exercise: this.exercises.find((exercise) => {
         return exercise.name === this.state.currentExercise
@@ -162,10 +161,10 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     }
   }
 
-  backToOriginalState = (dataLogCopy: ExerciseSet[], wasEditing: boolean) => {
+  backToOriginalState = (dataLogCopy: ServerEntity.ExerciseSet[], wasEditing: boolean) => {
     this.order = Object.keys(dataLogCopy)
-    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === this.muscles[0]).exercises,
-      [(exercise: ExerciseMuscle) => {
+    this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === this.muscles[0]).exercises,
+      [(exercise: ServerEntity.ExerciseMuscle) => {
         return exercise.name
       }])
     this.setState({
@@ -182,8 +181,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   editExercise = (index: number) => {
     const exerciseToEdit = this.state.dataLog[index]
     this.setState({currentMuscle: exerciseToEdit.muscleGroup})
-    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises,
-      [(exercise: ExerciseMuscle) => {
+    this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === exerciseToEdit.muscleGroup).exercises,
+      [(exercise: ServerEntity.ExerciseMuscle) => {
         return exercise.name
       }])
     this.editedExerciseIndex = index
@@ -195,7 +194,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
     })
   }
 
-  deleteExercise = (newDataLog: ExerciseSet[]) => {
+  deleteExercise = (newDataLog: ServerEntity.ExerciseSet[]) => {
     this.setState({dataLog: newDataLog})
   }
 
@@ -207,8 +206,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
   }
 
   selectExerciseModalSearch = (exercise: string, muscle: string) => {
-    this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === muscle).exercises,
-      [(e: ExerciseMuscle) => {
+    this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === muscle).exercises,
+      [(e: ServerEntity.ExerciseMuscle) => {
         return e.name
       }])
     this.setState({currentMuscle: muscle, currentExercise: exercise, showModalSearch: false})
@@ -243,8 +242,8 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 itemStyle={styles.pickerItem}
                 selectedValue={currentMuscle}
                 onValueChange={(itemValue) => {
-                  this.exercises = loDash.sortBy(exercises.find((data: MuscleGroups) => data.muscle === itemValue).exercises,
-                    [(exercise: ExerciseMuscle) => {
+                  this.exercises = loDash.sortBy(exercises.find((data: ServerEntity.MuscleGroups) => data.muscle === itemValue).exercises,
+                    [(exercise: ServerEntity.ExerciseMuscle) => {
                       return exercise.name
                     }])
                   this.setState({currentMuscle: itemValue, currentExercise: this.exercises[0].name})
@@ -265,7 +264,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
                 itemStyle={styles.pickerItem}
                 selectedValue={currentExercise}
                 onValueChange={(itemValue) => this.setState({currentExercise: itemValue})}>
-                {this.exercises.map((muscle: ExerciseMuscle) => {
+                {this.exercises.map((muscle: ServerEntity.ExerciseMuscle) => {
                   return <Picker.Item key={muscle.name} label={muscle.name} value={muscle.name}/>
                 })}
               </Picker>
@@ -277,7 +276,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
               contentContainerStyle={styles.scroll}
               ref={ref => this.scrollViewRef = ref}
               onContentSizeChange={(width) => this.scrollViewWidth = width}>
-              {sets.map((item: Set, index: number) => {
+              {sets.map((item: ServerEntity.Set, index: number) => {
                 return (
                   <TouchableOpacity
                     key={item.weight + index}

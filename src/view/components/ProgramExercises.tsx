@@ -2,7 +2,6 @@ import * as React from 'react'
 import {ActionSheetIOS, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
-import {ExerciseSet, Set} from '../../core/types'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Collapsible from 'react-native-collapsible'
 import exercises from '../../db/exercises'
@@ -10,25 +9,19 @@ import ModalSearch from './ModalSearch'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
-import {HeaderStatus} from './Header'
+import {HeaderStatus} from '../../core/enums'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {
-  exercisesDay: ExercisesDay[]
+  exercisesDay: ServerEntity.ExercisesDay[]
   showModalSearch: boolean
 }
 
-type ExercisesDay = {
-  day: string,
-  exercises: ExerciseSet[],
-  isCollapsed: boolean
-}
-
 class ProgramExercises extends React.PureComponent<IProps, IState> {
-  daySelected: ExercisesDay
+  daySelected: ServerEntity.ExercisesDay
   indexDaySelected: number
   editedDayIndex: number
   editedExerciseIndex: number
@@ -46,14 +39,14 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     const exercisesDayEmpty = this.props.navigation.state.params.days.map((day: string) => {
       return {
         day: day,
-        exercises: [] as ExerciseSet[],
+        exercises: [] as ServerEntity.ExerciseSet[],
         isCollapsed: false
       }
     })
     this.setState({exercisesDay: exercisesDayEmpty})
   }
 
-  showActionSheet(day: ExercisesDay, exercise: ExerciseSet) {
+  showActionSheet(day: ServerEntity.ExercisesDay, exercise: ServerEntity.ExerciseSet) {
     const {exercisesDay} = this.state
     ActionSheetIOS.showActionSheetWithOptions({
         title: exercise.exercise.name,
@@ -63,10 +56,10 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         cancelButtonIndex: 2
       },
       (buttonIndex) => {
-        const indexDay = loDash.findIndex(exercisesDay, (dayRow: ExercisesDay) => {
+        const indexDay = loDash.findIndex(exercisesDay, (dayRow: ServerEntity.ExercisesDay) => {
           return day === dayRow
         })
-        const indexExercise = loDash.findIndex(exercisesDay[indexDay].exercises, (exerciseRow: ExerciseSet) => {
+        const indexExercise = loDash.findIndex(exercisesDay[indexDay].exercises, (exerciseRow: ServerEntity.ExerciseSet) => {
           return exercise === exerciseRow
         })
         if (buttonIndex === 0) {
@@ -90,7 +83,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       })
   }
 
-  editExerciseFinished = (exercise: ExerciseSet) => {
+  editExerciseFinished = (exercise: ServerEntity.ExerciseSet) => {
     console.log(exercise)
     const exercisesDayCopy = this.state.exercisesDay.slice()
     const exerciseSetCopy = exercisesDayCopy[this.editedDayIndex].exercises.slice()
@@ -100,7 +93,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   handleSelectionExercise = (exercise: string, muscle: string, equipment: string) => {
-    const newExerciseSet: ExerciseSet = {
+    const newExerciseSet: ServerEntity.ExerciseSet = {
       muscleGroup: muscle,
       exercise: {name: exercise, equipment: equipment},
       sets: [{reps: 8, weight: 75}, {reps: 8, weight: 75}, {reps: 8, weight: 75}],
@@ -108,8 +101,8 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     }
     let sortedExercises = this.daySelected.exercises.slice()
     sortedExercises.push(newExerciseSet)
-    sortedExercises = loDash.sortBy(sortedExercises, (e: ExerciseSet) => e.exercise.name)
-    const copyCurrentDay: ExercisesDay = {
+    sortedExercises = loDash.sortBy(sortedExercises, (e: ServerEntity.ExerciseSet) => e.exercise.name)
+    const copyCurrentDay: ServerEntity.ExercisesDay = {
       day: this.daySelected.day,
       isCollapsed: this.daySelected.isCollapsed,
       exercises: sortedExercises
@@ -121,7 +114,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     this.indexDaySelected = null
   }
 
-  renderHeaderSection = (day: ExercisesDay, index: number) => {
+  renderHeaderSection = (day: ServerEntity.ExercisesDay, index: number) => {
     return (
       <View style={styles.containerHeaderSection}>
         <Text style={styles.textHeaderSection}>{day.day}</Text>
@@ -133,7 +126,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           <Icon name="add-circle-outline" size={20} color={colors.base} style={styles.iconHeaderSectionAdd}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
-          const copyCurrentDay: ExercisesDay = {
+          const copyCurrentDay: ServerEntity.ExercisesDay = {
             day: day.day,
             isCollapsed: !day.isCollapsed,
             exercises: day.exercises.slice()
@@ -149,7 +142,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     )
   }
 
-  renderExercisesSection = (day: ExercisesDay) => {
+  renderExercisesSection = (day: ServerEntity.ExercisesDay) => {
     return (
       <Collapsible collapsed={day.isCollapsed} duration={500}>
         {day.exercises.length === 0 &&
@@ -157,7 +150,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           <Text style={styles.sectionNoContent}>No exercises yet</Text>
         </View> ||
         <View>
-          {day.exercises.map((set: ExerciseSet, index: number) => {
+          {day.exercises.map((set: ServerEntity.ExerciseSet, index: number) => {
             return (
               <TouchableOpacity key={set.exercise.name + index}
                                 onPress={() => this.showActionSheet(day, set)}
@@ -168,7 +161,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
                 </View>
                 <View style={styles.sectionElementRow}>
                   <Text style={styles.textBoldSection}>{set.recoveryTime}</Text>
-                  {set.sets.map((s: Set) => {
+                  {set.sets.map((s: ServerEntity.Set) => {
                     return (<Text style={styles.textMediumSection}>{`${s.weight}x${s.reps}`}</Text>)
                   })}
                 </View>
@@ -181,7 +174,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     )
   }
 
-  renderSectionDay = (day: ExercisesDay, index: number) => {
+  renderSectionDay = (day: ServerEntity.ExercisesDay, index: number) => {
     return (
       <View key={day.day}>
         {this.renderHeaderSection(day, index)}
@@ -198,7 +191,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
-        {this.state.exercisesDay.map((day: ExercisesDay, index: number) => {
+        {this.state.exercisesDay.map((day: ServerEntity.ExercisesDay, index: number) => {
           return this.renderSectionDay(day, index)
         })}
       </ScrollView>

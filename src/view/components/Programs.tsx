@@ -1,19 +1,20 @@
 import * as React from 'react'
 import {Animated, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import Header, {HeaderStatus} from './Header'
+import Header from './Header'
 import * as SortableListView from 'react-native-sortable-listview'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as LottieView from 'lottie-react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
+import {HeaderStatus} from '../../core/enums'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
 }
 
 type IState = {
-  programs: any[] // todo fix when programs will have a shape
+  programs: ServerEntity.Program[]
   progressAnimation: Animated.Value
 }
 

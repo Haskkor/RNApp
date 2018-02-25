@@ -2,14 +2,13 @@ import * as React from 'react'
 import {Text, TouchableOpacity, View, Modal, StyleSheet, ActionSheetIOS} from 'react-native'
 import * as SortableListView from 'react-native-sortable-listview'
 import RowListLog from './RowListLog'
-import {ExerciseSet} from  '../../core/types'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
 
 type IProps = {
-  dataLog: ExerciseSet[]
-  deleteExercise: (newDataLog: ExerciseSet[]) => void
+  dataLog: ServerEntity.ExerciseSet[]
+  deleteExercise: (newDataLog: ServerEntity.ExerciseSet[]) => void
   editExercise: (index: number) => void
   order: string[]
   closeModal: () => void
@@ -24,7 +23,7 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
     this.showActionSheet = this.showActionSheet.bind(this)
   }
 
-  showActionSheet(data: ExerciseSet) {
+  showActionSheet(data: ServerEntity.ExerciseSet) {
     ActionSheetIOS.showActionSheetWithOptions({
         title: data.exercise.name,
         message: data.exercise.equipment,
@@ -33,7 +32,9 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
         cancelButtonIndex: 2
       },
       (buttonIndex) => {
-        const indexRow = loDash.findIndex(this.props.dataLog, (row: ExerciseSet) => {return row === data})
+        const indexRow = loDash.findIndex(this.props.dataLog, (row: ServerEntity.ExerciseSet) => {
+          return row === data
+        })
         if (buttonIndex === 0) {
           this.props.editExercise(indexRow)
         } else if (buttonIndex === 1) {
@@ -67,7 +68,8 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
               order.splice(e.to, 0, order.splice(e.from, 1)[0])
               this.forceUpdate()
             }}
-            renderRow={(row: ExerciseSet) => row && <RowListLog data={row} action={this.showActionSheet}/> || <View/>}
+            renderRow={(row: ServerEntity.ExerciseSet) => row &&
+                <RowListLog data={row} action={this.showActionSheet}/> || <View/>}
           />
         </Modal>
       </View>

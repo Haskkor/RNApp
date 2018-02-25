@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
+import {HeaderStatus} from '../../core/enums'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -17,11 +18,6 @@ type IProps = {
 }
 
 type IState = {}
-
-export enum HeaderStatus {
-  drawer,
-  editExercise
-}
 
 class Header extends React.PureComponent<IProps, IState> {
   render() {

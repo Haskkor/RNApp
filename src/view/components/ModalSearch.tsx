@@ -1,12 +1,11 @@
 import * as React from 'react'
 import {View, StyleSheet, Text, TouchableOpacity, Modal, StatusBar} from 'react-native'
 import SearchList from '@unpourtous/react-native-search-list'
-import {ExerciseMuscle, MuscleGroups} from '../../core/types'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
 
 type IProps = {
-  exercises: MuscleGroups[]
+  exercises: ServerEntity.MuscleGroups[]
   closeModal: (close: boolean) => void
   selectExercise: (exercise: string, muscle: string, equipment?: string) => void
 }
@@ -25,8 +24,8 @@ class ModalSearch extends React.PureComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    const dataSource = this.props.exercises.map((m: MuscleGroups) =>
-      m.exercises.map((e: ExerciseMuscle) => {
+    const dataSource = this.props.exercises.map((m: ServerEntity.MuscleGroups) =>
+      m.exercises.map((e: ServerEntity.ExerciseMuscle) => {
         return {
           searchStr: `${e.name} (${e.equipment}) - ${m.muscle}`,
           exercise: e.name,
