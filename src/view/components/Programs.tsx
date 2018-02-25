@@ -8,13 +8,17 @@ import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-nav
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
 import {HeaderStatus} from '../../core/enums'
+import {connect, Dispatch} from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as ProgramsActions from '../../core/modules/entities/programs'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
+  programs: ServerEntity.Program[]
+  setPrograms: typeof ProgramsActions.setPrograms
 }
 
 type IState = {
-  programs: ServerEntity.Program[]
   progressAnimation: Animated.Value
 }
 
@@ -24,16 +28,17 @@ class Programs extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {programs: [], progressAnimation: new Animated.Value(0)}
-    this.order = Object.keys(this.state.programs)
+    this.state = {progressAnimation: new Animated.Value(0)}
   }
 
   componentDidMount() {
+    this.order = Object.keys(this.props.programs)
     this.animation.play()
   }
 
   render() {
-    const {programs, progressAnimation} = this.state
+    const {progressAnimation} = this.state
+    const {programs} = this.props
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -83,6 +88,19 @@ class Programs extends React.PureComponent<IProps, IState> {
   }
 }
 
+const mapStateToProps = (rootState: ReduxState.RootState) => {
+  return {
+    programs: rootState.entities.programs
+  }
+}
+
+const mapDispatchToProps =
+  (dispatch: Dispatch<any>) => bindActionCreators({
+    setPrograms: ProgramsActions.setPrograms
+  }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Programs)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1
@@ -114,5 +132,3 @@ const styles = StyleSheet.create({
     marginTop: grid.unit * 2.5
   }
 })
-
-export default Programs

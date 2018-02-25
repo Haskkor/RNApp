@@ -5,9 +5,10 @@ import rootSaga from './saga'
 import reducer from './modules/reducer'
 
 export default function createStore (data?: any): Store<any> {
-  const sagaMiddleware = createSagaMiddleware()
+  // const sagaMiddleware = createSagaMiddleware()
 
-  const middleware = [sagaMiddleware, normailzrMiddleware]
+  // const middleware = [sagaMiddleware, normailzrMiddleware]
+  const middleware = [normailzrMiddleware]
 
   const devToolsExtension = (window as any).devToolsExtension ? (window as any).devToolsExtension() : (f: any) => f
 
@@ -15,7 +16,7 @@ export default function createStore (data?: any): Store<any> {
 
   const store = finalCreateStore(reducer, data)
 
-  sagaMiddleware.run(rootSaga)
+  // sagaMiddleware.run(rootSaga)
 
   return store
 }

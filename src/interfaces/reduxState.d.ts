@@ -4,14 +4,16 @@ declare namespace ReduxState {
     container: {
       App: AppContainer
     }
-    entities: {
-      programs: Programs
-    }
+    entities: Entities
   }
 
   type AppContainer = {}
 
   type Session = {}
 
-  type Programs = { [id: string]: ServerEntity.Program }
+  type Entities = {
+    programs: Programs
+  }
+
+  type Programs = ServerEntity.Program[]
 }
