@@ -188,20 +188,24 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const buttonDisabled = this.state.exercisesDay.map((ed: ServerEntity.ExercisesDay) => {
+      return ed.exercises.length > 0
+    }).some((val: boolean) => val === false)
+    console.log(buttonDisabled)
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
         {this.state.exercisesDay.map((day: ServerEntity.ExercisesDay, index: number) => {
           return this.renderSectionDay(day, index)
         })}
-
-
-
-        <TouchableOpacity onPress={() => this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)}><Text>TEST SAVE</Text></TouchableOpacity>
-
-
-
-
+        <View style={styles.viewButton}>
+          <TouchableOpacity
+            disabled={buttonDisabled}
+            style={[styles.button, styles.shadow]}
+            onPress={() => this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)}>
+            <Text style={[styles.text, buttonDisabled && styles.textDisabled]}>Save</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     )
   }
@@ -210,6 +214,10 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+  viewButton: {
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   containerHeaderSection: {
     width: '100%',
@@ -258,6 +266,33 @@ const styles = StyleSheet.create({
     fontSize: grid.caption,
     color: colors.base,
     marginRight: 5
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: grid.unit * 2,
+    marginTop: grid.unit
+  },
+  shadow: {
+    backgroundColor: colors.white,
+    borderRadius: grid.unit / 4,
+    padding: grid.unit / 2,
+    borderWidth: grid.regularBorder,
+    borderColor: colors.lightAlternative,
+    borderBottomWidth: 0,
+    shadowColor: colors.black,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: grid.highOpacity,
+    shadowRadius: grid.unit / 8,
+    elevation: 1
+  },
+  text: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: grid.body,
+    color: colors.base
+  },
+  textDisabled: {
+    color: colors.textDisabled
   }
 })
 
