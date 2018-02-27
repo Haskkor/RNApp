@@ -34,7 +34,7 @@ class Programs extends React.PureComponent<IProps, IState> {
 
   componentDidMount() {
     this.order = Object.keys(this.props.programs)
-    this.animation.play()
+    if (this.props.programs.length === 0) this.animation.play()
   }
 
   saveProgram = (program: ServerEntity.Program, index: number) => {

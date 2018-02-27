@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {ActionSheetIOS, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
-import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
+import {NavigationAction, NavigationActions, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Collapsible from 'react-native-collapsible'
 import exercises from '../../db/exercises'
@@ -33,6 +33,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}], showModalSearch: false}
     this.showActionSheet = this.showActionSheet.bind(this)
     this.editExerciseFinished = this.editExerciseFinished.bind(this)
+    this.saveProgram = this.saveProgram.bind(this)
   }
 
   componentDidMount() {
@@ -187,11 +188,18 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     )
   }
 
+  saveProgram = () => {
+    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)
+    this.props.navigation.dispatch(NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({routeName: 'Home'})]
+    }))
+  }
+
   render() {
     const buttonDisabled = this.state.exercisesDay.map((ed: ServerEntity.ExercisesDay) => {
       return ed.exercises.length > 0
     }).some((val: boolean) => val === false)
-    console.log(buttonDisabled)
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -202,7 +210,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           <TouchableOpacity
             disabled={buttonDisabled}
             style={[styles.button, styles.shadow]}
-            onPress={() => this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)}>
+            onPress={() => this.saveProgram()}>
             <Text style={[styles.text, buttonDisabled && styles.textDisabled]}>Save</Text>
           </TouchableOpacity>
         </View>

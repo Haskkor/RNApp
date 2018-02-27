@@ -6,17 +6,24 @@ import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: any
+  rightButtonFunction?: () => void
+  shouldDisplayRightButton?: boolean
 }
 
 type IState = {}
 
 class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
-  static navigationOptions = ({ navigation }: any) => ({
+  static navigationOptions = ({navigation, rightButtonFunction, shouldDisplayRightButton}: any) => ({
     title: navigation.state.params.title,
-    headerLeft: <TouchableOpacity style={styles.container} onPress={() => { navigation.goBack() } }>
+    headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
+      navigation.goBack()
+    }}>
       <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
       <Text style={styles.text}>Back</Text></TouchableOpacity>,
+    headerRight: shouldDisplayRightButton &&
+    <TouchableOpacity style={styles.container} onPress={() => rightButtonFunction()}>
+      <Text style={styles.text}>Save</Text></TouchableOpacity>,
     headerStyle: {
       height: grid.unit * 3.25,
       backgroundColor: colors.light,
