@@ -18,6 +18,7 @@ type IProps = {
 type IState = {
   exercisesDay: ServerEntity.ExercisesDay[]
   showModalSearch: boolean
+  saveEnabled: boolean
 }
 
 class ProgramExercises extends React.PureComponent<IProps, IState> {
@@ -30,10 +31,23 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {exercisesDay: [{day: '', exercises: [], isCollapsed: false}], showModalSearch: false}
+    this.state = {
+      exercisesDay: [{day: '', exercises: [], isCollapsed: false}],
+      showModalSearch: false,
+      saveEnabled: false
+    }
     this.showActionSheet = this.showActionSheet.bind(this)
     this.editExerciseFinished = this.editExerciseFinished.bind(this)
     this.saveProgram = this.saveProgram.bind(this)
+  }
+
+  componentWillMount() {
+    this.props.navigation.setParams({
+      rightButtonIcon: 'save',
+      rightButtonText: 'Save',
+      rightButtonFunction: this.saveProgram,
+      rightButtonEnabled: false
+    })
   }
 
   componentDidMount() {
@@ -45,6 +59,19 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       }
     })
     this.setState({exercisesDay: exercisesDayEmpty})
+  }
+
+  componentDidUpdate() {
+    const buttonDisabled = this.state.exercisesDay.map((ed: ServerEntity.ExercisesDay) => {
+      return ed.exercises.length > 0
+    }).some((val: boolean) => val === false)
+    this.setState({saveEnabled: !buttonDisabled})
+    console.log(this.props.navigation.state.params.rightButtonEnabled, buttonDisabled)
+    if (this.props.navigation.state.params.rightButtonEnabled === buttonDisabled) {
+      this.props.navigation.setParams({
+        rightButtonEnabled: !buttonDisabled
+      })
+    }
   }
 
   showActionSheet(day: ServerEntity.ExercisesDay, exercise: ServerEntity.ExerciseSet) {
@@ -197,9 +224,6 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const buttonDisabled = this.state.exercisesDay.map((ed: ServerEntity.ExercisesDay) => {
-      return ed.exercises.length > 0
-    }).some((val: boolean) => val === false)
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
@@ -208,10 +232,10 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         })}
         <View style={styles.viewButton}>
           <TouchableOpacity
-            disabled={buttonDisabled}
+            disabled={this.state.saveEnabled}
             style={[styles.button, styles.shadow]}
             onPress={() => this.saveProgram()}>
-            <Text style={[styles.text, buttonDisabled && styles.textDisabled]}>Save</Text>
+            <Text style={[styles.text, !this.state.saveEnabled && styles.textDisabled]}>Save</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

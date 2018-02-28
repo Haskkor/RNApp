@@ -6,24 +6,27 @@ import {colors} from '../../utils/colors'
 
 type IProps = {
   navigation: any
-  rightButtonFunction?: () => void
-  shouldDisplayRightButton?: boolean
 }
 
 type IState = {}
 
 class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
-  static navigationOptions = ({navigation, rightButtonFunction, shouldDisplayRightButton}: any) => ({
+  static navigationOptions = ({navigation}: any) => ({
     title: navigation.state.params.title,
     headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
       navigation.goBack()
     }}>
       <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
       <Text style={styles.text}>Back</Text></TouchableOpacity>,
-    headerRight: shouldDisplayRightButton &&
-    <TouchableOpacity style={styles.container} onPress={() => rightButtonFunction()}>
-      <Text style={styles.text}>Save</Text></TouchableOpacity>,
+    headerRight: navigation.state.params.rightButtonText &&
+    <TouchableOpacity disabled={!navigation.state.params.rightButtonEnabled}
+                      style={navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled}
+                      onPress={() => navigation.state.params.rightButtonFunction()}>
+      <Text style={styles.text}>{navigation.state.params.rightButtonText}</Text>
+      <Icon name={navigation.state.params.rightButtonIcon} size={grid.navIcon} color={colors.base}
+            style={styles.iconRight}/>
+    </TouchableOpacity>,
     headerStyle: {
       height: grid.unit * 3.25,
       backgroundColor: colors.light,
@@ -47,6 +50,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  containerDisabled: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    opacity: grid.lowOpacity
+  },
   text: {
     fontSize: grid.caption,
     fontFamily: grid.fontBold,
@@ -54,5 +62,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingRight: grid.unit
+  },
+  iconRight: {
+    paddingLeft: grid.unit
   }
 })
