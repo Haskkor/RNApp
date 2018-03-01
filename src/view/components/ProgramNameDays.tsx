@@ -62,8 +62,12 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
             title: 'Exercises',
+            name: this.state.name,
             days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString()),
-            saveProgram: this.props.navigation.state.params.saveProgram
+            saveProgram: this.props.navigation.state.params.saveProgram,
+            rightButtonIcon: 'save',
+            rightButtonText: 'Save',
+            rightButtonEnabled: false
           })
         }
       })
@@ -86,8 +90,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           style={[styles.textInput, styles.sectionSeparator, {width: grid.unit * 12.5}]}
           onChangeText={(text: string) => this.setState({name: text})}
           placeholder={'Type here'}
-          value={name}
-        />
+          value={name}/>
         <Text style={[styles.text, styles.elementsSeparator]}>Select training days:</Text>
         <View style={styles.wrapperDay}>
           {weekdays.map((day: Day, index: number) => {
@@ -112,8 +115,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           onChangeText={(text: string) => this.setState({numberOfDays: text})}
           placeholder={'Type here'}
           value={numberOfDays}
-          keyboardType={'numeric'}
-        />
+          keyboardType={'numeric'}/>
         <TouchableOpacity
           style={[styles.buttons, styles.shadow]}
           disabled={!this.buttonNextEnabled()}
@@ -125,15 +127,18 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
             } else {
               this.props.navigation.navigate('ProgramExercises', {
                 title: 'Exercises',
+                name: this.state.name,
                 days: numberOfDays === '' ? weekdays.filter((day: Day) => {
                     if (day.training) return day.name
                   }).map((day: Day) => day.name) :
                   loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
-                saveProgram: this.props.navigation.state.params.saveProgram
+                saveProgram: this.props.navigation.state.params.saveProgram,
+                rightButtonIcon: 'save',
+                rightButtonText: 'Save',
+                rightButtonEnabled: false
               })
             }
-          }}
-        >
+          }}>
           <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>

@@ -12,35 +12,38 @@ type IState = {}
 
 class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
-  static navigationOptions = ({navigation}: any) => ({
-    title: navigation.state.params.title,
-    headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
-      navigation.goBack()
-    }}>
-      <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
-      <Text style={styles.text}>Back</Text></TouchableOpacity>,
-    headerRight: navigation.state.params.rightButtonText &&
-    <TouchableOpacity disabled={!navigation.state.params.rightButtonEnabled}
-                      style={navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled}
-                      onPress={() => navigation.state.params.rightButtonFunction()}>
-      <Text style={styles.text}>{navigation.state.params.rightButtonText}</Text>
-      <Icon name={navigation.state.params.rightButtonIcon} size={grid.navIcon} color={colors.base}
-            style={styles.iconRight}/>
-    </TouchableOpacity>,
-    headerStyle: {
-      height: grid.unit * 3.25,
-      backgroundColor: colors.light,
-      paddingLeft: grid.unit,
-      paddingRight: grid.unit,
-      borderBottomColor: colors.base,
-      borderBottomWidth: grid.smallBorder
-    },
-    headerTitleStyle: {
-      fontFamily: grid.fontBold,
-      fontSize: grid.body,
-      color: colors.base
+  static navigationOptions = ({navigation}: any) => {
+    // this.navigationOptions.
+    return {
+      title: navigation.state.params.title,
+      headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
+        navigation.goBack()
+      }}>
+        <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
+        <Text style={styles.text}>Back</Text></TouchableOpacity>,
+      headerRight: navigation.state.params.rightButtonText &&
+      <TouchableOpacity disabled={!navigation.state.params.rightButtonEnabled}
+                        style={navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled}
+                        onPress={() => navigation.state.params.rightButtonFunction()}>
+        <Text style={styles.text}>{navigation.state.params.rightButtonText}</Text>
+        <Icon name={navigation.state.params.rightButtonIcon} size={grid.navIcon} color={colors.base}
+              style={styles.iconRight}/>
+      </TouchableOpacity>,
+      headerStyle: {
+        height: grid.unit * 3.25,
+        backgroundColor: colors.light,
+        paddingLeft: grid.unit,
+        paddingRight: grid.unit,
+        borderBottomColor: colors.base,
+        borderBottomWidth: grid.smallBorder
+      },
+      headerTitleStyle: {
+        fontFamily: grid.fontBold,
+        fontSize: grid.body,
+        color: colors.base
+      }
     }
-  })
+  }
 }
 
 export default HeaderStackNavigator
@@ -48,7 +51,8 @@ export default HeaderStackNavigator
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    opacity: 1
   },
   containerDisabled: {
     flexDirection: 'row',

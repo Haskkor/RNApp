@@ -37,9 +37,35 @@ class Programs extends React.PureComponent<IProps, IState> {
     if (this.props.programs.length === 0) this.animation.play()
   }
 
-  saveProgram = (program: ServerEntity.Program, index: number) => {
-    this.props.setPrograms({index: index, program: program})
+  saveProgram = (program: ServerEntity.ExercisesDay[], name: string, index: number) => {
+    const newProgram: ServerEntity.Program = {
+      days: program,
+      active: false,
+      name: name
+    }
+    this.props.setPrograms({index: index, program: newProgram})
   }
+
+
+
+
+
+  renderProgramRow = (row: ServerEntity.Program) => {
+    return (
+      <View key={row.toString()} style={{padding: 16, borderWidth: 0.5, justifyContent: 'flex-start', alignItems: 'center', borderColor: colors.base}}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{fontFamily: grid.fontBold, fontSize: 14, color: colors.base}}>{row.name}</Text>
+        <Text style={{fontFamily: grid.font, fontSize: 12, color: colors.base}}>{` - ${row.days.length} days program`}</Text>
+      </View>
+        <Text style={{fontFamily: grid.font, fontSize: 12, color: colors.base}}>{`${row.days.map((r: ServerEntity.ExercisesDay) => r.exercises.length).reduce((acc, cur) => acc + cur)} exercises`}</Text>
+      </View>
+    )
+  }
+
+
+
+
+
 
   render() {
     const {progressAnimation} = this.state
@@ -67,7 +93,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           onRowMoved={(e: any) => {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
           }}
-          renderRow={(row: any) => row && <View/> || <View/>}
+          renderRow={(row: ServerEntity.Program) => this.renderProgramRow(row)}
         /> ||
         <View style={styles.viewNoPrograms}>
           <View style={styles.viewTextNoProgram}>

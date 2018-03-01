@@ -1,6 +1,6 @@
 declare namespace ServerEntity {
   type Set = {
-    reps: number,
+    reps: number
     weight: number
   }
 
@@ -12,23 +12,24 @@ declare namespace ServerEntity {
   }
 
   type MuscleGroups = {
-    muscle: string,
+    muscle: string
     exercises: ExerciseMuscle[]
   }
 
   type ExerciseMuscle = {
-    name: string,
+    name: string
     equipment: string
   }
 
   type ExercisesDay = {
     day: string,
-    exercises: ExerciseSet[],
+    exercises: ExerciseSet[]
     isCollapsed: boolean
   }
 
   type Program = {
-    active: boolean,
+    name: string
+    active: boolean
     days: ExercisesDay[]
   }
 }

@@ -43,10 +43,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
 
   componentWillMount() {
     this.props.navigation.setParams({
-      rightButtonIcon: 'save',
-      rightButtonText: 'Save',
-      rightButtonFunction: this.saveProgram,
-      rightButtonEnabled: false
+      rightButtonFunction: this.saveProgram
     })
   }
 
@@ -66,7 +63,6 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
       return ed.exercises.length > 0
     }).some((val: boolean) => val === false)
     this.setState({saveEnabled: !buttonDisabled})
-    console.log(this.props.navigation.state.params.rightButtonEnabled, buttonDisabled)
     if (this.props.navigation.state.params.rightButtonEnabled === buttonDisabled) {
       this.props.navigation.setParams({
         rightButtonEnabled: !buttonDisabled
@@ -216,7 +212,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   saveProgram = () => {
-    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, null)
+    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, this.props.navigation.state.params.name, null)
     this.props.navigation.dispatch(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({routeName: 'Home'})]
@@ -232,7 +228,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         })}
         <View style={styles.viewButton}>
           <TouchableOpacity
-            disabled={this.state.saveEnabled}
+            disabled={!this.state.saveEnabled}
             style={[styles.button, styles.shadow]}
             onPress={() => this.saveProgram()}>
             <Text style={[styles.text, !this.state.saveEnabled && styles.textDisabled]}>Save</Text>
