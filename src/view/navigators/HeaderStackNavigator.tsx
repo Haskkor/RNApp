@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Text, StyleSheet, TouchableOpacity} from 'react-native'
+import {Text, StyleSheet, TouchableOpacity, TouchableHighlight} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
@@ -14,6 +14,8 @@ class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
   static navigationOptions = ({navigation}: any) => {
     // this.navigationOptions.
+    console.log(navigation.state.params.rightButtonEnabled)
+    const {rightButtonEnabled} = navigation.state.params
     return {
       title: navigation.state.params.title,
       headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
@@ -22,13 +24,16 @@ class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
         <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
         <Text style={styles.text}>Back</Text></TouchableOpacity>,
       headerRight: navigation.state.params.rightButtonText &&
-      <TouchableOpacity disabled={!navigation.state.params.rightButtonEnabled}
-                        style={navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled}
+      <TouchableHighlight disabled={!navigation.state.params.rightButtonEnabled}
+                        style={
+                          [
+                            navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled,
+                            {borderBottomWidth: 3, borderBottomColor:  rightButtonEnabled ? 'red' : 'blue'}
+                          ]
+                        }
                         onPress={() => navigation.state.params.rightButtonFunction()}>
         <Text style={styles.text}>{navigation.state.params.rightButtonText}</Text>
-        <Icon name={navigation.state.params.rightButtonIcon} size={grid.navIcon} color={colors.base}
-              style={styles.iconRight}/>
-      </TouchableOpacity>,
+      </TouchableHighlight>,
       headerStyle: {
         height: grid.unit * 3.25,
         backgroundColor: colors.light,
