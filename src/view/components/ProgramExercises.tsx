@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {ActionSheetIOS, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {NavigationAction, NavigationActions, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Collapsible from 'react-native-collapsible'
@@ -10,6 +9,7 @@ import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
 import {HeaderStatus} from '../../core/enums'
+import Header from './Header'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -26,8 +26,6 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   indexDaySelected: number
   editedDayIndex: number
   editedExerciseIndex: number
-
-  static navigationOptions = HeaderStackNavigator.navigationOptions
 
   constructor() {
     super()
@@ -92,7 +90,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           this.props.navigation.navigate('ProgramEditExercise',
             {
               exerciseToEdit: this.state.exercisesDay[indexDay].exercises[indexExercise],
-              status: HeaderStatus.editExercise,
+              status: HeaderStatus.stack,
               title: 'Edit exercise',
               exercise: exercise,
               saveEdit: this.editExerciseFinished
@@ -108,7 +106,6 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   editExerciseFinished = (exercise: ServerEntity.ExerciseSet) => {
-    console.log(exercise)
     const exercisesDayCopy = this.state.exercisesDay.slice()
     const exerciseSetCopy = exercisesDayCopy[this.editedDayIndex].exercises.slice()
     exerciseSetCopy[this.editedExerciseIndex] = exercise
@@ -223,6 +220,18 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
     return (
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content"/>
+        <Header
+          navigation={this.props.navigation}
+          colorBorder={colors.headerBorderLight}
+          colorHeader={colors.headerLight}
+          textColor={colors.base}
+          status={HeaderStatus.drawer}
+          title="Exercises"
+          secondaryIcon="save"
+          secondaryText="Save"
+          secondaryEnabled={this.state.saveEnabled}
+          secondaryFunction={() => this.saveProgram}
+        />
         {this.state.exercisesDay.map((day: ServerEntity.ExercisesDay, index: number) => {
           return this.renderSectionDay(day, index)
         })}

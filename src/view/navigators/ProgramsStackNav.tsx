@@ -12,10 +12,12 @@ const ProgramsStackNav = StackNavigator({
     navigationOptions: ({navigation}: any): any => ({header: null})
   },
   ProgramNameDays: {
-    screen: ProgramNameDays
+    screen: ProgramNameDays,
+    navigationOptions: ({navigation}: any): any => ({header: null})
   },
   ProgramExercises: {
-    screen: ProgramExercises
+    screen: ProgramExercises,
+    navigationOptions: ({navigation}: any): any => ({header: null})
   },
   ProgramEditExercise: {
     screen: QuickLog,

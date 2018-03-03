@@ -81,10 +81,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           status={HeaderStatus.drawer}
           title="Programs"
           secondaryIcon="add"
-          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {
-            title: 'Name and Days',
-            saveProgram: this.saveProgram
-          })}
+          secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {saveProgram: this.saveProgram})}
         />
         {programs.length > 0 && <SortableListView
           style={styles.sortableList}
@@ -102,10 +99,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           </View>
           <View style={styles.viewAnimationNoProgram}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ProgramNameDays', {
-                title: 'Name and Days',
-                saveProgram: this.saveProgram
-              })}>
+              onPress={() => this.props.navigation.navigate('ProgramNameDays', {saveProgram: this.saveProgram})}>
               <LottieView
                 ref={(ref: any) => this.animation = ref}
                 loop={true}

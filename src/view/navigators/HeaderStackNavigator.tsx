@@ -13,9 +13,6 @@ type IState = {}
 class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
 
   static navigationOptions = ({navigation}: any) => {
-    // this.navigationOptions.
-    console.log(navigation.state.params.rightButtonEnabled)
-    const {rightButtonEnabled} = navigation.state.params
     return {
       title: navigation.state.params.title,
       headerLeft: <TouchableOpacity style={styles.container} onPress={() => {
@@ -25,14 +22,11 @@ class HeaderStackNavigator extends React.PureComponent<IProps, IState> {
         <Text style={styles.text}>Back</Text></TouchableOpacity>,
       headerRight: navigation.state.params.rightButtonText &&
       <TouchableHighlight disabled={!navigation.state.params.rightButtonEnabled}
-                        style={
-                          [
-                            navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled,
-                            {borderBottomWidth: 3, borderBottomColor:  rightButtonEnabled ? 'red' : 'blue'}
-                          ]
-                        }
+                        style={navigation.state.params.rightButtonEnabled ? styles.container : styles.containerDisabled}
                         onPress={() => navigation.state.params.rightButtonFunction()}>
         <Text style={styles.text}>{navigation.state.params.rightButtonText}</Text>
+        <Icon name={navigation.state.params.rightButtonIcon} size={grid.navIcon} color={colors.base}
+              style={styles.iconRight}/>
       </TouchableHighlight>,
       headerStyle: {
         height: grid.unit * 3.25,

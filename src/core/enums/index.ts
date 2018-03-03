@@ -6,5 +6,5 @@ export enum ToasterInfo {
 
 export enum HeaderStatus {
   drawer,
-  editExercise
+  stack
 }

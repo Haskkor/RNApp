@@ -1,11 +1,12 @@
 import * as React from 'react'
 import {ActionSheetIOS, Dimensions, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
-import HeaderStackNavigator from '../navigators/HeaderStackNavigator'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import * as loDash from 'lodash'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
+import {HeaderStatus} from '../../core/enums'
+import Header from './Header'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -23,8 +24,6 @@ export type Day = {
 }
 
 class ProgramNameDays extends React.PureComponent<IProps, IState> {
-
-  static navigationOptions = HeaderStackNavigator.navigationOptions
 
   constructor() {
     super()
@@ -61,13 +60,9 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           })
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
-            title: 'Exercises',
             name: this.state.name,
             days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString()),
-            saveProgram: this.props.navigation.state.params.saveProgram,
-            rightButtonIcon: 'save',
-            rightButtonText: 'Save',
-            rightButtonEnabled: false
+            saveProgram: this.props.navigation.state.params.saveProgram
           })
         }
       })
@@ -85,6 +80,25 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     return (
       <KeyboardAwareScrollView contentContainerStyle={styles.container} scrollEnabled={false} extraHeight={90}>
         <StatusBar barStyle="dark-content"/>
+        <Header
+          navigation={this.props.navigation}
+          colorBorder={colors.headerBorderLight}
+          colorHeader={colors.headerLight}
+          textColor={colors.base}
+          status={HeaderStatus.drawer}
+          title="Name and Days"
+          secondaryIcon="arrow-forward"
+          secondaryText="Next"
+          secondaryEnabled={this.buttonNextEnabled()}
+          secondaryFunction={() => this.props.navigation.navigate('ProgramExercises', {
+            name: this.state.name,
+            days: numberOfDays === '' ? weekdays.filter((day: Day) => {
+                if (day.training) return day.name
+              }).map((day: Day) => day.name) :
+              loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
+            saveProgram: this.props.navigation.state.params.saveProgram
+          })}
+        />
         <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
         <TextInput
           style={[styles.textInput, styles.sectionSeparator, {width: grid.unit * 12.5}]}
@@ -126,16 +140,12 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
               this.showActionSheet()
             } else {
               this.props.navigation.navigate('ProgramExercises', {
-                title: 'Exercises',
                 name: this.state.name,
                 days: numberOfDays === '' ? weekdays.filter((day: Day) => {
                     if (day.training) return day.name
                   }).map((day: Day) => day.name) :
                   loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
-                saveProgram: this.props.navigation.state.params.saveProgram,
-                rightButtonIcon: 'save',
-                rightButtonText: 'Save',
-                rightButtonEnabled: false
+                saveProgram: this.props.navigation.state.params.saveProgram
               })
             }
           }}>

@@ -13,6 +13,8 @@ type IProps = {
   colorBorder: string
   title: string
   secondaryIcon?: string
+  secondaryText?: string
+  secondaryEnabled?: boolean
   secondaryFunction?: () => void
   status: HeaderStatus
 }
@@ -21,14 +23,15 @@ type IState = {}
 
 class Header extends React.PureComponent<IProps, IState> {
   render() {
-    const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon, status} = this.props
+    const {navigation, textColor, colorBorder, colorHeader, title, secondaryFunction, secondaryIcon, status,
+      secondaryText, secondaryEnabled} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
         <View style={[styles.viewSemiFlex, {marginLeft: grid.unit * 1.25}]}>
           {status === HeaderStatus.drawer &&
           <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
             <Icon name="fitness-center" size={grid.navIcon} color={textColor}/>
-          </TouchableOpacity> || status === HeaderStatus.editExercise &&
+          </TouchableOpacity> || status === HeaderStatus.stack &&
           <TouchableOpacity style={styles.containerButtonBack} onPress={() => navigation.goBack()}>
             <Icon name="arrow-back" size={grid.navIcon} color={colors.base} style={styles.icon}/>
             <Text style={styles.text}>Back</Text></TouchableOpacity>}
@@ -37,7 +40,12 @@ class Header extends React.PureComponent<IProps, IState> {
           <Text style={[styles.title, {color: textColor}]}>{title}</Text>
         </View>
         <View style={[styles.viewSemiFlex, styles.secondaryIconView]}>
-          {secondaryIcon && <TouchableOpacity onPress={() => secondaryFunction()}>
+          {secondaryIcon &&
+          <TouchableOpacity
+            onPress={() => secondaryFunction()}
+            disabled={!secondaryEnabled}
+            style={{opacity: !secondaryEnabled ? grid.lowOpacity : 1}}>
+            {secondaryText && <Text style={styles.text}>{secondaryText}</Text>}
             <Icon name={secondaryIcon} size={grid.navIcon} color={textColor}/>
           </TouchableOpacity>}
         </View>
@@ -45,6 +53,8 @@ class Header extends React.PureComponent<IProps, IState> {
     )
   }
 }
+
+export default Header
 
 const styles = StyleSheet.create({
   header: {
@@ -84,5 +94,3 @@ const styles = StyleSheet.create({
     paddingRight: grid.unit
   }
 })
-
-export default Header
