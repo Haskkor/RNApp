@@ -209,7 +209,7 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   saveProgram = () => {
-    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, this.props.navigation.state.params.name, null)
+    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, this.props.navigation.state.params.name)
     this.props.navigation.dispatch(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({routeName: 'Home'})]

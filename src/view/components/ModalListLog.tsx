@@ -5,6 +5,7 @@ import RowListLog from './RowListLog'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
+import RowSortableList from "./RowSortableList";
 
 type IProps = {
   dataLog: ServerEntity.ExerciseSet[]
@@ -69,7 +70,8 @@ class ModalListLog extends React.PureComponent<IProps, IState> {
               this.forceUpdate()
             }}
             renderRow={(row: ServerEntity.ExerciseSet) => row &&
-                <RowListLog data={row} action={this.showActionSheet}/> || <View/>}
+                <RowSortableList data={row} action={this.showActionSheet} component={<RowListLog data={row}/>}/> ||
+                <View/>}
           />
         </Modal>
       </View>

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Animated, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {ActionSheetIOS, Animated, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Header from './Header'
 import * as SortableListView from 'react-native-sortable-listview'
 import Icon from 'react-native-vector-icons/MaterialIcons'
@@ -11,11 +11,16 @@ import {HeaderStatus} from '../../core/enums'
 import {connect, Dispatch} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import * as ProgramsActions from '../../core/modules/entities/programs'
+import RowSortableList from './RowSortableList'
+import RowProgramsList from './RowProgramsList'
+import * as loDash from 'lodash'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
   programs: ServerEntity.Program[]
   setPrograms: typeof ProgramsActions.setPrograms
+  editProgram: typeof ProgramsActions.editProgram
+  deleteProgram: typeof ProgramsActions.deleteProgram
 }
 
 type IState = {
@@ -30,6 +35,7 @@ class Programs extends React.PureComponent<IProps, IState> {
     super()
     this.state = {progressAnimation: new Animated.Value(0)}
     this.saveProgram = this.saveProgram.bind(this)
+    this.showActionSheet = this.showActionSheet.bind(this)
   }
 
   componentDidMount() {
@@ -37,35 +43,36 @@ class Programs extends React.PureComponent<IProps, IState> {
     if (this.props.programs.length === 0) this.animation.play()
   }
 
-  saveProgram = (program: ServerEntity.ExercisesDay[], name: string, index: number) => {
+  saveProgram = (program: ServerEntity.ExercisesDay[], name: string) => {
     const newProgram: ServerEntity.Program = {
       days: program,
       active: false,
       name: name
     }
-    this.props.setPrograms({index: index, program: newProgram})
+    this.props.setPrograms({program: newProgram})
   }
 
-
-
-
-
-  renderProgramRow = (row: ServerEntity.Program) => {
-    return (
-      <View key={row.toString()} style={{padding: 16, borderWidth: 0.5, justifyContent: 'flex-start', alignItems: 'center', borderColor: colors.base}}>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={{fontFamily: grid.fontBold, fontSize: 14, color: colors.base}}>{row.name}</Text>
-        <Text style={{fontFamily: grid.font, fontSize: 12, color: colors.base}}>{` - ${row.days.length} days program`}</Text>
-      </View>
-        <Text style={{fontFamily: grid.font, fontSize: 12, color: colors.base}}>{`${row.days.map((r: ServerEntity.ExercisesDay) => r.exercises.length).reduce((acc, cur) => acc + cur)} exercises`}</Text>
-      </View>
-    )
+  showActionSheet = (data: ServerEntity.Program) => {
+    const {programs, editProgram, deleteProgram} = this.props
+    ActionSheetIOS.showActionSheetWithOptions({
+        title: data.name,
+        options: [data.active ? 'Set inactive' : 'Set active', 'Edit', 'Delete', 'Cancel'],
+        destructiveButtonIndex: 2,
+        cancelButtonIndex: 3
+      },
+      (buttonIndex) => {
+        const indexRow = loDash.findIndex(programs, (row: ServerEntity.Program) => {return row === data})
+        if (buttonIndex === 0) {
+          const pgAct = programs.find((pg: ServerEntity.Program) => pg.active)
+          if (pgAct) editProgram({index: indexRow, program: {active: false, days: pgAct.days, name: pgAct.name}})
+          editProgram({index: indexRow, program: {active: !data.active, days: data.days, name: data.name}})
+        } else if (buttonIndex === 1) {
+          console.log('test')
+        } else if (buttonIndex === 2) {
+          deleteProgram({index: indexRow})
+        }
+      })
   }
-
-
-
-
-
 
   render() {
     const {progressAnimation} = this.state
@@ -83,14 +90,17 @@ class Programs extends React.PureComponent<IProps, IState> {
           secondaryIcon="add"
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {saveProgram: this.saveProgram})}
         />
-        {programs.length > 0 && <SortableListView
+        {programs.length > 0 &&
+        <SortableListView
           style={styles.sortableList}
           data={programs}
           order={this.order}
           onRowMoved={(e: any) => {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
           }}
-          renderRow={(row: ServerEntity.Program) => this.renderProgramRow(row)}
+          renderRow={(row: ServerEntity.Program) => row &&
+              <RowSortableList data={row} action={this.showActionSheet} component={<RowProgramsList data={row}/>}/> ||
+              <View/>}
         /> ||
         <View style={styles.viewNoPrograms}>
           <View style={styles.viewTextNoProgram}>
@@ -104,10 +114,7 @@ class Programs extends React.PureComponent<IProps, IState> {
                 ref={(ref: any) => this.animation = ref}
                 loop={true}
                 speed={0.6}
-                style={{
-                  width: grid.unit * 3,
-                  height: grid.unit * 3
-                }}
+                style={styles.animation}
                 progress={progressAnimation}
                 source={require('../../../assets/lottie/add_button.json')}
               />
@@ -127,7 +134,9 @@ const mapStateToProps = (rootState: ReduxState.RootState) => {
 
 const mapDispatchToProps =
   (dispatch: Dispatch<any>) => bindActionCreators({
-    setPrograms: ProgramsActions.setPrograms
+    setPrograms: ProgramsActions.setPrograms,
+    editProgram: ProgramsActions.editProgram,
+    deleteProgram: ProgramsActions.deleteProgram
   }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Programs)
@@ -161,5 +170,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: grid.unit * 2.5
+  },
+  rowList: {
+    padding: grid.unit,
+    backgroundColor: colors.lightAlternative,
+    borderBottomWidth: grid.regularBorder,
+    borderColor: colors.light
+  },
+  animation: {
+    width: grid.unit * 3,
+    height: grid.unit * 3
   }
 })
