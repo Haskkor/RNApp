@@ -225,12 +225,12 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
           colorBorder={colors.headerBorderLight}
           colorHeader={colors.headerLight}
           textColor={colors.base}
-          status={HeaderStatus.drawer}
+          status={HeaderStatus.stack}
           title="Exercises"
           secondaryIcon="save"
           secondaryText="Save"
           secondaryEnabled={this.state.saveEnabled}
-          secondaryFunction={() => this.saveProgram}
+          secondaryFunction={() => this.saveProgram()}
         />
         {this.state.exercisesDay.map((day: ServerEntity.ExercisesDay, index: number) => {
           return this.renderSectionDay(day, index)

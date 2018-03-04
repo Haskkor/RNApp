@@ -230,6 +230,7 @@ class QuickLog extends React.PureComponent<IProps, IState> {
           textColor={colors.base}
           title={navigationParams ? navigationParams.title : 'Quick Log'}
           secondaryIcon="search"
+          secondaryEnabled={true}
           secondaryFunction={this.handleModalSearch}/>
         <Grid style={styles.grid}>
           <Row size={35} style={styles.rows}>

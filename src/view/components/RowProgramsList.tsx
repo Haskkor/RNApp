@@ -14,15 +14,16 @@ class RowProgramsList extends React.PureComponent<IProps, IState> {
 
   render() {
     const {days, name, active} = this.props.data
+    const exercises = days.map((r: ServerEntity.ExercisesDay) => r.exercises.length).reduce((acc, cur) => acc + cur)
     return (
       <View style={styles.rowContainer}>
         <View style={styles.textContainer}>
           <View style={styles.rowContainer}>
             <Text style={styles.programName}>{name}</Text>
-            <Text style={styles.textDays}>{` - ${days.length} days program`}</Text>
+            <Text style={styles.textDays}>{` - ${days.length} day${days.length > 1 ? 's' : ''} program`}</Text>
           </View>
           <Text style={styles.textExercises}>
-            {`${days.map((r: ServerEntity.ExercisesDay) => r.exercises.length).reduce((acc, cur) => acc + cur)} exercises`}
+            {`${exercises} exercise${exercises > 1 ? 's' : ''}`}
           </Text>
         </View>
         <View style={styles.iconContainer}>
@@ -36,7 +37,9 @@ class RowProgramsList extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   rowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   textContainer: {
     flexDirection: 'column',

@@ -43,6 +43,11 @@ class Programs extends React.PureComponent<IProps, IState> {
     if (this.props.programs.length === 0) this.animation.play()
   }
 
+  componentDidUpdate() {
+    this.order = Object.keys(this.props.programs)
+    if (this.props.programs.length === 0) this.animation.play()
+  }
+
   saveProgram = (program: ServerEntity.ExercisesDay[], name: string) => {
     const newProgram: ServerEntity.Program = {
       days: program,
@@ -61,7 +66,9 @@ class Programs extends React.PureComponent<IProps, IState> {
         cancelButtonIndex: 3
       },
       (buttonIndex) => {
-        const indexRow = loDash.findIndex(programs, (row: ServerEntity.Program) => {return row === data})
+        const indexRow = loDash.findIndex(programs, (row: ServerEntity.Program) => {
+          return row === data
+        })
         if (buttonIndex === 0) {
           const pgAct = programs.find((pg: ServerEntity.Program) => pg.active)
           if (pgAct) editProgram({index: indexRow, program: {active: false, days: pgAct.days, name: pgAct.name}})
@@ -88,6 +95,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           status={HeaderStatus.drawer}
           title="Programs"
           secondaryIcon="add"
+          secondaryEnabled={true}
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {saveProgram: this.saveProgram})}
         />
         {programs.length > 0 &&
@@ -99,8 +107,8 @@ class Programs extends React.PureComponent<IProps, IState> {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
           }}
           renderRow={(row: ServerEntity.Program) => row &&
-              <RowSortableList data={row} action={this.showActionSheet} component={<RowProgramsList data={row}/>}/> ||
-              <View/>}
+            <RowSortableList data={row} action={this.showActionSheet} component={<RowProgramsList data={row}/>}/> ||
+            <View/>}
         /> ||
         <View style={styles.viewNoPrograms}>
           <View style={styles.viewTextNoProgram}>

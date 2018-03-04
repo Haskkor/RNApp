@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import Header, {HeaderStatus} from './Header'
+import Header from './Header'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
+import {HeaderStatus} from '../../core/enums/index'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>

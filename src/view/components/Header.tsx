@@ -27,7 +27,7 @@ class Header extends React.PureComponent<IProps, IState> {
       secondaryText, secondaryEnabled} = this.props
     return (
       <View style={[styles.header, {borderColor: colorBorder, backgroundColor: colorHeader}]}>
-        <View style={[styles.viewSemiFlex, {marginLeft: grid.unit * 1.25}]}>
+        <View style={[styles.viewSemiFlex, styles.primaryIconView]}>
           {status === HeaderStatus.drawer &&
           <TouchableOpacity onPress={() => navigation.navigate('DrawerOpen')}>
             <Icon name="fitness-center" size={grid.navIcon} color={textColor}/>
@@ -39,14 +39,14 @@ class Header extends React.PureComponent<IProps, IState> {
         <View style={styles.viewFlex}>
           <Text style={[styles.title, {color: textColor}]}>{title}</Text>
         </View>
-        <View style={[styles.viewSemiFlex, styles.secondaryIconView]}>
+        <View style={[styles.viewSemiFlex, styles.secondaryIconView, {opacity: !secondaryEnabled ? grid.lowOpacity : 1}]}>
           {secondaryIcon &&
           <TouchableOpacity
             onPress={() => secondaryFunction()}
             disabled={!secondaryEnabled}
-            style={{opacity: !secondaryEnabled ? grid.lowOpacity : 1}}>
+            style={styles.containerButtonBack}>
             {secondaryText && <Text style={styles.text}>{secondaryText}</Text>}
-            <Icon name={secondaryIcon} size={grid.navIcon} color={textColor}/>
+            <Icon name={secondaryIcon} style={styles.iconRight} size={grid.navIcon} color={textColor}/>
           </TouchableOpacity>}
         </View>
       </View>
@@ -77,11 +77,19 @@ const styles = StyleSheet.create({
   viewSemiFlex: {
     flex: 0.5
   },
+  primaryIconView: {
+    marginLeft: grid.unit * 1.25,
+    alignItems: 'flex-start'
+  },
   secondaryIconView: {
     marginRight: grid.unit * 1.25,
     alignItems: 'flex-end'
   },
   containerButtonBack: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  containerButtonRight: {
     flexDirection: 'row',
     alignItems: 'center'
   },
@@ -92,5 +100,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingRight: grid.unit
+  },
+  iconRight: {
+    paddingLeft: grid.unit
   }
 })

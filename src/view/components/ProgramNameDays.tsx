@@ -85,7 +85,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           colorBorder={colors.headerBorderLight}
           colorHeader={colors.headerLight}
           textColor={colors.base}
-          status={HeaderStatus.drawer}
+          status={HeaderStatus.stack}
           title="Name and Days"
           secondaryIcon="arrow-forward"
           secondaryText="Next"
@@ -99,58 +99,60 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
             saveProgram: this.props.navigation.state.params.saveProgram
           })}
         />
-        <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
-        <TextInput
-          style={[styles.textInput, styles.sectionSeparator, {width: grid.unit * 12.5}]}
-          onChangeText={(text: string) => this.setState({name: text})}
-          placeholder={'Type here'}
-          value={name}/>
-        <Text style={[styles.text, styles.elementsSeparator]}>Select training days:</Text>
-        <View style={styles.wrapperDay}>
-          {weekdays.map((day: Day, index: number) => {
-            return (
-              <TouchableOpacity
-                key={day.name}
-                style={[styles.box, day.training ? styles.dayTrained : styles.dayOff,
-                  index === weekdays.length - 1 && styles.sectionSeparator]}
-                onPress={() => {
-                  let weekdaysCopy = weekdays.slice()
-                  weekdaysCopy[index] = {name: day.name, training: !day.training}
-                  this.setState({weekdays: weekdaysCopy})
-                }}>
-                <Text style={styles.text}>{day.name}</Text>
-              </TouchableOpacity>
-            )
-          })}
+        <View style={styles.containerForm}>
+          <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
+          <TextInput
+            style={[styles.textInput, styles.sectionSeparator, {width: grid.unit * 12.5}]}
+            onChangeText={(text: string) => this.setState({name: text})}
+            placeholder={'Type here'}
+            value={name}/>
+          <Text style={[styles.text, styles.elementsSeparator]}>Select training days:</Text>
+          <View style={styles.wrapperDay}>
+            {weekdays.map((day: Day, index: number) => {
+              return (
+                <TouchableOpacity
+                  key={day.name}
+                  style={[styles.box, day.training ? styles.dayTrained : styles.dayOff,
+                    index === weekdays.length - 1 && styles.sectionSeparator]}
+                  onPress={() => {
+                    let weekdaysCopy = weekdays.slice()
+                    weekdaysCopy[index] = {name: day.name, training: !day.training}
+                    this.setState({weekdays: weekdaysCopy})
+                  }}>
+                  <Text style={styles.text}>{day.name}</Text>
+                </TouchableOpacity>
+              )
+            })}
+          </View>
+          <Text style={[styles.text, styles.elementsSeparator]}>Or enter a number of days trained:</Text>
+          <TextInput
+            style={[styles.textInput, styles.sectionSeparator, {width: 100}]}
+            onChangeText={(text: string) => this.setState({numberOfDays: text})}
+            placeholder={'Type here'}
+            value={numberOfDays}
+            keyboardType={'numeric'}/>
+          <TouchableOpacity
+            style={[styles.buttons, styles.shadow]}
+            disabled={!this.buttonNextEnabled()}
+            onPress={() => {
+              if ((numberOfDays !== '' && weekdays.some((elem) => {
+                  return elem.training
+                }))) {
+                this.showActionSheet()
+              } else {
+                this.props.navigation.navigate('ProgramExercises', {
+                  name: this.state.name,
+                  days: numberOfDays === '' ? weekdays.filter((day: Day) => {
+                      if (day.training) return day.name
+                    }).map((day: Day) => day.name) :
+                    loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
+                  saveProgram: this.props.navigation.state.params.saveProgram
+                })
+              }
+            }}>
+            <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
+          </TouchableOpacity>
         </View>
-        <Text style={[styles.text, styles.elementsSeparator]}>Or enter a number of days trained:</Text>
-        <TextInput
-          style={[styles.textInput, styles.sectionSeparator, {width: 100}]}
-          onChangeText={(text: string) => this.setState({numberOfDays: text})}
-          placeholder={'Type here'}
-          value={numberOfDays}
-          keyboardType={'numeric'}/>
-        <TouchableOpacity
-          style={[styles.buttons, styles.shadow]}
-          disabled={!this.buttonNextEnabled()}
-          onPress={() => {
-            if ((numberOfDays !== '' && weekdays.some((elem) => {
-                return elem.training
-              }))) {
-              this.showActionSheet()
-            } else {
-              this.props.navigation.navigate('ProgramExercises', {
-                name: this.state.name,
-                days: numberOfDays === '' ? weekdays.filter((day: Day) => {
-                    if (day.training) return day.name
-                  }).map((day: Day) => day.name) :
-                  loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
-                saveProgram: this.props.navigation.state.params.saveProgram
-              })
-            }
-          }}>
-          <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>
-        </TouchableOpacity>
       </KeyboardAwareScrollView>
     )
   }
@@ -158,9 +160,11 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
+  },
+  containerForm: {
+    marginTop: 30,
     alignItems: 'center',
-    flexDirection: 'column',
     justifyContent: 'center'
   },
   text: {
