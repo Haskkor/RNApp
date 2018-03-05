@@ -5,7 +5,7 @@ import RowListLog from './RowListLog'
 import * as loDash from 'lodash'
 import {colors} from '../../utils/colors'
 import {grid} from '../../utils/grid'
-import RowSortableList from "./RowSortableList";
+import RowSortableList from './RowSortableList'
 
 type IProps = {
   dataLog: ServerEntity.ExerciseSet[]

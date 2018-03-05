@@ -14,6 +14,8 @@ import * as ProgramsActions from '../../core/modules/entities/programs'
 import RowSortableList from './RowSortableList'
 import RowProgramsList from './RowProgramsList'
 import * as loDash from 'lodash'
+import Animate from 'react-move/Animate'
+import {easeQuadOut} from 'd3-ease'
 
 type IProps = {
   navigation: NavigationScreenProp<NavigationRoute<any>, NavigationAction>
@@ -25,6 +27,7 @@ type IProps = {
 
 type IState = {
   progressAnimation: Animated.Value
+  showNoActiveProgramAlert: boolean
 }
 
 class Programs extends React.PureComponent<IProps, IState> {
@@ -33,19 +36,31 @@ class Programs extends React.PureComponent<IProps, IState> {
 
   constructor() {
     super()
-    this.state = {progressAnimation: new Animated.Value(0)}
+    this.state = {progressAnimation: new Animated.Value(0), showNoActiveProgramAlert: false}
     this.saveProgram = this.saveProgram.bind(this)
     this.showActionSheet = this.showActionSheet.bind(this)
+    this.showAlertNoActiveProgram = this.showAlertNoActiveProgram.bind(this)
   }
 
   componentDidMount() {
     this.order = Object.keys(this.props.programs)
     if (this.props.programs.length === 0) this.animation.play()
+    this.showAlertNoActiveProgram(this.props)
   }
 
   componentDidUpdate() {
     this.order = Object.keys(this.props.programs)
     if (this.props.programs.length === 0) this.animation.play()
+  }
+
+  componentWillUpdate(nextProps: IProps) {
+    this.showAlertNoActiveProgram(nextProps)
+  }
+
+  showAlertNoActiveProgram = (props: IProps) => {
+    const programActive = props.programs.map((pg: ServerEntity.Program) => pg.active)
+      .some((act: boolean) => act)
+    this.setState({showNoActiveProgramAlert: !programActive})
   }
 
   saveProgram = (program: ServerEntity.ExercisesDay[], name: string) => {
@@ -82,7 +97,7 @@ class Programs extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {progressAnimation} = this.state
+    const {progressAnimation, showNoActiveProgramAlert} = this.state
     const {programs} = this.props
     return (
       <View style={styles.container}>
@@ -98,6 +113,40 @@ class Programs extends React.PureComponent<IProps, IState> {
           secondaryEnabled={true}
           secondaryFunction={() => this.props.navigation.navigate('ProgramNameDays', {saveProgram: this.saveProgram})}
         />
+        <Animate
+          show={showNoActiveProgramAlert && programs.length > 0}
+          start={{
+            opacityView: 0,
+            height: 0
+          }}
+          enter={{
+            height: [30],
+            opacityView: [grid.highOpacity],
+            timing: {duration: 400, ease: easeQuadOut}
+          }}
+          leave={{
+            height: [0],
+            opacityView: [0],
+            timing: {duration: 400, ease: easeQuadOut}
+          }}>
+          {(state: { opacityView: number, height: number }) => {
+            return (
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: colors.orange,
+                opacity: state.opacityView,
+                height: state.height,
+                overflow: 'hidden'
+              }}>
+                <Icon name="warning" size={grid.navIcon} color={colors.white} style={{marginRight: grid.unit / 2}}/>
+                <Text style={{fontFamily: grid.font, fontSize: 14, color: colors.white}}>Please select an active
+                  program</Text>
+              </View>
+            )
+          }}
+        </Animate>
         {programs.length > 0 &&
         <SortableListView
           style={styles.sortableList}
