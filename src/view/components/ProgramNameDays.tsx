@@ -2,7 +2,7 @@ import * as React from 'react'
 import {ActionSheetIOS, Dimensions, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import {NavigationAction, NavigationRoute, NavigationScreenProp} from 'react-navigation'
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
-import * as loDash from 'lodash'
+import * as _ from 'lodash'
 import {grid} from '../../utils/grid'
 import {colors} from '../../utils/colors'
 import {HeaderStatus} from '../../core/enums'
@@ -41,6 +41,25 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
       ]
     }
     this.buttonNextEnabled = this.buttonNextEnabled.bind(this)
+    this.navigateToProgramExercises = this.navigateToProgramExercises.bind(this)
+  }
+
+  componentDidMount() {
+    const {params} = this.props.navigation.state
+    if (params.editedProgram) {
+      this.setState({name: params.editedProgram.name})
+      if (isNaN(+params.editedProgram.days[0].day)) {
+        const activeDays = params.editedProgram.days.map((day: ServerEntity.ExercisesDay) => day.day)
+        let weekdaysCopy = this.state.weekdays.slice()
+        activeDays.map((ad: string) => {
+          const index = _.findIndex(weekdaysCopy, (wd: any) => wd.name === ad)
+          weekdaysCopy[index] = {name: ad, training: true}
+        })
+        this.setState({weekdays: weekdaysCopy})
+      } else {
+        this.setState({numberOfDays: params.editedProgram.days.length.toString()})
+      }
+    }
   }
 
   showActionSheet() {
@@ -52,7 +71,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
       (buttonIndex) => {
         if (buttonIndex === 0) {
           this.props.navigation.navigate('ProgramExercises', {
-            title: 'Exercises',
+            name: this.state.name,
             days: this.state.weekdays.filter((day: Day) => {
               if (day.training) return day.name
             }).map((day: Day) => day.name),
@@ -61,7 +80,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
             name: this.state.name,
-            days: loDash.range(+this.state.numberOfDays).map((value: number) => value.toString()),
+            days: _.range(+this.state.numberOfDays).map((value: number) => value.toString()),
             saveProgram: this.props.navigation.state.params.saveProgram
           })
         }
@@ -73,6 +92,17 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     return name !== '' && (numberOfDays !== '' || weekdays.some((elem) => {
       return elem.training
     }))
+  }
+
+  navigateToProgramExercises = () => {
+    this.props.navigation.navigate('ProgramExercises', {
+      name: this.state.name,
+      days: this.state.numberOfDays === '' ? this.state.weekdays.filter((day: Day) => {
+          if (day.training) return day.name
+        }).map((day: Day) => day.name) :
+        _.range(+this.state.numberOfDays).map((value: number) => (value + 1).toString()),
+      saveProgram: this.props.navigation.state.params.saveProgram
+    })
   }
 
   render() {
@@ -90,14 +120,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           secondaryIcon="arrow-forward"
           secondaryText="Next"
           secondaryEnabled={this.buttonNextEnabled()}
-          secondaryFunction={() => this.props.navigation.navigate('ProgramExercises', {
-            name: this.state.name,
-            days: numberOfDays === '' ? weekdays.filter((day: Day) => {
-                if (day.training) return day.name
-              }).map((day: Day) => day.name) :
-              loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
-            saveProgram: this.props.navigation.state.params.saveProgram
-          })}
+          secondaryFunction={() => this.navigateToProgramExercises()}
         />
         <View style={styles.containerForm}>
           <Text style={[styles.text, styles.elementsSeparator]}>Enter a name for the program:</Text>
@@ -140,14 +163,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
                 }))) {
                 this.showActionSheet()
               } else {
-                this.props.navigation.navigate('ProgramExercises', {
-                  name: this.state.name,
-                  days: numberOfDays === '' ? weekdays.filter((day: Day) => {
-                      if (day.training) return day.name
-                    }).map((day: Day) => day.name) :
-                    loDash.range(+numberOfDays).map((value: number) => (value + 1).toString()),
-                  saveProgram: this.props.navigation.state.params.saveProgram
-                })
+                this.navigateToProgramExercises()
               }
             }}>
             <Text style={[styles.text, !this.buttonNextEnabled() && styles.textDisabled]}>Next</Text>

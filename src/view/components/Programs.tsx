@@ -89,7 +89,10 @@ class Programs extends React.PureComponent<IProps, IState> {
           if (pgAct) editProgram({index: indexRow, program: {active: false, days: pgAct.days, name: pgAct.name}})
           editProgram({index: indexRow, program: {active: !data.active, days: data.days, name: data.name}})
         } else if (buttonIndex === 1) {
-          console.log('test')
+          this.props.navigation.navigate('ProgramNameDays', {
+            saveProgram: this.saveProgram,
+            editedProgram: data
+          })
         } else if (buttonIndex === 2) {
           deleteProgram({index: indexRow})
         }
@@ -154,6 +157,7 @@ class Programs extends React.PureComponent<IProps, IState> {
           order={this.order}
           onRowMoved={(e: any) => {
             this.order.splice(e.to, 0, this.order.splice(e.from, 1)[0])
+            this.forceUpdate()
           }}
           renderRow={(row: ServerEntity.Program) => row &&
             <RowSortableList data={row} action={this.showActionSheet} component={<RowProgramsList data={row}/>}/> ||
