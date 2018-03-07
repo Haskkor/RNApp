@@ -42,6 +42,7 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     }
     this.buttonNextEnabled = this.buttonNextEnabled.bind(this)
     this.navigateToProgramExercises = this.navigateToProgramExercises.bind(this)
+    this.modifyEditedProgram = this.modifyEditedProgram.bind(this)
   }
 
   componentDidMount() {
@@ -92,6 +93,51 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     return name !== '' && (numberOfDays !== '' || weekdays.some((elem) => {
       return elem.training
     }))
+  }
+
+  modifyEditedProgram = (currentIsDays: boolean): ServerEntity.Program | null => {
+    const editedProgram: ServerEntity.Program = this.props.navigation.state.params.editedProgram ?
+      Object.assign(this.props.navigation.state.params.editedProgram) : null
+    if (editedProgram) {
+      if (isNaN(+editedProgram.days[0].day)) {
+        // If the edited program contained day names
+        if (currentIsDays) {
+          // If days were added push empty days, if days were removed destroy the difference
+          let newDays: ServerEntity.ExercisesDay[]
+          this.state.weekdays.map((d: Day) => {
+
+
+
+
+
+
+          })
+        } else {
+          // If current state is number as days remove all
+          editedProgram.days.length = 0
+        }
+      } else {
+        // If the edited program contained numbers as days
+        if (currentIsDays) {
+          // If the current state is day names remove all
+          editedProgram.days.length = 0
+        } else {
+          // If days were added push empty days, if days were removed destroy the difference
+          +this.state.numberOfDays > editedProgram.days.length ?
+            _.range(+this.state.numberOfDays - editedProgram.days.length).map((i: number) => {
+              editedProgram.days.push({
+                day: i.toString(),
+                exercises: [] as ServerEntity.ExerciseSet[],
+                isCollapsed: false
+              })
+            }) :
+            editedProgram.days.length = +this.state.numberOfDays
+        }
+      }
+      return editedProgram
+    } else {
+      return null
+    }
   }
 
   navigateToProgramExercises = () => {
