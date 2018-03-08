@@ -46,14 +46,15 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   componentDidMount() {
-    const exercisesDayEmpty = this.props.navigation.state.params.days.map((day: string) => {
+    const {params} = this.props.navigation.state
+    const exercisesDayEmpty = params.days.map((day: string) => {
       return {
         day: day,
         exercises: [] as ServerEntity.ExerciseSet[],
         isCollapsed: false
       }
     })
-    this.setState({exercisesDay: exercisesDayEmpty})
+    this.setState({exercisesDay: params.editedExercises ? params.editedExercises : exercisesDayEmpty})
   }
 
   componentDidUpdate() {

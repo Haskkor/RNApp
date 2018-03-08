@@ -76,13 +76,15 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
             days: this.state.weekdays.filter((day: Day) => {
               if (day.training) return day.name
             }).map((day: Day) => day.name),
-            saveProgram: this.props.navigation.state.params.saveProgram
+            saveProgram: this.props.navigation.state.params.saveProgram,
+            editedExercises: this.props.navigation.state.params.editedProgram ? this.modifyEditedProgram(true) : null
           })
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramExercises', {
             name: this.state.name,
             days: _.range(+this.state.numberOfDays).map((value: number) => value.toString()),
-            saveProgram: this.props.navigation.state.params.saveProgram
+            saveProgram: this.props.navigation.state.params.saveProgram,
+            editedExercises: this.props.navigation.state.params.editedProgram ? this.modifyEditedProgram(false) : null
           })
         }
       })
@@ -95,6 +97,24 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     }))
   }
 
+
+
+
+
+
+
+
+  // TESTS:
+  // Days add : OK
+  // Days remove : OK
+  // Days to number : OK BUT NEED TO BE FILLED WITH EMPTY ONES
+  // Number to days : OK BUT NEED TO BE FILLED WITH EMPTY ONES
+  // Number add : OK
+  // Number remove : OK
+
+
+  // RETURN EXERCISES MAP AND NOT FULL OBKECT
+
   modifyEditedProgram = (currentIsDays: boolean): ServerEntity.Program | null => {
     const editedProgram: ServerEntity.Program = this.props.navigation.state.params.editedProgram ?
       Object.assign(this.props.navigation.state.params.editedProgram) : null
@@ -103,15 +123,23 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
         // If the edited program contained day names
         if (currentIsDays) {
           // If days were added push empty days, if days were removed destroy the difference
-          let newDays: ServerEntity.ExercisesDay[]
+          let newDays: ServerEntity.ExercisesDay[] = []
           this.state.weekdays.map((d: Day) => {
-
-
-
-
-
-
+            if (d.training) {
+              const existingDay = editedProgram.days.find((ed: ServerEntity.ExercisesDay) => ed.day === d.name)
+              if (existingDay) {
+                newDays.push(existingDay)
+              } else {
+                newDays.push({
+                  day: d.name,
+                  exercises: [] as ServerEntity.ExerciseSet[],
+                  isCollapsed: false
+                })
+              }
+            }
           })
+          editedProgram.days.length = 0
+          editedProgram.days = newDays
         } else {
           // If current state is number as days remove all
           editedProgram.days.length = 0
@@ -123,15 +151,17 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
           editedProgram.days.length = 0
         } else {
           // If days were added push empty days, if days were removed destroy the difference
-          +this.state.numberOfDays > editedProgram.days.length ?
+          if (+this.state.numberOfDays > editedProgram.days.length) {
             _.range(+this.state.numberOfDays - editedProgram.days.length).map((i: number) => {
               editedProgram.days.push({
                 day: i.toString(),
                 exercises: [] as ServerEntity.ExerciseSet[],
                 isCollapsed: false
               })
-            }) :
+            })
+          } else {
             editedProgram.days.length = +this.state.numberOfDays
+          }
         }
       }
       return editedProgram
@@ -140,14 +170,24 @@ class ProgramNameDays extends React.PureComponent<IProps, IState> {
     }
   }
 
+
+
+
+
+
+
+
   navigateToProgramExercises = () => {
+    const {params} = this.props.navigation.state
     this.props.navigation.navigate('ProgramExercises', {
       name: this.state.name,
       days: this.state.numberOfDays === '' ? this.state.weekdays.filter((day: Day) => {
           if (day.training) return day.name
         }).map((day: Day) => day.name) :
         _.range(+this.state.numberOfDays).map((value: number) => (value + 1).toString()),
-      saveProgram: this.props.navigation.state.params.saveProgram
+      saveProgram: params.saveProgram,
+      editedExercises: params.editedProgram ? (this.state.numberOfDays === '' ? this.modifyEditedProgram(true) :
+        this.modifyEditedProgram(false)) : null
     })
   }
 
