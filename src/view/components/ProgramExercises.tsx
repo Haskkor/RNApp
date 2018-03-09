@@ -54,7 +54,10 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
         isCollapsed: false
       }
     })
-    this.setState({exercisesDay: params.editedExercises ? params.editedExercises : exercisesDayEmpty})
+    this.setState({
+      exercisesDay: (params.editedExercises && params.editedExercises.length) > 0 ?
+        params.editedExercises : exercisesDayEmpty
+    })
   }
 
   componentDidUpdate() {
@@ -210,7 +213,19 @@ class ProgramExercises extends React.PureComponent<IProps, IState> {
   }
 
   saveProgram = () => {
-    this.props.navigation.state.params.saveProgram(this.state.exercisesDay, this.props.navigation.state.params.name)
+    const {params} = this.props.navigation.state
+    if (params.editedProgram) {
+      params.saveProgram({
+        index: params.editedIndex,
+        program: {
+          name: params.name,
+          active: params.editedProgram.active,
+          days: this.state.exercisesDay
+        }
+      })
+    } else {
+      params.saveProgram(this.state.exercisesDay, params.name)
+    }
     this.props.navigation.dispatch(NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({routeName: 'Home'})]

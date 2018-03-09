@@ -90,8 +90,9 @@ class Programs extends React.PureComponent<IProps, IState> {
           editProgram({index: indexRow, program: {active: !data.active, days: data.days, name: data.name}})
         } else if (buttonIndex === 1) {
           this.props.navigation.navigate('ProgramNameDays', {
-            saveProgram: this.saveProgram,
-            editedProgram: data
+            saveProgram: editProgram,
+            editedProgram: data,
+            editedIndex: indexRow
           })
         } else if (buttonIndex === 2) {
           deleteProgram({index: indexRow})
